@@ -1,0 +1,32 @@
+:root {
+  color-scheme: light;
+  --paper: #f5f3ed;
+  --surface: #fcfbf7;
+  --ink: #262924;
+  --muted: #62685d;
+  --faint: #62685d;
+  --line: #dcdfd3;
+  --accent: #5e6c40;
+  --selected: #e4e9d8;
+  --key: #eaeae2;
+  --key-hover: #dfe3d4;
+  --danger: #a04b38;
+  --rail: #eeeee6;
+  --serif: 'Newsreader', Georgia, serif;
+  --sans: 'Manrope', sans-serif;
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --paper: #1d211e;
+  --surface: #242924;
+  --ink: #eeeee4;
+  --muted: #a5ad9e;
+  --faint: #9ca593;
+  --line: #3c443c;
+  --accent: #b1c28c;
+  --selected: #3a4730;
+  --key: #30372f;
+  --key-hover: #424d39;
+  --danger: #e5a08b;
+  --rail: #191d19;
+}
