@@ -83,6 +83,7 @@ onBeforeUnmount(() => { window.removeEventListener('hashchange', syncUpdatesPage
 <template>
   <div class="app-shell">
     <button class="icon-button menu-toggle" aria-label="Open menu" aria-haspopup="dialog" :aria-expanded="menuOpen" :aria-describedby="needRefresh ? 'update-available' : undefined" :disabled="updating" @click="menuOpen = true"><Menu :size="23" :stroke-width="1.5" /><span v-if="needRefresh" class="update-dot" aria-hidden="true"></span><span v-if="needRefresh" id="update-available" class="sr-only">Update available</span></button>
+    <p v-if="!game.storageError" class="puzzle-meta"><span class="level-number">Nº {{ number }}</span><span>{{ game.puzzle.quote.difficulty }}</span></p>
     <div class="app-body" :inert="updating">
       <main id="main" class="main-content">
         <h1 class="sr-only">Cryptogram {{ number }}</h1>

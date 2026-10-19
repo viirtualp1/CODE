@@ -2,7 +2,7 @@
 
 A functional, local-first cryptogram game built with Vue 3, TypeScript, Vite, Pinia, SCSS and IndexedDB
 
-Current revision: 0.2.1.
+Current revision: 0.2.2.
 
 Working directory: `/Users/virtualp1/Documents/personal/CODE`. All subsequent changes belong here.
 
@@ -64,7 +64,7 @@ IndexedDB database `code-cryptogram`, schema 1, store `records`: puzzle:<id> →
 
 ## Visual direction
 
-Warm paper, near-black ink, olive selection, precise rules and restrained typography. The user explicitly requested a game-centered layout: put CODE branding and navigation inside a sliding left drawer, reached through a floating upper-left hamburger. The board has no card/frame or top metadata strip. The burger is fixed at top:0/left:0, with safe-area padding inside its hit target. Phone gameplay fills 100dvh without document or quote scrolling. Number, difficulty, collection position and full source details live in the drawer. Remove large titles, slogans, marketing eyebrows, sidebar advice and filler labels from gameplay. Keyboard explanations live in Help. The keyboard has no header, Read/Solve controls or selected-number caption; erase sits directly above Enter on the right. Wide desktops use a 1160px board, 40px cells and 32px letters. Routine saved/saving labels are removed; failure warnings remain. See docs/KEYBOARD_UX.md for the custom/native decision and Android IME safety contract.
+Warm paper, near-black ink, olive selection, precise rules and restrained typography. The user explicitly requested a game-centered layout: put CODE branding and navigation inside a sliding left drawer, reached through a floating upper-left hamburger. The board has no card/frame or top metadata strip. The burger is fixed at top:0/left:0, with safe-area padding inside its hit target. Phone gameplay fills 100dvh without document or quote scrolling. Static puzzle number and difficulty sit at the upper right, aligned with the burger. Collection position and full source details live in the drawer. Remove large titles, slogans, marketing eyebrows, sidebar advice and filler labels from gameplay. Keyboard explanations live in Help. The keyboard has no header, Read/Solve controls or selected-number caption; erase sits directly above Enter on the right. Wide desktops use a 1160px board, 40px cells and 32px letters. Routine saved/saving labels are removed; failure warnings remain. See docs/KEYBOARD_UX.md for the custom/native decision and Android IME safety contract.
 
 ## Validation and limits
 
@@ -82,10 +82,10 @@ Release notes use `#/updates`, with browser/Android Back returning to the puzzle
 Local validation: 44 Vitest tests plus 3 release-tool tests, production build and browser checks (recorded in docs/QA.md). Remote GitHub Actions and hosted Android updates require the workflows to be pushed and the host connected; these have not run from this local session.
 
 
-## Phone layout contract — 0.2.1
+## Phone layout contract — 0.2.2
 
-The game is unframed, with 12px horizontal phone gutters. There is no puzzle-number/difficulty strip or duplicate collection counter above the quote. The transparent 48px menu target is fixed at the viewport origin; safe-area padding protects its icon without offsetting the target. Toolbar and custom keyboard stay in flow inside 100dvh. Neither the page nor quote is scrollable on phone layouts; long dialogs remain internally scrollable.
+The game is unframed, with 12px horizontal phone gutters. Small, noninteractive puzzle number and difficulty text share the burger’s vertical alignment at the upper right. There is no header bar, divider or duplicate collection counter. The transparent 48px menu target is fixed at the viewport origin; safe-area padding protects its icon without offsetting the target. Toolbar and custom keyboard stay in flow inside 100dvh. Neither the page nor quote is scrollable on phone layouts; long dialogs remain internally scrollable.
 
-At 800px height or less, compact quote spacing and 44px cell/key heights preserve room. Only the author's name remains under the quote at that size; full work/year details are always available in Current puzzle. Landscape uses the page width above a centered keyboard, rather than a narrow side-by-side card. A real save failure appears beside the burger in the already reserved control area; it does not push the keyboard below the viewport. Feedback grows only as needed, with readable bounded phone type.
+Portrait keys use 50–68px height (about 64px at 412×915), with an additional 8–16px bottom inset above the safe area. At 860px height or less, compact quote spacing and 44px cell heights preserve room; below 680px, row gaps tighten further. Landscape retains 44px keys. Only the author's name remains under the quote at that size; full work/year details are always available in Current puzzle. Landscape uses the page width above a centered keyboard, rather than a narrow side-by-side card. A real save failure replaces the optional top-right metadata beside the burger in the control area; it does not push the keyboard below the viewport. Feedback grows only as needed, with readable bounded phone type.
 
 Validated every bundled puzzle at 360×640, 360×800, 412×915, 480×960 and 915×412 without scrollable gameplay containers or hidden words. The longest sample also fits with 200% text at 412×915, 360×800 and 360×640, including duplicate-input feedback. Arbitrarily small windows, future longer quotes and real Samsung display/font scaling require their own fit validation before release; do not silently crop or shrink controls below their accepted bounds.

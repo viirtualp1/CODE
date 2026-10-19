@@ -30,6 +30,8 @@ p, h1, h2, h3 { margin: 0; }
 // App chrome. The game is the only content area.
 .app-shell { min-height: 100dvh; }
 .menu-toggle { position: fixed; z-index: 3; left: 0; top: 0; width: calc(48px + env(safe-area-inset-left)); height: calc(48px + env(safe-area-inset-top)); padding: env(safe-area-inset-top) 0 0 env(safe-area-inset-left); background: transparent; border-radius: 0; &:focus-visible { outline-offset: -4px; } }
+.puzzle-meta { position: fixed; z-index: 2; top: 0; right: max(12px, env(safe-area-inset-right)); min-height: calc(48px + env(safe-area-inset-top)); padding-top: env(safe-area-inset-top); display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: .6875rem; line-height: 1.4; pointer-events: none; }
+.level-number { color: var(--ink); font-weight: 600; letter-spacing: .06em; font-variant-numeric: tabular-nums; }
 .app-body { min-height: 100dvh; display: flex; flex-direction: column; }
 .main-content { width: 100%; max-width: 960px; margin: 0 auto; padding: 12px 36px 20px; flex: 1; display: flex; flex-direction: column; justify-content: flex-start; }
 .workspace, .game-column { width: 100%; min-width: 0; }
@@ -77,7 +79,7 @@ p, h1, h2, h3 { margin: 0; }
 .key-row-2 .letter-key:first-child { grid-column: 2; }
 .next-key { grid-column: 10; }
 .key {
-  width: 100%; min-width: 0; min-height: 47px; background: var(--key); border: 1px solid transparent; border-bottom-color: var(--line); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: min(1rem, 24px); font-weight: 500; position: relative;
+  width: 100%; min-width: 0; min-height: 56px; background: var(--key); border: 1px solid transparent; border-bottom-color: var(--line); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: min(1rem, 24px); font-weight: 500; position: relative;
   &.used { color: var(--muted); }
   &.current { background: var(--selected); color: var(--accent); border-color: var(--accent); }
   &:hover:not(:disabled) { background: var(--key-hover); }
@@ -155,23 +157,29 @@ p, h1, h2, h3 { margin: 0; }
   .toolbar-divider { margin: 0 3px; }
   .tool-button { font-size: .6875rem; padding: 0 8px; gap: 5px; span { overflow-wrap: anywhere; } }
   .check-button { margin-left: 0; }
-  .input-deck { margin-top: 4px; flex-shrink: 0; padding-bottom: env(safe-area-inset-bottom); }
-  .keyboard { gap: 6px; margin: 0 auto; max-width: 590px; }
+  .input-deck { margin-top: 4px; flex-shrink: 0; padding-bottom: calc(env(safe-area-inset-bottom) + clamp(8px, 1.75dvh, 16px)); }
+  .keyboard { gap: 8px; margin: 0 auto; max-width: 590px; }
   .key-row { gap: 4px; }
-  .key { min-height: 48px; }
+  .key { min-height: 50px; height: clamp(50px, 7dvh, 68px); font-size: min(1.125rem, 24px); }
   .feedback-message { flex-shrink: 0; min-height: 18px; margin: 3px 0 5px; font-size: clamp(12px, .625rem, 14px); line-height: 1.5; text-align: center; }
   .storage-warning { position: fixed; top: env(safe-area-inset-top); left: calc(env(safe-area-inset-left) + 52px); right: max(12px, env(safe-area-inset-right)); z-index: 2; margin: 0; padding: 4px 0; border: 0; background: var(--paper); font-size: min(.75rem, 14px); line-height: 1.4; }
   .app-dialog { padding: 24px; width: min(480px, calc(100% - 28px)); }
   .dialog-header h2 { font-size: 2rem; }
 }
-@media (max-width: 700px) and (max-height: 800px) {
+@media (max-width: 700px) and (max-height: 860px) {
   .cipher-board { column-gap: 12px; row-gap: 6px; }
   .cipher-cell { width: 21px; height: 44px; .cell-letter { width: 19px; height: 27px; font-size: min(1.25rem, 21px); } .cell-number { margin-top: 4px; } }
   .quote-region { padding-bottom: 8px; }
   .attribution { margin-top: 8px; }
   .work-title { display: none; }
-  .key { min-height: 44px; }
-  .keyboard { gap: 4px; }
+  .key { min-height: 50px; height: clamp(50px, 7dvh, 60px); }
+  .keyboard { gap: 6px; }
+}
+@media (max-width: 700px) and (max-height: 680px) {
+  .cipher-board { row-gap: 2px; }
+  .cipher-cell .cell-number { font-size: min(.5625rem, 12px); }
+  .attribution { margin-top: 6px; }
+  .input-deck { padding-bottom: calc(env(safe-area-inset-bottom) + 8px); }
 }
 @media (max-height: 580px) and (orientation: landscape) {
   .quote-region { padding-bottom: 6px; }
@@ -181,8 +189,9 @@ p, h1, h2, h3 { margin: 0; }
   .work-title { display: inline; margin-left: 10px; }
   .author { display: inline; }
   .attribution-line { display: none; }
-  .key { min-height: 44px; }
+  .key { min-height: 44px; height: 44px; }
   .keyboard { gap: 4px; }
+  .input-deck { padding-bottom: env(safe-area-inset-bottom); }
   .puzzle-toolbar { min-height: 44px; }
   .feedback-message { min-height: 14px; margin: 2px 0; }
 }
@@ -208,13 +217,13 @@ p, h1, h2, h3 { margin: 0; }
   .author { font-size: .8125rem; }
   .work-title { font-size: .9375rem; }
   .keyboard { max-width: 720px; }
-  .key { min-height: 51px; font-size: min(1.125rem, 26px); }
+  .key { min-height: 60px; font-size: min(1.125rem, 26px); }
 }
 @media (min-width: 701px) and (min-height: 581px) and (max-height: 850px) {
   .main-content { padding-top: 12px; padding-bottom: 8px; }
   .quote-region { min-height: 240px; max-height: max(240px, calc(100dvh - 490px)); padding-top: 24px; padding-bottom: 24px; }
   .input-deck { margin-top: 12px; }
-  .key { min-height: 44px; }
+  .key { min-height: 52px; }
 }
 
 

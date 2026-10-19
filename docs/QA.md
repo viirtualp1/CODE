@@ -95,3 +95,15 @@ Final 0.2.0 preparation build (`index-D-frUw_v.js`) also installed through the n
 - Existing **44 Vitest tests plus 3 release-tool tests** passed; production build/release validation passed. Gameplay storage schema and quote IDs/revisions are unchanged. Real Samsung gesture/display/font-scaling verification remains a hardware gate.
 
 The saved production preview was explicitly updated from 0.2.0 to 0.2.1 through What’s new. Its current menu showed v0.2.1 and `index-B1xhglSD.js`; no top metadata strip remained. Final mobile and 1440×1000 desktop screenshots show the unframed layout.
+
+
+## Revision 0.2.2 — taller keyboard and quiet puzzle context
+
+- At 412×915, measured key height **64.05px**, up from 48px, and keyboard top **664.86px**, approximately 68px higher. An extra bottom inset lifts the bottom edge to 873px. Portrait keys scale between 50 and 68px; landscape stays 44px.
+- Added plain, noninteractive number/difficulty text at the upper right, aligned with the menu's 48px target. No header surface, divider, tab stop or click target. Storage failure takes priority over this optional metadata.
+- Checked every bundled puzzle at **360×640, 360×800, 360×840, 412×915, 480×960 and 915×412**: no document overflow or scrollable gameplay descendants; complete quotes and keyboards remained visible. Austen was already completed and retained its Next puzzle state.
+- Longest Carroll sample with 200% text and duplicate-input feedback fit at 360×640, 360×800, 360×840, 412×915 and 915×412. At 360×640: first row top **49px**, attribution bottom **359px**, toolbar top **368px**, keyboard bottom **582px**. This is simulated rem scaling, not a Samsung hardware test.
+- Native macOS T input updated the grouped symbol and advanced actual focus; Down and Command Z worked. One board tab stop remained; no unsolicited mistake marker or page scroll appeared.
+- No engine, quote or persistence-schema changes.
+- Existing **44 Vitest tests plus 3 release-tool tests** passed; release validation, TypeScript and production build passed. Visually checked light/dark at 412×915 and measured 60px desktop keys at 1440×1000.
+- Cached production preview updated from 0.2.1 to **0.2.2** through What’s new → Update & restart; the installed version and new keys were verified after reload. Closing the drawer restored normal body positioning.

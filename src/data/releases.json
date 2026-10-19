@@ -1,5 +1,15 @@
 [
   {
+    "version": "0.2.2",
+    "date": "2026-10-19",
+    "title": "A more comfortable keyboard",
+    "changes": [
+      "Taller phone keys bring the keyboard higher for easier typing.",
+      "The puzzle number and difficulty appear quietly at the top right, beside the menu.",
+      "The full puzzle remains visible without scrolling on supported phone sizes."
+    ]
+  },
+  {
     "version": "0.2.1",
     "date": "2026-10-19",
     "title": "More room to solve",
