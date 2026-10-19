@@ -2,7 +2,7 @@
 
 A functional, local-first cryptogram game built with Vue 3, TypeScript, Vite, Pinia, SCSS and IndexedDB
 
-Current revision: 0.2.2.
+Current revision: 0.2.3.
 
 Working directory: `/Users/virtualp1/Documents/personal/CODE`. All subsequent changes belong here.
 
@@ -25,11 +25,11 @@ Open the local address printed by Vite. Production preview is needed to test ser
 1. Read AGENTS.md and docs/PRODUCT.md, docs/DESIGN.md, docs/PUZZLE_ENGINE.md.
 2. Run npm test and npm run build.
 3. Keep the current boundary: no advanced generator, remote quote API, statistics or Android packaging.
-4. The next content phase needs audited provenance, a licensed word list, an ambiguity-aware solver and measured difficulty. The current six samples have editorial difficulty labels, not solver-certified fairness.
+4. The next content phase needs audited provenance, a licensed word list, an ambiguity-aware solver and measured difficulty. The current sixteen samples have editorial difficulty labels, not solver-certified fairness.
 
 ## Working behavior
 
-- Six bundled original English excerpts with sources, reuse notes and hand-selected starting clues.
+- Sixteen bundled original English excerpts with sources, reuse notes and hand-selected starting clues.
 - Deterministic per-puzzle substitution and one-to-one assignments. Repeated symbols update together.
 - Neutral guesses; explicit Check; confirmed, undoable hints; undo/redo; erase and Enter.
 - Exact completion, puzzle switching, confirmed restart and per-puzzle resume.
@@ -79,13 +79,22 @@ CI runs tests and a production build on branches and pull requests. A pushed `vX
 
 Release notes use `#/updates`, with browser/Android Back returning to the puzzle. Opening them directly and reloading works offline. There is no quote API, account or release API dependency. A downloaded version only activates after explicit Update & restart. During flush/activation the modal cannot be dismissed and gameplay is inert. Save and worker waits are each capped at 30 seconds and can be retried. Another tab's activation never forces this tab to reload. IndexedDB schema remains 1.
 
-Local validation: 44 Vitest tests plus 3 release-tool tests, production build and browser checks (recorded in docs/QA.md). Remote GitHub Actions and hosted Android updates require the workflows to be pushed and the host connected; these have not run from this local session.
+Local validation: 55 Vitest tests plus 3 release-tool tests, production build and browser checks (recorded in docs/QA.md). Remote GitHub Actions and hosted Android updates require the workflows to be pushed and the host connected; these have not run from this local session.
 
 
-## Phone layout contract — 0.2.2
+## Phone layout contract — 0.2.3
 
 The game is unframed, with 12px horizontal phone gutters. Small, noninteractive puzzle number and difficulty text share the burger’s vertical alignment at the upper right. There is no header bar, divider or duplicate collection counter. The transparent 48px menu target is fixed at the viewport origin; safe-area padding protects its icon without offsetting the target. Toolbar and custom keyboard stay in flow inside 100dvh. Neither the page nor quote is scrollable on phone layouts; long dialogs remain internally scrollable.
 
 Portrait keys use 50–68px height (about 64px at 412×915), with an additional 8–16px bottom inset above the safe area. At 860px height or less, compact quote spacing and 44px cell heights preserve room; below 680px, row gaps tighten further. Landscape retains 44px keys. Only the author's name remains under the quote at that size; full work/year details are always available in Current puzzle. Landscape uses the page width above a centered keyboard, rather than a narrow side-by-side card. A real save failure replaces the optional top-right metadata beside the burger in the control area; it does not push the keyboard below the viewport. Feedback grows only as needed, with readable bounded phone type.
 
 Validated every bundled puzzle at 360×640, 360×800, 412×915, 480×960 and 915×412 without scrollable gameplay containers or hidden words. The longest sample also fits with 200% text at 412×915, 360×800 and 360×640, including duplicate-input feedback. Arbitrarily small windows, future longer quotes and real Samsung display/font scaling require their own fit validation before release; do not silently crop or shrink controls below their accepted bounds.
+
+
+## Content and keyboard revision — 0.2.3
+
+The collection contains 16 puzzles: 6 Easy, 6 Medium, 4 Hard (editorial labels). Ten additions are appended after the original six, preserving their IDs, quote revisions, cipher seeds and collection positions; existing IndexedDB schema 1 progress needs no migration. New IDs start at revision 1. Each quote has a verified source passage and individually selected clue rationale; see docs/CONTENT.md. No generator or API was introduced.
+
+Portrait keyboard horizontal gaps are 2px, with 4px effective screen gutters when there are no larger safe-area insets. Only the keyboard extends 8px beyond each side of the 12px content gutters; the board spacing is unchanged. At 412px wide, key width increases from 35.2px to 38.6px. Desktop keyboard maximum width is 800px; landscape maximum is 640px. Erase and Enter remain vertically aligned at the right.
+
+The action toolbar shares the keyboard's horizontal bounds via the same width constraint at all breakpoints. What’s new in the drawer displays an 8px green dot alongside its availability text only when an update is ready. The release dialog keeps at least 24px above/below it, respecting larger safe areas; its contents scroll internally and its close control stays visible.

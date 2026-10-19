@@ -4,7 +4,7 @@
 A quiet, premium English cryptogram game for Android. Solve a sentence by finding the letter behind each number. No ads, subscription, currencies, paid features, account, network dependency or timer pressure.
 
 ## First vertical slice
-A complete local session: six public-domain sample passages, Easy/Medium/Hard labels with hand-authored clues, consistent substitution, custom keyboard, physical keyboard, selection, grouped entry, erase, undo/redo, optional checking, a confirmed hint, completion, puzzle selection and reset. Resume each puzzle through IndexedDB. Include a floating menu button with an animated left drawer, light/dark/system preference and optional haptics. App shell installability and offline caching through a PWA. No statistics, advanced generator, remote quote service or Android wrapper.
+A complete local session: sixteen public-domain sample passages, Easy/Medium/Hard labels with hand-authored clues, consistent substitution, custom keyboard, physical keyboard, selection, grouped entry, erase, undo/redo, optional checking, a confirmed hint, completion, puzzle selection and reset. Resume each puzzle through IndexedDB. Include a floating menu button with an animated left drawer, light/dark/system preference and optional haptics. App shell installability and offline caching through a PWA. No statistics, advanced generator, remote quote service or Android wrapper.
 
 Difficulty labels in this slice describe author-selected samples; they are not solver-certified. There is no scheduled daily service in this slice. Puzzle numbers are stable collection positions. All answers ship with the application.
 
@@ -38,7 +38,7 @@ Difficulty labels in this slice describe author-selected samples; they are not s
 6. Tests and production build pass; verify keyboard/touch, drawer, completion and both themes in a browser. Actual Samsung hardware testing remains a release gate, not something desktop emulation can certify.
 
 ## Phases
-- **1 — this slice:** architecture, polished board, six curated samples, reliable session, offline app shell, tests and documented handoff.
+- **1 — this slice:** architecture, polished board, sixteen curated samples, reliable session, offline app shell, tests and documented handoff.
 - **2 — content + fairness:** 100–200 curated legally reusable quotes; provenance audit, solver, clue selection, ambiguity rejection and measured difficulty. See PUZZLE_ENGINE.md.
 - **3 — Android refinement:** real-device gesture navigation, scale/accessibility/landscape tests, usability sessions, content revision and storage migration hardening.
 - **4 — release:** installation guidance, offline/update QA, privacy statement and optional Android packaging only when explicitly requested.

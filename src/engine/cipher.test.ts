@@ -8,6 +8,11 @@ const editable = puzzle.symbols.filter(n => !puzzle.clues[n])
 const freeLetter = (session: Session) => [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'].find(letter => !Object.values(session.entries).includes(letter))!
 
 describe('curated corpus and substitution invariants', () => {
+  it('keeps saved sessions and collection entries distinct', () => {
+    expect(new Set(quotes.map(q => q.id)).size).toBe(quotes.length)
+    expect(new Set(quotes.map(q => q.text.toUpperCase())).size).toBe(quotes.length)
+    expect(quotes.every(q => /^[a-z]+(?:-[a-z]+)+$/.test(q.id) && Number.isInteger(q.revision) && q.revision > 0)).toBe(true)
+  })
   it.each(quotes)('$id has deterministic unique mappings, valid clues and intact punctuation', quote => {
     const p = createPuzzle(quote)
     expect(createPuzzle(quote)).toEqual(p)
@@ -19,6 +24,15 @@ describe('curated corpus and substitution invariants', () => {
     expect(p.words.every(word => word.filter(c => c.symbol).length <= 10)).toBe(true)
     expect(quote.source).toMatch(/^https:\/\/www.gutenberg.org/)
     expect(quote.clueRationale.length).toBeGreaterThan(30)
+    expect(new Set(quote.clues).size).toBe(quote.clues.length)
+    let solved = initialSession(p)
+    for (const symbol of p.symbols.filter(n => !p.clues[n])) {
+      const result = edit(p, solved, symbol, p.solution[symbol]!)
+      expect(result.changed).toBe(true)
+      solved = result.session
+    }
+    expect(isComplete(p, solved)).toBe(true)
+    expect(validSession(p, solved)).toBe(true)
   })
 })
 describe('session operations', () => {

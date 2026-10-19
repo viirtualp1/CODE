@@ -30,7 +30,7 @@ Read docs/PRODUCT.md, docs/DESIGN.md and docs/PUZZLE_ENGINE.md before changing b
 - Explicitly focus clicked cells on Safari/macOS. Successful letter entry advances from that occurrence to the next blank in reading order, wrapping once. Rejected/unchanged input and erase retain selection.
 - Never add a hidden editable field for hardware typing: it risks opening Android IME. See docs/KEYBOARD_UX.md.
 - Do not display routine Saved/Saving labels; show actual storage failures only.
-- Keep keyboard and active symbol visible at narrow widths, landscape and enlarged text.
+- Keep keyboard and active symbol visible at narrow widths, landscape and enlarged text. Toolbar and keyboard share horizontal bounds at every size. Release notes keep at least 24px top/bottom gaps plus safe-area protection. Show a green dot beside Update available in the drawer only when an update is downloaded.
 - Do not add telemetry, ads, payments, a quote API, statistics, native packaging, or a generator in this slice.
 - Update docs when contracts, persistence schema or scope changes.
 - Every release updates package.json, package-lock.json and the newest entry in src/data/releases.json together; run release:check. Follow RELEASING.md. Never auto-reload active play or discard writes to apply an update.

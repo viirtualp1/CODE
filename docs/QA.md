@@ -107,3 +107,17 @@ The saved production preview was explicitly updated from 0.2.0 to 0.2.1 through 
 - No engine, quote or persistence-schema changes.
 - Existing **44 Vitest tests plus 3 release-tool tests** passed; release validation, TypeScript and production build passed. Visually checked light/dark at 412×915 and measured 60px desktop keys at 1440×1000.
 - Cached production preview updated from 0.2.1 to **0.2.2** through What’s new → Update & restart; the installed version and new keys were verified after reload. Closing the drawer restored normal body positioning.
+
+
+## Revision 0.2.3 — expanded collection and input refinements
+
+- Appended ten sourced public-domain English excerpts (007–016); original six IDs, revisions, clue sets and seeds are unchanged. Collection now has 6 Easy, 6 Medium and 4 Hard editorial labels. See CONTENT.md for source passages and excerpt boundaries.
+- Corpus tests now validate unique IDs/text and solve every sample through the real edit operation, in addition to deterministic mappings, clues, punctuation and maximum ten-letter words. All **55 Vitest tests plus 3 release-tool tests** passed.
+- All ten additions fit intact at **360×640, 360×800, 412×915, 480×960 and 915×412** (50 checks), with no document overflow and attribution above the toolbar. All ten also fit at 200% root text at 360×640 and 412×915 (20 checks). These are browser emulations; hardware gates remain.
+- At 412×915, key width is **38.59px**, up from 35.2px, with 4px screen gutters and 2px horizontal gaps. Existing 64px height is retained. Clicked H in puzzle 016: assignment entered, actual focus advanced, one board tab stop remained, Command Z undid the move and page scroll remained zero.
+- Toolbar and keyboard bounds match at 360×640, 412×915, 915×412, 1280×800 and 1440×1000. At 915×412 both are **x=137.5–777.5**; at 1440×1000 both are **x=320–1120**. Erase remains above Enter.
+- Release dialog measured **24px top/bottom gaps** at 360×640, 412×915, 915×412 and 1440×1000, with internal vertical scrolling, no horizontal overflow and body scroll locked.
+- Confirmed all difficulty filters show the correct counts (6/6/4). Production build, TypeScript and release validation passed.
+- Exercised a real update from cached 0.2.2 to a temporary local 0.2.3 preparation bundle, then the final 0.2.3 bundle. Before a download, no drawer dot existed. After the final bundle downloaded, the drawer showed the **8px green dot and Update available**; no automatic reload occurred. After explicit installation the dot disappeared. This was a local two-build check, not two published versions.
+- Entered O in the new Shelley puzzle immediately before installing: all three O occurrences survived the update, and Undo remained available. Final loaded script was index-CRJvgKPL.js.
+- In final release notes at 412×915, an internal scroll of 1579px retained the dialog top at **24px**, close target top at **44px**, and page scroll at **0**. Closing restored body styles. Screenshots record the availability badge, contained landscape actions and spaced release window.

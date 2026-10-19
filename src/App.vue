@@ -123,7 +123,7 @@ onBeforeUnmount(() => { window.removeEventListener('hashchange', syncUpdatesPage
         <button class="drawer-item" @click="openMenuPage('library')"><Grid2X2 :size="20" /><span>Puzzle collection</span><span class="menu-count">{{ puzzles.length }}</span></button>
         <button class="drawer-item" @click="openMenuPage('help')"><CircleHelp :size="20" /><span>How to play</span><ArrowUpRight :size="17" /></button>
         <button class="drawer-item" @click="openMenuPage('settings')"><Settings2 :size="20" /><span>Settings</span><ArrowUpRight :size="17" /></button>
-        <button class="drawer-item" @click="openMenuPage('updates')"><ScrollText :size="20" /><span><strong>What’s new</strong><small v-if="needRefresh">Update available</small></span><span class="menu-count">v{{ releases[0]!.version }}</span></button>
+        <button class="drawer-item" @click="openMenuPage('updates')"><ScrollText :size="20" /><span><strong>What’s new</strong><small v-if="needRefresh" class="drawer-update-status"><span class="drawer-update-dot" aria-hidden="true"></span>Update available</small></span><span class="menu-count">v{{ releases[0]!.version }}</span></button>
       </nav>
       <button class="drawer-item theme-menu-item" :aria-label="isDark ? 'Switch to light theme' : 'Switch to dark theme'" @click="game.setTheme(isDark ? 'light' : 'dark')"><Sun v-if="isDark" :size="20" /><Moon v-else :size="20" /><span>{{ isDark ? 'Light appearance' : 'Dark appearance' }}</span></button>
     </AppDialog>

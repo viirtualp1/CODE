@@ -1,5 +1,18 @@
 [
   {
+    "version": "0.2.3",
+    "date": "2026-10-19",
+    "title": "Ten more puzzles",
+    "changes": [
+      "Ten new literary puzzles bring the offline collection to sixteen, with hand-selected starting clues.",
+      "Wider keyboard keys use more of the phone screen, with smaller gaps and side margins.",
+      "Existing puzzle progress stays intact.",
+      "The toolbar follows the keyboard width on landscape phones and desktop.",
+      "A green dot in the menu highlights a downloaded update.",
+      "Release notes keep space above and below the window, including on short screens."
+    ]
+  },
+  {
     "version": "0.2.2",
     "date": "2026-10-19",
     "title": "A more comfortable keyboard",
