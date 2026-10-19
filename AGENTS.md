@@ -1,6 +1,6 @@
 # CODE — working agreement
 
-Read docs/PRODUCT.md, docs/DESIGN.md and docs/PUZZLE_ENGINE.md before changing behavior. Read README.md for commands and the current implementation boundary.
+Read docs/PRODUCT.md, docs/DESIGN.md and docs/PUZZLE_ENGINE.md before changing behavior. Read docs/HANDOFF.md for commands and the current implementation boundary. README.md is a short player-facing overview; keep developer instructions out of it.
 
 ## Priorities
 1. Android interaction quality and accessibility.
@@ -40,4 +40,4 @@ Read docs/PRODUCT.md, docs/DESIGN.md and docs/PUZZLE_ENGINE.md before changing b
 - No subagent requirement. No deployment is required for the local application deliverable.
 
 ## Handoff
-Record current behavior, known limitations, validation and next steps in README.md. Keep quotes' sources and reuse rationale attached to their data. Storage migrations require a version bump and explicit compatibility handling.
+Record current behavior, known limitations, validation and next steps in docs/HANDOFF.md. Keep quotes' sources and reuse rationale attached to their data. Storage migrations require a version bump and explicit compatibility handling.
