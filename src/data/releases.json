@@ -1,5 +1,23 @@
 [
   {
+    "version": "0.3.1",
+    "date": "2026-10-19",
+    "title": "More room to play",
+    "changes": [
+      "Both English and Russian collections now contain 100 original literary puzzles.",
+      "Collection, help, settings and release notes open as full screens on phones, with Back navigation. Desktop keeps windows.",
+      "The desktop quote is centered in the viewport when space allows, with the keyboard underneath and larger puzzle details."
+    ],
+    "ru": {
+      "title": "Больше места для игры",
+      "changes": [
+        "В английской и русской коллекциях теперь по 100 оригинальных литературных пазлов.",
+        "Коллекция, справка, настройки и обновления открываются отдельными экранами на телефоне с кнопкой «Назад». На компьютере остаются окна.",
+        "Цитата на компьютере центрируется в окне, когда позволяет высота; клавиатура — под ней, а номер и сложность стали крупнее."
+      ]
+    }
+  },
+  {
     "version": "0.3.0",
     "date": "2026-10-19",
     "title": "CODE in Russian",

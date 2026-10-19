@@ -116,5 +116,6 @@
   "applyUpdate": "Update & restart",
   "checkUpdates": "Check for updates",
   "eraseMistake": "Clear a checked mistake",
-  "demoLetter": "A"
+  "demoLetter": "A",
+  "back": "Back"
 }

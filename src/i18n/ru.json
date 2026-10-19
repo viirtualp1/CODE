@@ -116,5 +116,6 @@
   "applyUpdate": "Обновить и перезапустить",
   "checkUpdates": "Проверить обновления",
   "eraseMistake": "Удалить отмеченную ошибку",
-  "demoLetter": "А"
+  "demoLetter": "А",
+  "back": "Назад"
 }

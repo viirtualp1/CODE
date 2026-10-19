@@ -21,28 +21,38 @@ const puzzles = computed(() => game.collection)
 const cipher = ref<InstanceType<typeof CipherBoard>>()
 const dialog = ref<'library' | 'help' | 'settings' | 'hint' | 'restart' | 'updates' | null>(null)
 const menuOpen = ref(false)
+const menuButton = ref<HTMLElement>()
 const menuDialog = ref<InstanceType<typeof AppDialog>>()
 let menuDestination: 'library' | 'help' | 'settings' | 'updates' | null = null
 function openMenuPage(page: typeof menuDestination) { menuDestination = page; menuDialog.value?.requestClose() }
 async function closeMenu() {
   menuOpen.value = false; await nextTick()
   const destination = menuDestination; menuDestination = null
-  if (destination === 'updates') openUpdates(); else dialog.value = destination
+  if (destination) openPage(destination)
 }
-const updatesHash = '#/updates'
-let updatesOpenedHere = false
-function openUpdates() { updatesOpenedHere = true; window.location.hash = updatesHash; syncUpdatesPage() }
-function syncUpdatesPage() {
-  if (updating.value && window.location.hash !== updatesHash) {
-    window.history.replaceState(null, '', updatesHash); return
+const pages = { library: '#/collection', help: '#/help', settings: '#/settings', updates: '#/updates' } as const
+type Page = keyof typeof pages
+let pageOpenedHere = false
+const phoneQuery = window.matchMedia('(max-width: 700px), (max-height: 580px) and (orientation: landscape)')
+const isPhone = ref(phoneQuery.matches)
+const isPage = computed(() => isPhone.value && dialog.value !== null && dialog.value in pages)
+function viewportChanged() { isPhone.value = phoneQuery.matches }
+function openPage(page: Page) { pageOpenedHere = true; window.location.hash = pages[page]; syncPage() }
+function syncPage() {
+  if (updating.value && window.location.hash !== pages.updates) {
+    window.history.replaceState(null, '', pages.updates); return
   }
-  if (window.location.hash === updatesHash) dialog.value = 'updates'
-  else if (dialog.value === 'updates') dialog.value = null
+  const page = (Object.keys(pages) as Page[]).find(key => pages[key] === window.location.hash)
+  if (page) dialog.value = page
+  else if (dialog.value && dialog.value in pages) dialog.value = null
 }
-function closeUpdates() {
+function closePage() {
   if (updating.value) return
-  if (updatesOpenedHere && window.location.hash === updatesHash) { updatesOpenedHere = false; window.history.back() }
-  else { window.history.replaceState(null, '', window.location.pathname + window.location.search); dialog.value = null }
+  if (pageOpenedHere && Object.values(pages).some(hash => hash === window.location.hash)) {
+    pageOpenedHere = false; window.history.back()
+  } else {
+    window.history.replaceState(null, '', window.location.pathname + window.location.search); dialog.value = null
+  }
 }
 function enterLetter(letter: string) {
   if (!game.apply(letter) || game.complete) return
@@ -83,17 +93,51 @@ function keyboard(event: KeyboardEvent) {
   else if (action.type === 'next') cipher.value?.advance()
   else cipher.value?.erase()
 }
-function choose(id: string) { game.switchPuzzle(id); dialog.value = null }
+function choose(id: string) { game.switchPuzzle(id); closePage() }
 function nextPuzzle() { game.switchPuzzle(puzzles.value[(index.value + 1) % puzzles.value.length]!.quote.id) }
-onMounted(() => { syncUpdatesPage(); window.addEventListener('hashchange', syncUpdatesPage); void game.initialize(); window.addEventListener('keydown', keyboard, true); systemDark.addEventListener('change', applyTheme) })
-onBeforeUnmount(() => { window.removeEventListener('hashchange', syncUpdatesPage); window.removeEventListener('keydown', keyboard, true); systemDark.removeEventListener('change', applyTheme) })
+let layoutObserver: ResizeObserver | undefined
+let layoutFrame = 0
+function centerDesktop() {
+  cancelAnimationFrame(layoutFrame)
+  layoutFrame = requestAnimationFrame(() => {
+    if (isPhone.value || isPage.value) return
+    const workspace = document.querySelector<HTMLElement>('.workspace')
+    const quote = document.querySelector<HTMLElement>('.quote-region')
+    const column = document.querySelector<HTMLElement>('.game-column')
+    if (!workspace || !quote || !column) return
+    const height = quote.getBoundingClientRect().height
+    const remainder = column.getBoundingClientRect().height - height
+    const feedbackElement = document.querySelector<HTMLElement>('.feedback-message')
+    const feedbackStyle = feedbackElement ? getComputedStyle(feedbackElement) : null
+    const feedback = (feedbackElement?.getBoundingClientRect().height ?? 0) + parseFloat(feedbackStyle?.marginTop ?? '0') + parseFloat(feedbackStyle?.marginBottom ?? '0')
+    const boardHeight = quote.querySelector('.cipher-board')?.getBoundingClientRect().height ?? height
+    const desired = window.innerHeight / 2 - boardHeight / 2
+    const main = document.querySelector('.main-content')
+    const bottomRoom = (main ? parseFloat(getComputedStyle(main).paddingBottom) : 16) + 8
+    const available = window.innerHeight - height - remainder - feedback - bottomRoom
+    workspace.style.setProperty('--desktop-offset', `${Math.max(56, Math.min(desired, available))}px`)
+  })
+}
+watch(isPage, () => { void nextTick(centerDesktop) })
+onMounted(() => {
+  layoutObserver = new ResizeObserver(centerDesktop)
+  for (const selector of ['.quote-region', '.input-deck', '.puzzle-toolbar', '.feedback-message']) {
+    const element = document.querySelector(selector)
+    if (element) layoutObserver.observe(element)
+  }
+  window.addEventListener('resize', centerDesktop)
+  centerDesktop()
+})
+onBeforeUnmount(() => { layoutObserver?.disconnect(); cancelAnimationFrame(layoutFrame); window.removeEventListener('resize', centerDesktop) })
+onMounted(() => { phoneQuery.addEventListener('change', viewportChanged); syncPage(); window.addEventListener('hashchange', syncPage); void game.initialize(); window.addEventListener('keydown', keyboard, true); systemDark.addEventListener('change', applyTheme) })
+onBeforeUnmount(() => { phoneQuery.removeEventListener('change', viewportChanged); window.removeEventListener('hashchange', syncPage); window.removeEventListener('keydown', keyboard, true); systemDark.removeEventListener('change', applyTheme) })
 </script>
 
 <template>
-  <div class="app-shell">
-    <button class="icon-button menu-toggle" :aria-label="t('openMenu')" aria-haspopup="dialog" :aria-expanded="menuOpen" :aria-describedby="needRefresh ? 'update-available' : undefined" :disabled="updating" @click="menuOpen = true"><Menu :size="23" :stroke-width="1.5" /><span v-if="needRefresh" class="update-dot" aria-hidden="true"></span><span v-if="needRefresh" id="update-available" class="sr-only">{{ t('updateAvailable') }}</span></button>
-    <p v-if="!game.storageError" class="puzzle-meta"><span class="level-number">Nº {{ number }}</span><span>{{ t('difficulty.' + game.puzzle.quote.difficulty) }}</span></p>
-    <div class="app-body" :inert="updating">
+  <div class="app-shell" :class="{ 'has-screen': isPage }">
+    <button v-show="!isPage" ref="menuButton" class="icon-button menu-toggle" :aria-label="t('openMenu')" aria-haspopup="dialog" :aria-expanded="menuOpen" :aria-describedby="needRefresh ? 'update-available' : undefined" :disabled="updating" @click="menuOpen = true"><Menu :size="23" :stroke-width="1.5" /><span v-if="needRefresh" class="update-dot" aria-hidden="true"></span><span v-if="needRefresh" id="update-available" class="sr-only">{{ t('updateAvailable') }}</span></button>
+    <p v-if="!game.storageError && !isPage" class="puzzle-meta"><span class="level-number">Nº {{ number }}</span><span>{{ t('difficulty.' + game.puzzle.quote.difficulty) }}</span></p>
+    <div v-show="!isPage" class="app-body" :inert="updating || isPage">
       <main id="main" class="main-content">
         <h1 class="sr-only">{{ t('cryptogram', { number }) }}</h1>
         <div class="workspace">
@@ -140,23 +184,23 @@ onBeforeUnmount(() => { window.removeEventListener('hashchange', syncUpdatesPage
       </div>
     </AppDialog>
 
-    <AppDialog v-if="dialog === 'updates'" :title="t('updates')" class="release-dialog" :busy="updating" @close="closeUpdates">
+    <AppDialog v-if="dialog === 'updates'" :key="String(isPhone)" :page="isPhone" :return-focus="menuButton" :title="t('updates')" class="release-dialog" :busy="updating" @close="closePage">
       <ReleaseNotes :available="needRefresh" :busy="updating" :checking="checkingUpdate" :phase="updatePhase" :failure="updateFailure" :result="updateResult" @check="checkForUpdates()" @apply="applyUpdate()" />
     </AppDialog>
 
-    <AppDialog v-if="dialog === 'library'" :title="t('choosePuzzle')" @close="dialog = null">
+    <AppDialog v-if="dialog === 'library'" :key="String(isPhone)" :page="isPhone" :return-focus="menuButton" :title="t('choosePuzzle')" @close="closePage">
       <div class="filter-tabs" :aria-label="t('filter')"><button v-for="level in (['All', 'Easy', 'Medium', 'Hard'] as const)" :key="level" :class="{ chosen: filter === level }" :aria-pressed="filter === level" @click="filter = level">{{ t('difficulty.' + level) }}</button></div>
       <div class="puzzle-list"><button v-for="p in filtered" :key="p.quote.id" class="puzzle-list-item" :class="{ current: p.quote.id === game.currentId }" @click="choose(p.quote.id)"><span class="list-number">{{ String(puzzles.indexOf(p) + 1).padStart(2, '0') }}</span><span><strong>{{ p.quote.author }}</strong><small>{{ t('difficulty.' + p.quote.difficulty) }}<template v-if="isComplete(p, game.sessions[p.quote.id]!)"> · {{ t('decoded') }}</template><template v-else-if="p.quote.id === game.currentId"> · {{ t('current') }}</template></small></span><Check v-if="isComplete(p, game.sessions[p.quote.id]!)" :size="18" /><ArrowUpRight v-else :size="18" /></button></div>
     </AppDialog>
 
-    <AppDialog v-if="dialog === 'help'" :title="t('help')" @close="dialog = null">
+    <AppDialog v-if="dialog === 'help'" :key="String(isPhone)" :page="isPhone" :return-focus="menuButton" :title="t('help')" @close="closePage">
       <div class="help-demo" aria-hidden="true"><span><b>{{ t('demoLetter') }}</b><small>12</small></span><ArrowRight :size="18" /><span><b>{{ t('demoLetter') }}</b><small>12</small></span><span class="demo-caption">{{ t('sameNumber') }}<br />{{ t('sameLetter') }}</span></div>
       <ol class="help-steps"><li><strong>{{ t('findPattern') }}</strong><p>{{ t('patternHelp') }}</p></li><li><strong>{{ t('enterGuess') }}</strong><p>{{ t('guessHelp') }}</p></li><li><strong>{{ t('checkWhen') }}</strong><p>{{ t('checkHelp') }}</p></li></ol>
       <dl class="keyboard-shortcuts"><dt>{{ t('letterRange') }}</dt><dd>{{ t('typingHelp') }}</dd><dt>← →</dt><dd>{{ t('previousNext') }}</dd><dt>↑ ↓</dt><dd>{{ t('betweenRows') }}</dd><dt>Home / End</dt><dd>{{ t('firstLast') }}</dd><dt>Enter</dt><dd>{{ t('nextBlank') }}</dd><dt>Backspace / Delete</dt><dd>{{ t('erase') }}</dd><dt>Ctrl/⌘ Z · Shift Z</dt><dd>{{ t('undoRedo') }}</dd><dt>Tab</dt><dd>{{ t('tabHelp') }}</dd></dl>
-      <button class="primary-button" @click="dialog = null">{{ t('gotIt') }} <Check :size="17" /></button>
+      <button class="primary-button" @click="closePage">{{ t('gotIt') }} <Check :size="17" /></button>
     </AppDialog>
 
-    <AppDialog v-if="dialog === 'settings'" :title="t('settings')" @close="dialog = null">
+    <AppDialog v-if="dialog === 'settings'" :key="String(isPhone)" :page="isPhone" :return-focus="menuButton" :title="t('settings')" @close="closePage">
       <div class="setting-row"><label for="theme">{{ t('appearance') }}</label><select id="theme" :value="game.theme" @change="game.setTheme(($event.target as HTMLSelectElement).value as Theme)"><option value="system">{{ t('systemTheme') }}</option><option value="light">{{ t('light') }}</option><option value="dark">{{ t('dark') }}</option></select></div>
       <div class="setting-row"><label for="haptics">{{ t('haptics') }}<small>{{ t('supported') }}</small></label><input id="haptics" class="toggle-input" type="checkbox" :checked="game.haptics" @change="game.setHaptics(($event.target as HTMLInputElement).checked)" /></div>
       <p class="dialog-footnote">{{ t('privacy') }}</p>

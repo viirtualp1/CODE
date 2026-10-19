@@ -98,7 +98,7 @@ describe('language preference compatibility', () => {
     game.apply(game.puzzle.solution[game.selected!]!)
     const englishEntries = { ...game.session.entries }
     game.setLanguage('ru')
-    expect(game.collection).toHaveLength(12)
+    expect(game.collection).toHaveLength(100)
     expect(game.puzzle.quote.locale).toBe('ru')
     game.apply(game.puzzle.solution[game.selected!]!)
     const russianId = game.currentId, russianEntries = { ...game.session.entries }

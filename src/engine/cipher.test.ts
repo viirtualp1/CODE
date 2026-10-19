@@ -11,6 +11,8 @@ const freeLetter = (session: Session) => [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'].find(
 
 describe('curated corpus and substitution invariants', () => {
   it('keeps saved sessions and collection entries distinct', () => {
+    expect(quotes.filter(q => (q.locale ?? 'en') === 'en')).toHaveLength(100)
+    expect(quotes.filter(q => q.locale === 'ru')).toHaveLength(100)
     expect(new Set(quotes.map(q => q.id)).size).toBe(quotes.length)
     expect(new Set(quotes.map(q => q.text.toUpperCase())).size).toBe(quotes.length)
     expect(quotes.every(q => /^[a-z]+(?:-[a-z]+)+$/.test(q.id) && Number.isInteger(q.revision) && q.revision > 0)).toBe(true)
@@ -23,7 +25,7 @@ describe('curated corpus and substitution invariants', () => {
     expect(p.symbols.every(n => Number.isInteger(n) && n >= 1 && n <= alphabetFor(quote.locale).length)).toBe(true)
     expect(p.words.map(word => word.map(cell => cell.symbol ? p.solution[cell.symbol] : cell.punctuation).join('')).join(' ')).toBe(quote.text.toUpperCase())
     expect(validSession(p, initialSession(p))).toBe(true)
-    expect(p.words.every(word => word.filter(c => c.symbol).length <= 10)).toBe(true)
+    expect(p.words.every(word => word.filter(c => c.symbol).length <= 12)).toBe(true)
     expect(quote.source).toMatch(quote.locale === 'ru' ? /^https:\/\/ru.wikisource.org/ : /^https:\/\/www.gutenberg.org/)
     expect(quote.clueRationale.length).toBeGreaterThan(30)
     expect(new Set(quote.clues).size).toBe(quote.clues.length)

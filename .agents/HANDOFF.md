@@ -2,7 +2,7 @@
 
 A functional, local-first cryptogram game built with Vue 3, TypeScript, Vite, Pinia, SCSS and IndexedDB
 
-Current revision: 0.3.0.
+Current revision: 0.3.1.
 
 Working directory: `/Users/virtualp1/Documents/personal/CODE`. All subsequent changes belong here.
 
@@ -25,11 +25,11 @@ Open the local address printed by Vite. Production preview is needed to test ser
 1. Read .agents/AGENTS.md and docs/PRODUCT.md, docs/DESIGN.md, docs/PUZZLE_ENGINE.md.
 2. Run npm test and npm run build.
 3. Keep the current boundary: no advanced generator, remote quote API, statistics or Android packaging.
-4. The next content phase needs audited provenance, a licensed word list, an ambiguity-aware solver and measured difficulty. The current twenty-eight samples have editorial difficulty labels, not solver-certified fairness.
+4. The next content phase needs audited provenance, a licensed word list, an ambiguity-aware solver and measured difficulty. The current 200 samples have editorial difficulty labels, not solver-certified fairness.
 
 ## Working behavior
 
-- Sixteen bundled original English excerpts and twelve original Russian excerpts with sources, reuse notes and hand-selected starting clues.
+- 100 bundled original English excerpts and 100 original Russian excerpts with sources, reuse notes and hand-selected starting clues.
 - Deterministic per-puzzle substitution and one-to-one assignments. Repeated symbols update together.
 - Neutral guesses; explicit Check; confirmed, undoable hints; undo/redo; erase and Enter.
 - Exact completion, puzzle switching, confirmed restart and per-puzzle resume.
@@ -44,7 +44,7 @@ Open the local address printed by Vite. Production preview is needed to test ser
 | Area | Responsibility |
 | --- | --- |
 | src/engine/cipher.ts | Pure puzzle encoding, validation, assignments, checks, hints, snapshots, bounded history and completion |
-| src/data/puzzles.ts | Small curated corpus, explicit clues, rationale, provenance and quote revision |
+| src/data | Bundled curated corpus, explicit clues, rationale, provenance and quote revision |
 | src/interaction | Pure spatial navigation and physical-key interpretation, independent of Vue and DOM |
 | src/stores/game.ts | Pinia session orchestration, selection, feedback, preferences, persistence lifecycle |
 | src/services/update.ts | Bounded service-worker activation and save-before-reload orchestration |
@@ -56,7 +56,7 @@ Open the local address printed by Vite. Production preview is needed to test ser
 | src/App.vue | App chrome, composed gameplay, dialogs and physical-key routing |
 | vite.config.ts | Build, tests and prompt-based PWA updates |
 
-There is one screen, so no router is needed. No database wrapper, NLP library or generic command framework is needed. Native dialog provides focus trapping and inert background. Only a clicked/focused occurrence owns keyboard focus; every occurrence still shares its assignment. Arrows skip revealed clues but allow revisiting guessed cells. The app advances only successful regular letter edits, using the pure `nextEmptyCell` helper. It scans occurrences after the actual selected index, rather than the first appearance of that symbol. The board owns actual DOM focus. Phone layout displays the whole quote; only desktop overflow uses focus-reveal scrolling. Enter uses the same helper; arrows can revisit filled guesses.
+One game view and four local hash destinations do not require a router dependency. No database wrapper, NLP library or generic command framework is needed. Native dialog provides focus trapping and inert background. Only a clicked/focused occurrence owns keyboard focus; every occurrence still shares its assignment. Arrows skip revealed clues but allow revisiting guessed cells. The app advances only successful regular letter edits, using the pure `nextEmptyCell` helper. It scans occurrences after the actual selected index, rather than the first appearance of that symbol. The board owns actual DOM focus. Phone layout displays the whole quote; only desktop overflow uses focus-reveal scrolling. Enter uses the same helper; arrows can revisit filled guesses.
 
 History snapshots include both guesses and hint locks, capped at 100 steps. New edits clear redo. A hint may displace a conflicting guessed assignment; one undo restores both. Structural duplicate-letter rejection is not a correctness check.
 
@@ -79,7 +79,7 @@ CI runs tests and a production build on branches and pull requests. A pushed `vX
 
 Release notes use `#/updates`, with browser/Android Back returning to the puzzle. Opening them directly and reloading works offline. There is no quote API, account or release API dependency. A downloaded version only activates after explicit Update & restart. During flush/activation the modal cannot be dismissed and gameplay is inert. Save and worker waits are each capped at 30 seconds and can be retried. Another tab's activation never forces this tab to reload. IndexedDB schema remains 1.
 
-Local validation: 79 Vitest tests plus 3 release-tool tests, production build and browser checks (recorded in docs/QA.md). Remote GitHub Actions and hosted Android updates require the workflows to be pushed and the host connected; these have not run from this local session.
+Local validation: 251 Vitest tests plus 3 release-tool tests, production build and browser checks (recorded in docs/QA.md). Remote GitHub Actions and hosted Android updates require the workflows to be pushed and the host connected; these have not run from this local session.
 
 
 ## Phone layout contract — 0.2.4
@@ -114,7 +114,7 @@ Agent-only instructions live in .agents/: AGENTS.md contains repository-wide rul
 
 ## Localization and checked erase — 0.3.0
 
-Vue I18n in src/i18n owns complete en/ru UI messages, accessibility, announcements and dates; all historical release entries have ru translations. Locale defaults to the device language only when no compatible saved choice exists. The native selector sits at the drawer foot and changes UI, filtered quote collection, numbering and keyboard together. English has 16 puzzles, Russian 12; both remain cached offline. Each collection resumes its own last puzzle; switching never clears sessions.
+Vue I18n in src/i18n owns complete en/ru UI messages, accessibility, announcements and dates; all historical release entries have ru translations. Locale defaults to the device language only when no compatible saved choice exists. The native selector sits at the drawer foot and changes UI, filtered quote collection, numbering and keyboard together. English and Russian each have 100 puzzles; both remain cached offline. Each collection resumes its own last puzzle; switching never clears sessions.
 
 Pure engine/alphabet.ts defines English 26-letter and Russian 33-letter alphabets, with distinct Е/Ё. Russian records have locale:ru; absent locale means legacy English. Existing English IDs/revisions/seeds/mappings remain unchanged, covered by the v0.2.4 golden fixture. Input failures are machine reason keys plus parameters; only the store/UI translates them. validSnapshot validates against the puzzle alphabet. The Russian keyboard has 12 columns and all 33 letters, including a dedicated Ё; erase remains above Enter. Hardware Cyrillic letters are accepted directly and English positions map to ЙЦУКЕН, including punctuation keys/Backquote for Ё. Shortcut guards stay language-independent.
 
@@ -123,3 +123,11 @@ Preferences writes use version:2 with language and lastPuzzle:{en?,ru?}; initial
 Check marks are ephemeral explicit verdicts. Ordinary edits, hints, undo/redo and puzzle/language switches clear them. Erase is the exception while marks remain: pure nextCheckedCell selects the active marked occurrence or the next marked occurrence in reading order (one wrap), without inspecting answers. The board focuses/clears one grouped assignment via eraseChecked; only that mark is removed. Other marks remain for repeated erasing. Normal erase never judges correctness or moves focus. Each deletion is one undo step; undo clears check marks. Screen and physical Backspace/Delete use the same controller, even if a clue is selected.
 
 Manrope Cyrillic and Noto Serif Cyrillic regular/italic are bundled; English Newsreader remains. Document language/title/description switch with locale; install name CODE is language-neutral. Read docs/CONTENT.md and THIRD_PARTY.md for sources and font licenses.
+
+## Collection and responsive destinations — 0.3.1
+
+Exactly 100 quotes per language. Keep the original 16 English records in puzzles.ts and 12 Russian in russian-quotes.ts intact. New static records live in english-expansion.json (84) and russian-expansion.json (88); append them after the original records within each language. Each includes source, reuse/normalization rationale and explicit clue letters. No runtime generator or quote API. Difficulty remains editorial, not solver-certified. The longest bundled word may now contain 12 letters; never split it. Validate new content on small/large phones, landscape and 200% text. Existing English mapping fixtures still cover all 16 published entries.
+
+App.vue owns four small hash destinations and responsive matchMedia state. AppDialog uses a section for phone destination screens, with a sticky Back button; desktop and destructive confirmations retain native dialog. Both presentations preserve background scroll/focus restoration. Drawer remains a native animated modal. While a phone screen is open the game stays mounted but hidden/inert. Changing viewport recreates only the presentation; browser Back closes the current destination. Updates keep dismissal blocked while saving/activating.
+
+Desktop quote rows/attribution are centered. A ResizeObserver sets a bounded workspace top offset from measured quote, toolbar, keyboard and feedback heights: cipher centered at 50% of the viewport if it fits, otherwise lift the group to preserve input visibility. Metadata is 1rem on desktop. The observer never changes cipher state and disconnects on unmount. Phone fitting and keyboard geometry remain independent.
