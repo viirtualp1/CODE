@@ -83,3 +83,15 @@ The current 0.1.2 source was transferred to `/Users/virtualp1/Documents/personal
 - Schema stays 1; quote IDs, revisions and saved gameplay format are unchanged. Release/check orchestration belongs outside the cipher engine. See ../RELEASING.md for preparing subsequent versions and cache policies.
 
 Final 0.2.0 preparation build (`index-D-frUw_v.js`) also installed through the new updater with C retained; the sticky-header fix was present. The restarted preview returned `Cache-Control: no-store, max-age=0, must-revalidate` for `/sw.js`. Remaining release gates are remote CI, connecting the real production host and Samsung-installed PWA checks.
+
+## Revision 0.2.1 — unframed, non-scrolling phone gameplay
+
+- Removed the card surface/border, nested horizontal padding and complete top metadata strip (number, divider, difficulty and repeated collection count). Puzzle details remain in the drawer; Current puzzle also includes the full author/work/year.
+- The transparent menu button has a measured 48×48px target at **x=0, y=0**. Safe-area padding is inside that target, not an outer offset. The quote has no mobile scroll handler; desktop focus reveal is retained.
+- Tested all six bundled puzzles at **360×640, 360×800, 412×915, 480×960 and 915×412**. No document overflow, no scrollable gameplay descendants, every last word/attribution above the toolbar and every keyboard inside the viewport. These were content-bound checks, not merely hidden scrollbar checks. The already completed Austen sample retained its Next puzzle action.
+- The longest Carroll sample also fit at **200% text**, 412×915 and 360×800. At 360×640 with 200% text and a refused E assignment, first quote row top was **53px**, attribution bottom **385px**, toolbar top **398px**, keyboard bottom **590px**; no scroll container existed. Short-phone work/year details are available in the menu instead of consuming quote height.
+- Native macOS T input, spatial Down navigation and Command Z worked in the new layout. Document scrollY and quote scrollTop remained **0** after entry/navigation; the active cell stayed above the keyboard.
+- Inspected light and dark unframed phone layouts. Long dialogs and release notes deliberately retain their own internal scrolling; the no-scroll contract applies to gameplay. Storage failure uses a short persistent alert beside the floating menu, without changing game height.
+- Existing **44 Vitest tests plus 3 release-tool tests** passed; production build/release validation passed. Gameplay storage schema and quote IDs/revisions are unchanged. Real Samsung gesture/display/font-scaling verification remains a hardware gate.
+
+The saved production preview was explicitly updated from 0.2.0 to 0.2.1 through What’s new. Its current menu showed v0.2.1 and `index-B1xhglSD.js`; no top metadata strip remained. Final mobile and 1440×1000 desktop screenshots show the unframed layout.

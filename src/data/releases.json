@@ -1,5 +1,15 @@
 [
   {
+    "version": "0.2.1",
+    "date": "2026-10-19",
+    "title": "More room to solve",
+    "changes": [
+      "The puzzle sits directly on the page, without a card or repeated metadata.",
+      "The floating menu stays at the top-left edge. Puzzle details live in the drawer.",
+      "A tighter phone layout keeps the puzzle and keyboard together without scrolling."
+    ]
+  },
+  {
     "version": "0.2.0",
     "date": "2026-10-19",
     "title": "Updates & release notes",

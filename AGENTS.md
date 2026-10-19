@@ -20,7 +20,8 @@ Read docs/PRODUCT.md, docs/DESIGN.md and docs/PUZZLE_ENGINE.md before changing b
 ## Change rules
 - Preserve one-to-one mappings, immutable clues, grouped symbol updates and explicit checking.
 - Never infer incorrectness from a normal key press. Exact completion can celebrate automatically.
-- Use a floating upper-left menu button with an animated modal left drawer; the board starts near the top, without a reserved header band. No Read/Solve switch or keyboard header.
+- Use an unframed game surface and floating menu button fixed at top:0/left:0, with safe-area padding inside its hit target and an animated modal left drawer. Puzzle number, collection counter and difficulty belong in the drawer. No Read/Solve switch or keyboard header.
+- Phone gameplay has no document or quote scrolling: fit every bundled word, attribution and keyboard inside the dynamic viewport. Never hide overflowed puzzle content to fake a fit. Long dialogs/release notes still scroll internally.
 - Gameplay stays visually central: no oversized headings, promotional labels, sidebar tips or marketing copy on the playing screen.
 - Support spatial arrow navigation, a single board tab stop, and typed input into the focused cell.
 - Every modal must lock body/document scrolling and restore styles, scroll position and focus on close.

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onBeforeUnmount, ref, watch } from 'vue'
-import { ArrowRight, ArrowUpRight, Check, ChevronDown, CircleHelp, Menu, Grid2X2, Lightbulb, Moon, RotateCcw, Settings2, ScrollText, ShieldCheck, Sun, Undo2, Redo2 } from '@lucide/vue'
+import { ArrowRight, ArrowUpRight, Check, CircleHelp, Menu, Grid2X2, Lightbulb, Moon, RotateCcw, Settings2, ScrollText, ShieldCheck, Sun, Undo2, Redo2 } from '@lucide/vue'
 import { useAppUpdate } from './composables/useAppUpdate'
 import releases from './data/releases.json'
 import ReleaseNotes from './components/ReleaseNotes.vue'
@@ -88,12 +88,8 @@ onBeforeUnmount(() => { window.removeEventListener('hashchange', syncUpdatesPage
         <h1 class="sr-only">Cryptogram {{ number }}</h1>
         <div class="workspace">
           <section class="game-column" aria-label="Cryptogram game">
-            <div class="puzzle-paper">
-              <div class="puzzle-topline">
-                <div class="puzzle-identifier"><span class="eyebrow">Nº {{ number }}</span><span class="thin-divider"></span><span class="difficulty"><span class="difficulty-bars" aria-hidden="true"><i></i><i :class="{ lit: game.puzzle.quote.difficulty !== 'Easy' }"></i><i :class="{ lit: game.puzzle.quote.difficulty === 'Hard' }"></i></span>{{ game.puzzle.quote.difficulty }}</span></div>
-                <button class="text-button paper-menu" aria-label="Choose a different puzzle" @click="dialog = 'library'">{{ String(index + 1).padStart(2, '0') }} <span>/ 06</span><ChevronDown :size="14" /></button>
-              </div>
-              <div class="play-scroll" :class="{ 'is-complete': game.complete }">
+            <div class="puzzle-area">
+              <div class="quote-region" :class="{ 'is-complete': game.complete }">
                 <CipherBoard ref="cipher" />
                 <div class="attribution"><span class="attribution-line"></span><div><span class="author">{{ game.puzzle.quote.author }}</span><span class="work-title">{{ game.puzzle.quote.work }}, {{ game.puzzle.quote.year }}</span></div></div>
                 <div v-if="game.complete" class="completion-note"><Check :size="17" /> Decoded</div>
@@ -116,13 +112,13 @@ onBeforeUnmount(() => { window.removeEventListener('hashchange', syncUpdatesPage
         </div>
         <div class="status-region sr-only" role="status" aria-live="polite" aria-atomic="true">{{ game.message }}</div>
         <p class="feedback-message">{{ game.feedback }}</p>
-        <div v-if="game.storageError" class="storage-warning" role="alert">Progress cannot be saved on this device. Keep this tab open to continue.</div>
+        <div v-if="game.storageError" class="storage-warning" role="alert">Progress can’t be saved. Keep this tab open.</div>
       </main>
     </div>
 
     <AppDialog v-if="menuOpen" ref="menuDialog" title="CODE." drawer @close="closeMenu">
       <nav class="drawer-menu" aria-label="Main navigation">
-        <button class="drawer-item current-puzzle" @click="openMenuPage(null)"><span><strong>Current puzzle</strong><small>Nº {{ number }} · {{ game.puzzle.quote.difficulty }}</small></span><ArrowRight :size="19" /></button>
+        <button class="drawer-item current-puzzle" @click="openMenuPage(null)"><span><strong>Current puzzle</strong><small>Nº {{ number }} · {{ game.puzzle.quote.difficulty }}</small><small>{{ game.puzzle.quote.author }}<br />{{ game.puzzle.quote.work }}, {{ game.puzzle.quote.year }}</small></span><ArrowRight :size="19" /></button>
         <button class="drawer-item" @click="openMenuPage('library')"><Grid2X2 :size="20" /><span>Puzzle collection</span><span class="menu-count">{{ puzzles.length }}</span></button>
         <button class="drawer-item" @click="openMenuPage('help')"><CircleHelp :size="20" /><span>How to play</span><ArrowUpRight :size="17" /></button>
         <button class="drawer-item" @click="openMenuPage('settings')"><Settings2 :size="20" /><span>Settings</span><ArrowUpRight :size="17" /></button>

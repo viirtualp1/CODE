@@ -33,10 +33,10 @@ function choose(symbol: number, index: number, pulse = true) {
   if (pulse) board.value?.querySelector<HTMLButtonElement>(`[data-index="${index}"]`)?.focus({ preventScroll: true })
 }
 function revealSelection() {
-  // Scroll only this board's parent region; never scroll the keyboard out of view.
+  // Phones show the whole quote without scrolling. Desktop overflow may reveal its active cell.
   const active = board.value?.querySelector<HTMLElement>('[data-active="true"]') ?? board.value?.querySelector<HTMLElement>('[aria-pressed="true"]')
-  const scroller = board.value?.closest<HTMLElement>('.play-scroll')
-  if (!active || !scroller) return
+  const scroller = board.value?.closest<HTMLElement>('.quote-region')
+  if (!active || !scroller || getComputedStyle(scroller).overflowY !== 'auto') return
   const cell = active.getBoundingClientRect(), region = scroller.getBoundingClientRect()
   if (cell.top < region.top + 16) scroller.scrollTop += cell.top - region.top - 24
   else if (cell.bottom > region.bottom - 16) scroller.scrollTop += cell.bottom - region.bottom + 24
@@ -48,7 +48,7 @@ function revealSelection() {
 }
 let resizeObserver: ResizeObserver | undefined
 onMounted(() => {
-  const scroller = board.value?.closest<HTMLElement>('.play-scroll')
+  const scroller = board.value?.closest<HTMLElement>('.quote-region')
   if (scroller) { resizeObserver = new ResizeObserver(revealSelection); resizeObserver.observe(scroller) }
 })
 onBeforeUnmount(() => resizeObserver?.disconnect())
