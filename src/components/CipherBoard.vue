@@ -46,13 +46,42 @@ function revealSelection() {
     active.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'instant' })
   }
 }
+// Try a few bounded sizes against the actual rendered words, attribution and viewport.
+// Fixed slots keep guesses from changing layout; fitting runs only after layout/content changes.
+function fitPhoneBoard() {
+  const element = board.value
+  const region = element?.closest<HTMLElement>('.quote-region')
+  if (!element || !region) return
+  if (!window.matchMedia('(max-width: 700px) and (orientation: portrait)').matches) {
+    delete element.dataset.size
+    return
+  }
+  const style = getComputedStyle(region)
+  const siblings = [...region.children].filter(child => child !== element)
+  const occupied = siblings.reduce((sum, child) => {
+    const css = getComputedStyle(child)
+    return sum + child.getBoundingClientRect().height + parseFloat(css.marginTop) + parseFloat(css.marginBottom)
+  }, 0)
+  const availableHeight = region.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom) - occupied - 2
+  const availableWidth = region.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight)
+  for (const size of ['large', 'comfortable', 'regular', 'compact', 'minimum']) {
+    element.dataset.size = size
+    if (element.getBoundingClientRect().height <= availableHeight && element.scrollWidth <= availableWidth + 1) break
+  }
+}
 let resizeObserver: ResizeObserver | undefined
 onMounted(() => {
   const scroller = board.value?.closest<HTMLElement>('.quote-region')
-  if (scroller) { resizeObserver = new ResizeObserver(revealSelection); resizeObserver.observe(scroller) }
+  if (scroller) {
+    fitPhoneBoard()
+    resizeObserver = new ResizeObserver(() => { fitPhoneBoard(); revealSelection() })
+    resizeObserver.observe(scroller)
+    const attribution = scroller.querySelector('.attribution')
+    if (attribution) resizeObserver.observe(attribution)
+  }
 })
 onBeforeUnmount(() => resizeObserver?.disconnect())
-watch(() => game.currentId, () => { activeIndex.value = null })
+watch(() => game.currentId, async () => { activeIndex.value = null; await nextTick(); fitPhoneBoard() })
 watch(() => [game.selected, game.currentId, activeIndex.value], async () => { await nextTick(); revealSelection() })
 </script>
 

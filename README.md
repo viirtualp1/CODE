@@ -2,7 +2,7 @@
 
 A functional, local-first cryptogram game built with Vue 3, TypeScript, Vite, Pinia, SCSS and IndexedDB
 
-Current revision: 0.2.3.
+Current revision: 0.2.4.
 
 Working directory: `/Users/virtualp1/Documents/personal/CODE`. All subsequent changes belong here.
 
@@ -82,11 +82,11 @@ Release notes use `#/updates`, with browser/Android Back returning to the puzzle
 Local validation: 55 Vitest tests plus 3 release-tool tests, production build and browser checks (recorded in docs/QA.md). Remote GitHub Actions and hosted Android updates require the workflows to be pushed and the host connected; these have not run from this local session.
 
 
-## Phone layout contract — 0.2.3
+## Phone layout contract — 0.2.4
 
 The game is unframed, with 12px horizontal phone gutters. Small, noninteractive puzzle number and difficulty text share the burger’s vertical alignment at the upper right. There is no header bar, divider or duplicate collection counter. The transparent 48px menu target is fixed at the viewport origin; safe-area padding protects its icon without offsetting the target. Toolbar and custom keyboard stay in flow inside 100dvh. Neither the page nor quote is scrollable on phone layouts; long dialogs remain internally scrollable.
 
-Portrait keys use 50–68px height (about 64px at 412×915), with an additional 8–16px bottom inset above the safe area. At 860px height or less, compact quote spacing and 44px cell heights preserve room; below 680px, row gaps tighten further. Landscape retains 44px keys. Only the author's name remains under the quote at that size; full work/year details are always available in Current puzzle. Landscape uses the page width above a centered keyboard, rather than a narrow side-by-side card. A real save failure replaces the optional top-right metadata beside the burger in the control area; it does not push the keyboard below the viewport. Feedback grows only as needed, with readable bounded phone type.
+Portrait keys use 50–68px height (about 64px at 412×915), with an additional 8–16px bottom inset above the safe area. Portrait board fitting tries larger 32/28/25/22px letter tiers against the rendered words and remaining quote area, with the existing compact CSS as a minimum fallback. Thus a short quote can stay large even below 860px. The short-height rules remain the baseline, rather than the final size of every puzzle. Landscape retains 44px keys. Only the author's name remains under the quote at that size; full work/year details are always available in Current puzzle. Landscape uses the page width above a centered keyboard, rather than a narrow side-by-side card. A real save failure replaces the optional top-right metadata beside the burger in the control area; it does not push the keyboard below the viewport. Feedback grows only as needed, with readable bounded phone type.
 
 Validated every bundled puzzle at 360×640, 360×800, 412×915, 480×960 and 915×412 without scrollable gameplay containers or hidden words. The longest sample also fits with 200% text at 412×915, 360×800 and 360×640, including duplicate-input feedback. Arbitrarily small windows, future longer quotes and real Samsung display/font scaling require their own fit validation before release; do not silently crop or shrink controls below their accepted bounds.
 
@@ -98,3 +98,10 @@ The collection contains 16 puzzles: 6 Easy, 6 Medium, 4 Hard (editorial labels).
 Portrait keyboard horizontal gaps are 2px, with 4px effective screen gutters when there are no larger safe-area insets. Only the keyboard extends 8px beyond each side of the 12px content gutters; the board spacing is unchanged. At 412px wide, key width increases from 35.2px to 38.6px. Desktop keyboard maximum width is 800px; landscape maximum is 640px. Erase and Enter remain vertically aligned at the right.
 
 The action toolbar shares the keyboard's horizontal bounds via the same width constraint at all breakpoints. What’s new in the drawer displays an 8px green dot alongside its availability text only when an update is ready. The release dialog keeps at least 24px above/below it, respecting larger safe areas; its contents scroll internally and its close control stays visible.
+
+
+## Portrait board sizing — 0.2.4
+
+CipherBoard owns a small DOM-based fit pass for portrait viewports up to 700px wide. It tries five bounded data-size tiers, largest first, and measures the real wrapping against quote-region content width/height after padding, attribution and completion status. It uses fixed cell slots and does not examine guesses or answer correctness. At 412×915 the bundled playing quotes use 25–32px letters, replacing the former 22px cap; short quotes can use 32px even at 384×824.
+
+A ResizeObserver watches the quote region and attribution, not the board itself, so changing tiers cannot create a resize feedback loop. Refit on content/viewport/attribution changes, then use existing focus navigation. No editor, persistent scale preference, general layout engine or resize animation is introduced. Landscape/desktop retain their CSS layout, and keyboard geometry is unchanged. Future content still needs explicit fit QA; minimum-size overflow must never be hidden.

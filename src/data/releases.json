@@ -1,5 +1,14 @@
 [
   {
+    "version": "0.2.4",
+    "date": "2026-10-19",
+    "title": "A larger puzzle on your phone",
+    "changes": [
+      "Portrait puzzles use larger letters and number labels when space allows.",
+      "Quote size adapts to the actual sentence and available space, keeping every word and the keyboard visible."
+    ]
+  },
+  {
     "version": "0.2.3",
     "date": "2026-10-19",
     "title": "Ten more puzzles",

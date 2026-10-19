@@ -197,6 +197,20 @@ p, h1, h2, h3 { margin: 0; }
   .puzzle-toolbar { min-height: 44px; }
   .feedback-message { min-height: 14px; margin: 2px 0; }
 }
+// Portrait quotes grow into their available space; the component picks the largest fitting tier.
+@media (max-width: 700px) and (orientation: portrait) {
+  .cipher-board[data-size]:not([data-size='minimum']) {
+    column-gap: var(--word-gap); row-gap: var(--row-gap);
+    .cipher-cell { width: var(--cell-width); height: var(--cell-height); }
+    .cell-letter { width: calc(var(--cell-width) - 2px); height: var(--letter-height); font-size: var(--letter-size); }
+    .cell-number { margin-top: var(--number-gap); font-size: min(var(--number-size), var(--number-cap)); }
+    .punctuation { font-size: var(--letter-size); width: 7px; }
+  }
+  .cipher-board[data-size='large'] { --cell-width: 36px; --cell-height: 64px; --letter-height: 40px; --letter-size: 32px; --number-gap: 6px; --number-size: .75rem; --number-cap: 14px; --word-gap: 16px; --row-gap: 16px; }
+  .cipher-board[data-size='comfortable'] { --cell-width: 32px; --cell-height: 58px; --letter-height: 36px; --letter-size: 28px; --number-gap: 5px; --number-size: .6875rem; --number-cap: 14px; --word-gap: 16px; --row-gap: 12px; }
+  .cipher-board[data-size='regular'] { --cell-width: 28px; --cell-height: 52px; --letter-height: 32px; --letter-size: 25px; --number-gap: 4px; --number-size: .625rem; --number-cap: 13px; --word-gap: 14px; --row-gap: 10px; }
+  .cipher-board[data-size='compact'] { --cell-width: 24px; --cell-height: 48px; --letter-height: 28px; --letter-size: 22px; --number-gap: 4px; --number-size: .625rem; --number-cap: 12px; --word-gap: 12px; --row-gap: 6px; }
+}
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
 @media (prefers-contrast: more) { :root { --muted: #50564b; --line: #9ba190; } :root[data-theme='dark'] { --muted: #c0cbb4; --line: #727f68; } }
 // Allow enlarged text to reflow inside dialogs rather than widening the page.
