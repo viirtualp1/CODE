@@ -1,7 +1,7 @@
 {
   "name": "code-cryptogram",
   "private": true,
-  "version": "0.3.1",
+  "version": "0.4.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
@@ -10,7 +10,8 @@
     "test": "vitest run && node --test scripts/*.test.mjs",
     "test:watch": "vitest",
     "release:check": "node scripts/release.mjs check",
-    "release:notes": "node scripts/release.mjs notes"
+    "release:notes": "node scripts/release.mjs notes",
+    "content:audit": "node scripts/audit-content.mjs"
   },
   "dependencies": {
     "@fontsource/manrope": "^5.2.8",
@@ -22,6 +23,7 @@
     "vue-i18n": "^11.4.16"
   },
   "devDependencies": {
+    "@types/node": "^24.19.2",
     "@vitejs/plugin-vue": "^6.0.1",
     "fake-indexeddb": "^6.2.4",
     "sass": "^1.93.2",

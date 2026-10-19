@@ -102,3 +102,11 @@ Added sources:
 | Russian | Лебедь, Щука и Рак | 2 | [Original text](https://ru.wikisource.org/wiki/%D0%9B%D0%B5%D0%B1%D0%B5%D0%B4%D1%8C%2C_%D0%A9%D1%83%D0%BA%D0%B0_%D0%B8_%D0%A0%D0%B0%D0%BA_%28%D0%9A%D1%80%D1%8B%D0%BB%D0%BE%D0%B2%29) |
 | Russian | Зеркало и Обезьяна | 1 | [Original text](https://ru.wikisource.org/wiki/%D0%97%D0%B5%D1%80%D0%BA%D0%B0%D0%BB%D0%BE_%D0%B8_%D0%9E%D0%B1%D0%B5%D0%B7%D1%8C%D1%8F%D0%BD%D0%B0_%28%D0%9A%D1%80%D1%8B%D0%BB%D0%BE%D0%B2%29) |
 | Russian | Ларчик | 1 | [Original text](https://ru.wikisource.org/wiki/%D0%9B%D0%B0%D1%80%D1%87%D0%B8%D0%BA_%28%D0%9A%D1%80%D1%8B%D0%BB%D0%BE%D0%B2%29) |
+
+## Reviewed difficulty profiles — 0.4.0
+
+No answers, excerpt boundaries, sources or numeric seeds changed. src/data/puzzles.ts retains publishedQuotes for compatibility, applies src/data/clue-profiles.json, and keeps each language at 100 stable positions. English: 20 Easy, 55 Medium, 25 Hard. Russian: 20 Easy, 50 Medium, 30 Hard. scripts/easy-selection.json records the explicit beginner and advanced selections; remaining entries are Medium. Poetry with obsolete forms, fragments depending on context, and vocabulary-heavy passages were excluded from the beginner selection. Famous text alone never earns an Easy label.
+
+The 40 Easy clue sets are supersets of their previous givens and pass the independent common-word propagation route described in PUZZLE_ENGINE.md. Profiles store audit version/work/steps/anchor metadata; tests rerun the actual deductions against the broad independent TSVs rather than trusting these metadata. Old revision-1 sessions migrate explicitly to revision 2 without changing their answers. All other records remain revision 1. Medium/Hard labels still require human calibration; frequency/word patterns do not prove universal uniqueness.
+
+Frequency data: Robyn Speer, wordfreq, pinned commit 912caf64b657478d1dff1138efdc078947d54bb1, derived lists under CC BY-SA 4.0. Attribution, source checksums, filtering and upstream NOTICE are in scripts/lexicons/README.md. Lists are used by tests/editorial tools only, not shipped in the game bundle and not fetched at runtime.

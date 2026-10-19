@@ -152,7 +152,7 @@ describe('Russian alphabet isolation', () => {
 it('keeps every published English mapping and saved numeric assignment compatible', () => {
   for (const [id, mapping] of Object.entries(legacyEnglish)) {
     const quote = quotes.find(q => q.id === id)!
-    expect(quote.revision).toBe(1)
+    expect(quote.revision).toBe(quote.previousClues ? 2 : 1)
     const puzzle = createPuzzle(quote)
     const expected = Object.fromEntries(puzzle.symbols.map(n => [n, (mapping as Record<string, string>)[String(n)]]))
     expect(puzzle.solution).toEqual(expected)

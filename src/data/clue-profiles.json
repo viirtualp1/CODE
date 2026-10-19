@@ -1,0 +1,2399 @@
+{
+  "austen-heart": {
+    "difficulty": "Medium",
+    "clues": [
+      "E",
+      "T",
+      "R"
+    ]
+  },
+  "hamlet-possibility": {
+    "difficulty": "Easy",
+    "clues": [
+      "W",
+      "E",
+      "K",
+      "R",
+      "A",
+      "B",
+      "Y",
+      "M",
+      "U"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 3898,
+      "steps": 2,
+      "unresolved": 0,
+      "anchors": [
+        "WE",
+        "KNOW",
+        "WHAT",
+        "ARE",
+        "BUT",
+        "NOT",
+        "MAY",
+        "BE"
+      ]
+    }
+  },
+  "alcott-storms": {
+    "difficulty": "Medium",
+    "clues": [
+      "I",
+      "O"
+    ]
+  },
+  "carroll-yesterday": {
+    "difficulty": "Easy",
+    "clues": [
+      "I",
+      "E",
+      "D",
+      "G",
+      "W",
+      "F",
+      "Y"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 9401,
+      "steps": 8,
+      "unresolved": 0,
+      "anchors": [
+        "IT'S",
+        "NO",
+        "USE",
+        "GOING",
+        "BACK",
+        "TO",
+        "BECAUSE",
+        "I",
+        "WAS",
+        "A",
+        "PERSON",
+        "THEN"
+      ]
+    }
+  },
+  "wilde-living": {
+    "difficulty": "Hard",
+    "clues": [
+      "T"
+    ]
+  },
+  "thoreau-truth": {
+    "difficulty": "Hard",
+    "clues": [
+      "A"
+    ]
+  },
+  "austen-reading": {
+    "difficulty": "Medium",
+    "clues": [
+      "E",
+      "R",
+      "I"
+    ]
+  },
+  "bronte-bird": {
+    "difficulty": "Medium",
+    "clues": [
+      "N",
+      "E"
+    ]
+  },
+  "dickens-tears": {
+    "difficulty": "Medium",
+    "clues": [
+      "E",
+      "R"
+    ]
+  },
+  "emerson-enthusiasm": {
+    "difficulty": "Hard",
+    "clues": [
+      "T",
+      "E"
+    ]
+  },
+  "melville-maps": {
+    "difficulty": "Easy",
+    "clues": [
+      "I",
+      "E",
+      "N",
+      "U",
+      "Y",
+      "D",
+      "S",
+      "C",
+      "M"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 19745,
+      "steps": 6,
+      "unresolved": 0,
+      "anchors": [
+        "IT",
+        "IS",
+        "NOT",
+        "DOWN",
+        "IN",
+        "ANY",
+        "MAP",
+        "TRUE",
+        "PLACES",
+        "NEVER",
+        "ARE"
+      ]
+    }
+  },
+  "shelley-change": {
+    "difficulty": "Medium",
+    "clues": [
+      "N",
+      "T"
+    ]
+  },
+  "twain-work": {
+    "difficulty": "Medium",
+    "clues": [
+      "O",
+      "T"
+    ]
+  },
+  "burnett-rose": {
+    "difficulty": "Hard",
+    "clues": [
+      "R",
+      "T"
+    ]
+  },
+  "doyle-obvious": {
+    "difficulty": "Hard",
+    "clues": [
+      "T",
+      "E"
+    ]
+  },
+  "wilde-temptation": {
+    "difficulty": "Medium",
+    "clues": [
+      "T",
+      "O",
+      "I"
+    ]
+  },
+  "en-alice-s-adventures-in-wonderland-cenljibjcc": {
+    "difficulty": "Easy",
+    "clues": [
+      "E",
+      "A",
+      "T",
+      "Y",
+      "W",
+      "N",
+      "M",
+      "K",
+      "B",
+      "R",
+      "V"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 3649,
+      "steps": 3,
+      "unresolved": 0,
+      "anchors": [
+        "HOW",
+        "THEY'LL",
+        "ALL",
+        "THINK",
+        "ME",
+        "AT",
+        "HOME"
+      ]
+    }
+  },
+  "en-alice-s-adventures-in-wonderland-ojjalehnkl": {
+    "difficulty": "Easy",
+    "clues": [
+      "T",
+      "E",
+      "C",
+      "M",
+      "O",
+      "B",
+      "F",
+      "W"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 9018,
+      "steps": 5,
+      "unresolved": 0,
+      "anchors": [
+        "I",
+        "MUST",
+        "BE",
+        "GETTING",
+        "NEAR",
+        "THE",
+        "CENTRE",
+        "OF",
+        "EARTH"
+      ]
+    }
+  },
+  "en-alice-s-adventures-in-wonderland-oflpindfpe": {
+    "difficulty": "Easy",
+    "clues": [
+      "I",
+      "E",
+      "F",
+      "O",
+      "C",
+      "B",
+      "D",
+      "R"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 7173,
+      "steps": 5,
+      "unresolved": 0,
+      "anchors": [
+        "I",
+        "ALMOST",
+        "THINK",
+        "CAN",
+        "FEELING",
+        "A",
+        "LITTLE"
+      ]
+    }
+  },
+  "en-alice-s-adventures-in-wonderland-llkkaanhoc": {
+    "difficulty": "Easy",
+    "clues": [
+      "T",
+      "O",
+      "A",
+      "W",
+      "V",
+      "R",
+      "M",
+      "C",
+      "P"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 8298,
+      "steps": 4,
+      "unresolved": 0,
+      "anchors": [
+        "I",
+        "DO",
+        "WONDER",
+        "WHAT",
+        "CAN",
+        "HAVE",
+        "TO",
+        "ME"
+      ]
+    }
+  },
+  "en-alice-s-adventures-in-wonderland-kfjgmmkmad": {
+    "difficulty": "Hard",
+    "clues": [
+      "T",
+      "H"
+    ]
+  },
+  "en-alice-s-adventures-in-wonderland-jmghfoaefj": {
+    "difficulty": "Easy",
+    "clues": [
+      "W",
+      "E",
+      "A",
+      "P",
+      "F",
+      "G",
+      "T"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 14436,
+      "steps": 7,
+      "unresolved": 0,
+      "anchors": [
+        "WOULD",
+        "YOU",
+        "TELL",
+        "ME",
+        "PLEASE",
+        "WHICH",
+        "WAY",
+        "I",
+        "TO",
+        "GO",
+        "FROM",
+        "HERE"
+      ]
+    }
+  },
+  "en-alice-s-adventures-in-wonderland-coicofiblh": {
+    "difficulty": "Easy",
+    "clues": [
+      "T",
+      "I",
+      "H",
+      "C",
+      "K",
+      "D",
+      "E",
+      "R",
+      "M",
+      "F",
+      "Y",
+      "U"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 8292,
+      "steps": 4,
+      "unresolved": 0,
+      "anchors": [
+        "DO",
+        "YOU",
+        "MEAN",
+        "THAT",
+        "THINK",
+        "CAN",
+        "FIND",
+        "OUT",
+        "THE",
+        "ANSWER",
+        "TO",
+        "IT"
+      ]
+    }
+  },
+  "en-alice-s-adventures-in-wonderland-khdlbcipog": {
+    "difficulty": "Easy",
+    "clues": [
+      "Y",
+      "E",
+      "R",
+      "W",
+      "D",
+      "I",
+      "L"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 13320,
+      "steps": 5,
+      "unresolved": 0,
+      "anchors": [
+        "DOES",
+        "YOUR",
+        "WATCH",
+        "TELL",
+        "YOU",
+        "WHAT",
+        "YEAR",
+        "IT",
+        "IS"
+      ]
+    }
+  },
+  "en-alice-s-adventures-in-wonderland-gldaoophoi": {
+    "difficulty": "Medium",
+    "clues": [
+      "T",
+      "H"
+    ]
+  },
+  "en-alice-s-adventures-in-wonderland-begpghnnli": {
+    "difficulty": "Medium",
+    "clues": [
+      "E",
+      "O"
+    ]
+  },
+  "en-alice-s-adventures-in-wonderland-pikgpobjai": {
+    "difficulty": "Medium",
+    "clues": [
+      "W",
+      "I"
+    ]
+  },
+  "en-alice-s-adventures-in-wonderland-gemdiflebo": {
+    "difficulty": "Medium",
+    "clues": [
+      "T",
+      "E"
+    ]
+  },
+  "en-the-adventures-of-sherlock-holmes-eominkjkgg": {
+    "difficulty": "Medium",
+    "clues": [
+      "R",
+      "E"
+    ]
+  },
+  "en-the-adventures-of-sherlock-holmes-bkjccmalaj": {
+    "difficulty": "Hard",
+    "clues": [
+      "T",
+      "E"
+    ]
+  },
+  "en-the-adventures-of-sherlock-holmes-oigpdolobj": {
+    "difficulty": "Hard",
+    "clues": [
+      "O",
+      "U"
+    ]
+  },
+  "en-the-adventures-of-sherlock-holmes-ipdkghnmkc": {
+    "difficulty": "Medium",
+    "clues": [
+      "T",
+      "E"
+    ]
+  },
+  "en-the-adventures-of-sherlock-holmes-cgbnlkbgde": {
+    "difficulty": "Easy",
+    "clues": [
+      "T",
+      "O",
+      "P",
+      "A",
+      "N",
+      "L",
+      "F",
+      "B"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 8347,
+      "steps": 6,
+      "unresolved": 0,
+      "anchors": [
+        "I",
+        "TOOK",
+        "TWO",
+        "STEPS",
+        "FORWARD",
+        "AND",
+        "LOOKED",
+        "BACK"
+      ]
+    }
+  },
+  "en-the-adventures-of-sherlock-holmes-ocmibmdfal": {
+    "difficulty": "Easy",
+    "clues": [
+      "P",
+      "E",
+      "I",
+      "G",
+      "F",
+      "M",
+      "O",
+      "D",
+      "N",
+      "H",
+      "C",
+      "S",
+      "L"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 2102,
+      "steps": 4,
+      "unresolved": 0,
+      "anchors": [
+        "GIVE",
+        "ME",
+        "A",
+        "AND",
+        "THAT",
+        "OF",
+        "PAPER"
+      ]
+    }
+  },
+  "en-the-adventures-of-sherlock-holmes-naipjfkdan": {
+    "difficulty": "Medium",
+    "clues": [
+      "H",
+      "E"
+    ]
+  },
+  "en-the-adventures-of-sherlock-holmes-ailkcmldbh": {
+    "difficulty": "Medium",
+    "clues": [
+      "T",
+      "E"
+    ]
+  },
+  "en-the-adventures-of-sherlock-holmes-nicmochdmj": {
+    "difficulty": "Medium",
+    "clues": [
+      "I",
+      "T"
+    ]
+  },
+  "en-the-adventures-of-sherlock-holmes-hbpbajmcnk": {
+    "difficulty": "Easy",
+    "clues": [
+      "E",
+      "O",
+      "T",
+      "A",
+      "C",
+      "G",
+      "M"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 15357,
+      "steps": 7,
+      "unresolved": 0,
+      "anchors": [
+        "I",
+        "COULD",
+        "NOT",
+        "LIVE",
+        "THERE",
+        "LONGER",
+        "WITHOUT",
+        "SOME",
+        "ADVICE"
+      ]
+    }
+  },
+  "en-the-adventures-of-tom-sawyer-kmhnobcidb": {
+    "difficulty": "Medium",
+    "clues": [
+      "E",
+      "I"
+    ]
+  },
+  "en-the-adventures-of-tom-sawyer-jbaniighdc": {
+    "difficulty": "Medium",
+    "clues": [
+      "S",
+      "E"
+    ]
+  },
+  "en-the-adventures-of-tom-sawyer-gkdaanfpok": {
+    "difficulty": "Medium",
+    "clues": [
+      "H",
+      "E"
+    ]
+  },
+  "en-the-adventures-of-tom-sawyer-kdojkhabpe": {
+    "difficulty": "Medium",
+    "clues": [
+      "T",
+      "E"
+    ]
+  },
+  "en-the-adventures-of-tom-sawyer-pjlpgfnoic": {
+    "difficulty": "Medium",
+    "clues": [
+      "E",
+      "O"
+    ]
+  },
+  "en-the-adventures-of-tom-sawyer-lhcmjenhmi": {
+    "difficulty": "Medium",
+    "clues": [
+      "I",
+      "E"
+    ]
+  },
+  "en-the-adventures-of-tom-sawyer-dalfhhagad": {
+    "difficulty": "Medium",
+    "clues": [
+      "R",
+      "E"
+    ]
+  },
+  "en-the-adventures-of-tom-sawyer-cebcfifjba": {
+    "difficulty": "Hard",
+    "clues": [
+      "T",
+      "E"
+    ]
+  },
+  "en-the-adventures-of-tom-sawyer-flcfkpfokn": {
+    "difficulty": "Medium",
+    "clues": [
+      "A",
+      "S"
+    ]
+  },
+  "en-essays-amogdklkhl": {
+    "difficulty": "Hard",
+    "clues": [
+      "I",
+      "S"
+    ]
+  },
+  "en-essays-njbclbibho": {
+    "difficulty": "Medium",
+    "clues": [
+      "H",
+      "E"
+    ]
+  },
+  "en-essays-fllkgmlcdj": {
+    "difficulty": "Medium",
+    "clues": [
+      "E",
+      "R"
+    ]
+  },
+  "en-essays-bjgpaobnli": {
+    "difficulty": "Hard",
+    "clues": [
+      "E",
+      "N"
+    ]
+  },
+  "en-essays-dkoalfcgig": {
+    "difficulty": "Medium",
+    "clues": [
+      "E",
+      "S"
+    ]
+  },
+  "en-essays-hdppmkkcnf": {
+    "difficulty": "Medium",
+    "clues": [
+      "H",
+      "E",
+      "A"
+    ]
+  },
+  "en-essays-nbdbjefkkk": {
+    "difficulty": "Medium",
+    "clues": [
+      "E",
+      "O"
+    ]
+  },
+  "en-essays-jkgdpldgpn": {
+    "difficulty": "Hard",
+    "clues": [
+      "R",
+      "E"
+    ]
+  },
+  "en-essays-idjijpfldm": {
+    "difficulty": "Hard",
+    "clues": [
+      "A",
+      "E"
+    ]
+  },
+  "en-frankenstein-pbbolmaeej": {
+    "difficulty": "Medium",
+    "clues": [
+      "I",
+      "E"
+    ]
+  },
+  "en-frankenstein-glbieipfne": {
+    "difficulty": "Hard",
+    "clues": [
+      "E",
+      "N"
+    ]
+  },
+  "en-frankenstein-amfnheobpn": {
+    "difficulty": "Hard",
+    "clues": [
+      "R",
+      "E"
+    ]
+  },
+  "en-frankenstein-bmopkhgjah": {
+    "difficulty": "Hard",
+    "clues": [
+      "I",
+      "E"
+    ]
+  },
+  "en-frankenstein-lpmbmcanfo": {
+    "difficulty": "Medium",
+    "clues": [
+      "A",
+      "E"
+    ]
+  },
+  "en-frankenstein-jfcmoeinll": {
+    "difficulty": "Medium",
+    "clues": [
+      "E",
+      "R"
+    ]
+  },
+  "en-frankenstein-ioebhmcoil": {
+    "difficulty": "Hard",
+    "clues": [
+      "E",
+      "R"
+    ]
+  },
+  "en-frankenstein-kkgofdmcfb": {
+    "difficulty": "Medium",
+    "clues": [
+      "P",
+      "E",
+      "A"
+    ]
+  },
+  "en-frankenstein-jbdciclgia": {
+    "difficulty": "Hard",
+    "clues": [
+      "E"
+    ]
+  },
+  "en-frankenstein-anpihalpoc": {
+    "difficulty": "Hard",
+    "clues": [
+      "A",
+      "D"
+    ]
+  },
+  "en-pride-and-prejudice-mfmpmakhlj": {
+    "difficulty": "Easy",
+    "clues": [
+      "R",
+      "E",
+      "Y",
+      "G",
+      "F",
+      "V",
+      "C",
+      "P",
+      "N"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 9429,
+      "steps": 5,
+      "unresolved": 0,
+      "anchors": [
+        "I",
+        "HAVE",
+        "A",
+        "HIGH",
+        "RESPECT",
+        "FOR",
+        "YOUR"
+      ]
+    }
+  },
+  "en-pride-and-prejudice-bmfaajiklj": {
+    "difficulty": "Hard",
+    "clues": [
+      "E",
+      "L"
+    ]
+  },
+  "en-pride-and-prejudice-gmjjhjfbfo": {
+    "difficulty": "Easy",
+    "clues": [
+      "O",
+      "I",
+      "G",
+      "V",
+      "M",
+      "Y",
+      "F",
+      "S",
+      "L"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 5515,
+      "steps": 5,
+      "unresolved": 0,
+      "anchors": [
+        "MY",
+        "GOOD",
+        "OPINION",
+        "ONCE",
+        "LOST",
+        "IS",
+        "FOR",
+        "EVER"
+      ]
+    }
+  },
+  "en-pride-and-prejudice-lpapdnooak": {
+    "difficulty": "Medium",
+    "clues": [
+      "N",
+      "E"
+    ]
+  },
+  "en-pride-and-prejudice-ompffmolai": {
+    "difficulty": "Medium",
+    "clues": [
+      "T",
+      "E"
+    ]
+  },
+  "en-pride-and-prejudice-pgiendnoml": {
+    "difficulty": "Easy",
+    "clues": [
+      "O",
+      "U",
+      "W",
+      "Y",
+      "H",
+      "R",
+      "S",
+      "V",
+      "A"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 9849,
+      "steps": 4,
+      "unresolved": 0,
+      "anchors": [
+        "HOW",
+        "MUCH",
+        "YOU",
+        "MUST",
+        "HAVE",
+        "GONE",
+        "THROUGH"
+      ]
+    }
+  },
+  "en-pride-and-prejudice-fekhfbnheh": {
+    "difficulty": "Medium",
+    "clues": [
+      "E",
+      "O"
+    ]
+  },
+  "en-pride-and-prejudice-enoefebihm": {
+    "difficulty": "Medium",
+    "clues": [
+      "T",
+      "E"
+    ]
+  },
+  "en-the-secret-garden-ebdljmecam": {
+    "difficulty": "Medium",
+    "clues": [
+      "T",
+      "E"
+    ]
+  },
+  "en-the-secret-garden-afogpelfbp": {
+    "difficulty": "Medium",
+    "clues": [
+      "A",
+      "S"
+    ]
+  },
+  "en-the-secret-garden-bbgdjgoflo": {
+    "difficulty": "Medium",
+    "clues": [
+      "E",
+      "R"
+    ]
+  },
+  "en-the-secret-garden-ljpfncbfhk": {
+    "difficulty": "Medium",
+    "clues": [
+      "I",
+      "E"
+    ]
+  },
+  "en-the-secret-garden-nclfboadmj": {
+    "difficulty": "Easy",
+    "clues": [
+      "E",
+      "O",
+      "Y",
+      "G",
+      "D",
+      "B",
+      "F"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 10841,
+      "steps": 6,
+      "unresolved": 0,
+      "anchors": [
+        "FOR",
+        "A",
+        "MINUTE",
+        "I",
+        "THOUGHT",
+        "YOU",
+        "MIGHT",
+        "BE",
+        "DREAM",
+        "TOO"
+      ]
+    }
+  },
+  "en-the-secret-garden-aeeegeinlb": {
+    "difficulty": "Medium",
+    "clues": [
+      "E",
+      "O"
+    ]
+  },
+  "en-the-secret-garden-gioffihfed": {
+    "difficulty": "Easy",
+    "clues": [
+      "A",
+      "T",
+      "W",
+      "M",
+      "L",
+      "D",
+      "N",
+      "C",
+      "H"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 2347,
+      "steps": 4,
+      "unresolved": 0,
+      "anchors": [
+        "IT'S",
+        "COOL",
+        "AND",
+        "WARM",
+        "SWEET",
+        "ALL",
+        "AT",
+        "THE",
+        "SAME",
+        "TIME"
+      ]
+    }
+  },
+  "en-the-secret-garden-ijnbbdfjhm": {
+    "difficulty": "Hard",
+    "clues": [
+      "E",
+      "R"
+    ]
+  },
+  "en-the-secret-garden-cmjcdniaah": {
+    "difficulty": "Medium",
+    "clues": [
+      "E",
+      "W"
+    ]
+  },
+  "en-little-women-hgmgnkogii": {
+    "difficulty": "Medium",
+    "clues": [
+      "W",
+      "E"
+    ]
+  },
+  "en-little-women-klnjohljil": {
+    "difficulty": "Medium",
+    "clues": [
+      "T",
+      "E"
+    ]
+  },
+  "en-little-women-iaecbfhhik": {
+    "difficulty": "Medium",
+    "clues": [
+      "E",
+      "O"
+    ]
+  },
+  "en-little-women-cdejifjcel": {
+    "difficulty": "Easy",
+    "clues": [
+      "L",
+      "E",
+      "A",
+      "W",
+      "B",
+      "P",
+      "M",
+      "I",
+      "D",
+      "N",
+      "K",
+      "U"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 6125,
+      "steps": 3,
+      "unresolved": 0,
+      "anchors": [
+        "SPEAK",
+        "LOW",
+        "AND",
+        "TELL",
+        "ME",
+        "ALL",
+        "ABOUT",
+        "IT"
+      ]
+    }
+  },
+  "en-little-women-iafkpcfkaj": {
+    "difficulty": "Medium",
+    "clues": [
+      "A",
+      "E"
+    ]
+  },
+  "en-little-women-obojplpamm": {
+    "difficulty": "Medium",
+    "clues": [
+      "I",
+      "T"
+    ]
+  },
+  "en-little-women-fhlpaekebn": {
+    "difficulty": "Hard",
+    "clues": [
+      "I",
+      "E"
+    ]
+  },
+  "en-little-women-mekhidbhgi": {
+    "difficulty": "Medium",
+    "clues": [
+      "I",
+      "E"
+    ]
+  },
+  "en-little-women-kokkbfkjjk": {
+    "difficulty": "Medium",
+    "clues": [
+      "E",
+      "O"
+    ]
+  },
+  "en-the-picture-of-dorian-gray-nlihhiilgh": {
+    "difficulty": "Hard",
+    "clues": [
+      "A",
+      "E"
+    ]
+  },
+  "en-the-picture-of-dorian-gray-ggleljkoao": {
+    "difficulty": "Medium",
+    "clues": [
+      "T",
+      "E"
+    ]
+  },
+  "en-the-picture-of-dorian-gray-hoajdegifp": {
+    "difficulty": "Medium",
+    "clues": [
+      "T",
+      "I"
+    ]
+  },
+  "en-the-picture-of-dorian-gray-ajhicehdfc": {
+    "difficulty": "Medium",
+    "clues": [
+      "T",
+      "E"
+    ]
+  },
+  "en-emma-bohpnlmibi": {
+    "difficulty": "Medium",
+    "clues": [
+      "H",
+      "E"
+    ]
+  },
+  "en-emma-gefpgmnnoe": {
+    "difficulty": "Easy",
+    "clues": [
+      "H",
+      "E",
+      "T",
+      "B",
+      "O",
+      "P",
+      "N",
+      "A",
+      "S",
+      "D",
+      "G",
+      "U"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 3526,
+      "steps": 2,
+      "unresolved": 0,
+      "anchors": [
+        "SHE",
+        "WAS",
+        "HAPPY",
+        "KNEW",
+        "AND",
+        "TO",
+        "BE"
+      ]
+    }
+  },
+  "en-emma-aakimigflk": {
+    "difficulty": "Hard",
+    "clues": [
+      "E",
+      "S"
+    ]
+  },
+  "en-walden-hlamnjhkii": {
+    "difficulty": "Hard",
+    "clues": [
+      "E",
+      "N"
+    ]
+  },
+  "ru-pushkin-morning": {
+    "difficulty": "Easy",
+    "clues": [
+      "О",
+      "Н",
+      "Е",
+      "Ц",
+      "З",
+      "Д",
+      "И",
+      "Й",
+      "У",
+      "Ч",
+      "Ы"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 7392,
+      "steps": 3,
+      "unresolved": 0,
+      "anchors": [
+        "МОРОЗ",
+        "И",
+        "СОЛНЦЕ",
+        "ДЕНЬ"
+      ]
+    }
+  },
+  "ru-lermontov-sail": {
+    "difficulty": "Hard",
+    "clues": [
+      "О",
+      "Б",
+      "Р"
+    ]
+  },
+  "ru-griboedov-hours": {
+    "difficulty": "Medium",
+    "clues": [
+      "А",
+      "Е",
+      "О"
+    ]
+  },
+  "ru-tolstoy-families": {
+    "difficulty": "Easy",
+    "clues": [
+      "С",
+      "Е",
+      "Р",
+      "Г",
+      "Д",
+      "Н",
+      "М",
+      "И",
+      "Ж",
+      "Х",
+      "Л",
+      "Т",
+      "Ч",
+      "Ы"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 12524,
+      "steps": 5,
+      "unresolved": 0,
+      "anchors": [
+        "ВСЕ",
+        "СЕМЬИ",
+        "ПОХОЖИ",
+        "ДРУГ",
+        "НА",
+        "ДРУГА"
+      ]
+    }
+  },
+  "ru-fet-greeting": {
+    "difficulty": "Easy",
+    "clues": [
+      "Т",
+      "Р",
+      "Ч",
+      "Б",
+      "Я",
+      "К",
+      "С",
+      "Н",
+      "Ё",
+      "Ш",
+      "З",
+      "М",
+      "Ь",
+      "В",
+      "А"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 10535,
+      "steps": 4,
+      "unresolved": 0,
+      "anchors": [
+        "Я",
+        "ПРИШЁЛ",
+        "К",
+        "ТЕБЕ",
+        "С",
+        "ЧТО",
+        "СОЛНЦЕ"
+      ]
+    }
+  },
+  "ru-krylov-quartet": {
+    "difficulty": "Easy",
+    "clues": [
+      "И",
+      "Т",
+      "Н",
+      "А",
+      "Ы",
+      "Е",
+      "К",
+      "О",
+      "В",
+      "Ё",
+      "Г",
+      "М",
+      "Р",
+      "Я",
+      "З",
+      "У"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 5803,
+      "steps": 2,
+      "unresolved": 0,
+      "anchors": [
+        "А",
+        "ВЫ",
+        "ДРУЗЬЯ",
+        "КАК",
+        "НИ",
+        "ВСЁ",
+        "В",
+        "НЕ"
+      ]
+    }
+  },
+  "ru-gogol-road": {
+    "difficulty": "Easy",
+    "clues": [
+      "К",
+      "Й",
+      "Е",
+      "Ж",
+      "Н",
+      "И",
+      "У",
+      "Д",
+      "З",
+      "Л",
+      "Т",
+      "Ы"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 4119,
+      "steps": 3,
+      "unresolved": 0,
+      "anchors": [
+        "И",
+        "КАКОЙ",
+        "ЖЕ",
+        "РУССКИЙ",
+        "НЕ",
+        "ЛЮБИТ"
+      ]
+    }
+  },
+  "ru-chekhov-beauty": {
+    "difficulty": "Easy",
+    "clues": [
+      "И",
+      "О",
+      "Ц",
+      "Ж",
+      "Ч",
+      "Ы",
+      "У",
+      "Б",
+      "Ш",
+      "Ё",
+      "П",
+      "Р"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 19925,
+      "steps": 7,
+      "unresolved": 0,
+      "anchors": [
+        "В",
+        "ЧЕЛОВЕКЕ",
+        "ДОЛЖНО",
+        "БЫТЬ",
+        "ВСЁ",
+        "И",
+        "ЛИЦО",
+        "ОДЕЖДА",
+        "ДУША",
+        "МЫСЛИ"
+      ]
+    }
+  },
+  "ru-pushkin-love": {
+    "difficulty": "Easy",
+    "clues": [
+      "Л",
+      "В",
+      "Ю",
+      "Й",
+      "Н",
+      "Ё",
+      "Я",
+      "А",
+      "Ш",
+      "Г"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 23998,
+      "steps": 8,
+      "unresolved": 0,
+      "anchors": [
+        "Я",
+        "ВАС",
+        "ЛЮБИЛ",
+        "ЛЮБОВЬ",
+        "ЕЩЁ",
+        "БЫТЬ",
+        "МОЖЕТ",
+        "В",
+        "ДУШЕ",
+        "МОЕЙ",
+        "НЕ",
+        "СОВСЕМ"
+      ]
+    }
+  },
+  "ru-tyutchev-silence": {
+    "difficulty": "Hard",
+    "clues": [
+      "Т"
+    ]
+  },
+  "ru-lermontov-sadness": {
+    "difficulty": "Hard",
+    "clues": [
+      "Н",
+      "У"
+    ]
+  },
+  "ru-pushkin-stream": {
+    "difficulty": "Hard",
+    "clues": [
+      "Л"
+    ]
+  },
+  "ru-odbbeldaolec": {
+    "difficulty": "Hard",
+    "clues": [
+      "Е",
+      "О"
+    ]
+  },
+  "ru-lafmfenpgmce": {
+    "difficulty": "Hard",
+    "clues": [
+      "Л",
+      "О"
+    ]
+  },
+  "ru-conkleocjnjo": {
+    "difficulty": "Medium",
+    "clues": [
+      "Н",
+      "А"
+    ]
+  },
+  "ru-ilellagdmckh": {
+    "difficulty": "Hard",
+    "clues": [
+      "Т",
+      "Р"
+    ]
+  },
+  "ru-fcmeipmjbmjl": {
+    "difficulty": "Medium",
+    "clues": [
+      "Л",
+      "Е"
+    ]
+  },
+  "ru-dcjkiedmchni": {
+    "difficulty": "Hard",
+    "clues": [
+      "Р",
+      "О"
+    ]
+  },
+  "ru-gmfmlaelpjln": {
+    "difficulty": "Medium",
+    "clues": [
+      "Т",
+      "О"
+    ]
+  },
+  "ru-jdklinlajbpo": {
+    "difficulty": "Hard",
+    "clues": [
+      "Н",
+      "А"
+    ]
+  },
+  "ru-gcnnefmceloi": {
+    "difficulty": "Medium",
+    "clues": [
+      "Т",
+      "О"
+    ]
+  },
+  "ru-npeapnagjhcn": {
+    "difficulty": "Hard",
+    "clues": [
+      "Т",
+      "Р"
+    ]
+  },
+  "ru-efepenkdjfig": {
+    "difficulty": "Easy",
+    "clues": [
+      "Е",
+      "О",
+      "А",
+      "М",
+      "П",
+      "Х",
+      "Л",
+      "З",
+      "Ж",
+      "Ю",
+      "К",
+      "Й",
+      "Р",
+      "Ц"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 7740,
+      "steps": 3,
+      "unresolved": 0,
+      "anchors": [
+        "МНЕ",
+        "ПЕСНЮ",
+        "КАК",
+        "ТИХО",
+        "ЗА",
+        "ЖИЛА"
+      ]
+    }
+  },
+  "ru-eiclmiipjhag": {
+    "difficulty": "Easy",
+    "clues": [
+      "О",
+      "А",
+      "Ш",
+      "В",
+      "Р",
+      "З",
+      "К",
+      "И",
+      "Т",
+      "Ц",
+      "Ю",
+      "С",
+      "Н",
+      "У"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 8120,
+      "steps": 4,
+      "unresolved": 0,
+      "anchors": [
+        "МНЕ",
+        "ПЕСНЮ",
+        "КАК",
+        "ЗА",
+        "ВОДОЙ",
+        "ШЛА"
+      ]
+    }
+  },
+  "ru-ggikonmgakgb": {
+    "difficulty": "Hard",
+    "clues": [
+      "Р",
+      "О"
+    ]
+  },
+  "ru-mbilkgopencg": {
+    "difficulty": "Hard",
+    "clues": [
+      "К",
+      "О"
+    ]
+  },
+  "ru-lgibodnchjlh": {
+    "difficulty": "Medium",
+    "clues": [
+      "К",
+      "Т"
+    ]
+  },
+  "ru-kemahjihhhnp": {
+    "difficulty": "Easy",
+    "clues": [
+      "Р",
+      "О",
+      "А",
+      "П",
+      "Ы",
+      "Т",
+      "В",
+      "М",
+      "Е",
+      "Л",
+      "Н",
+      "Ь"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 6453,
+      "steps": 2,
+      "unresolved": 0,
+      "anchors": [
+        "МЫ",
+        "ПТИЦЫ",
+        "ПОРА",
+        "БРАТ"
+      ]
+    }
+  },
+  "ru-hcbmdgmgccdc": {
+    "difficulty": "Hard",
+    "clues": [
+      "О",
+      "Л"
+    ]
+  },
+  "ru-kcaonjpkfbgi": {
+    "difficulty": "Medium",
+    "clues": [
+      "Р",
+      "О"
+    ]
+  },
+  "ru-cenklepbndnl": {
+    "difficulty": "Hard",
+    "clues": [
+      "Т",
+      "О"
+    ]
+  },
+  "ru-oldjjjogfllo": {
+    "difficulty": "Medium",
+    "clues": [
+      "О",
+      "Л"
+    ]
+  },
+  "ru-gcfocejigfaj": {
+    "difficulty": "Hard",
+    "clues": [
+      "Л",
+      "О"
+    ]
+  },
+  "ru-dbjgnflnbjll": {
+    "difficulty": "Medium",
+    "clues": [
+      "Р",
+      "О"
+    ]
+  },
+  "ru-geimhgabemdi": {
+    "difficulty": "Easy",
+    "clues": [
+      "О",
+      "Н",
+      "В",
+      "С",
+      "Ы",
+      "Я",
+      "Ж",
+      "Д",
+      "Т",
+      "Л",
+      "Г",
+      "Ё",
+      "И",
+      "У",
+      "Х",
+      "Ь",
+      "Ш"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 8988,
+      "steps": 3,
+      "unresolved": 0,
+      "anchors": [
+        "ОДНА",
+        "В",
+        "ЛЕСОВ",
+        "ДАВНО",
+        "ТЫ",
+        "МЕНЯ"
+      ]
+    }
+  },
+  "ru-befpjhmeanjc": {
+    "difficulty": "Hard",
+    "clues": [
+      "О",
+      "Т"
+    ]
+  },
+  "ru-mbmohgloelna": {
+    "difficulty": "Hard",
+    "clues": [
+      "Т",
+      "А"
+    ]
+  },
+  "ru-nkhpljkceodd": {
+    "difficulty": "Easy",
+    "clues": [
+      "М",
+      "О",
+      "Ю",
+      "Р",
+      "Ы",
+      "Я",
+      "Т",
+      "А",
+      "Г",
+      "И",
+      "Л",
+      "С",
+      "У",
+      "Ч",
+      "В",
+      "Ь"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 6912,
+      "steps": 3,
+      "unresolved": 0,
+      "anchors": [
+        "Я",
+        "ПОМНЮ",
+        "ПЕРЕДО",
+        "МНОЙ",
+        "ТЫ"
+      ]
+    }
+  },
+  "ru-enemejmhfnjh": {
+    "difficulty": "Hard",
+    "clues": [
+      "К",
+      "О"
+    ]
+  },
+  "ru-fehoieolmmnl": {
+    "difficulty": "Medium",
+    "clues": [
+      "И",
+      "Л"
+    ]
+  },
+  "ru-blcdmmlfilbf": {
+    "difficulty": "Easy",
+    "clues": [
+      "Т",
+      "И",
+      "Й",
+      "Я",
+      "А",
+      "Ж",
+      "З",
+      "Ы",
+      "Р",
+      "Г",
+      "С",
+      "Н"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 10712,
+      "steps": 4,
+      "unresolved": 0,
+      "anchors": [
+        "И",
+        "Я",
+        "ЗАБЫЛ",
+        "ТВОЙ",
+        "ГОЛОС",
+        "ТВОИ",
+        "ЧЕРТЫ"
+      ]
+    }
+  },
+  "ru-ggmdnmhmpdgg": {
+    "difficulty": "Hard",
+    "clues": [
+      "Т",
+      "Н"
+    ]
+  },
+  "ru-gbfkbngbojkk": {
+    "difficulty": "Medium",
+    "clues": [
+      "И",
+      "Е"
+    ]
+  },
+  "ru-geepbkfimgkc": {
+    "difficulty": "Medium",
+    "clues": [
+      "Н",
+      "О"
+    ]
+  },
+  "ru-icmagodplida": {
+    "difficulty": "Medium",
+    "clues": [
+      "Н",
+      "О"
+    ]
+  },
+  "ru-opfbioepcanc": {
+    "difficulty": "Medium",
+    "clues": [
+      "З",
+      "Е"
+    ]
+  },
+  "ru-pggifajpbcmj": {
+    "difficulty": "Hard",
+    "clues": [
+      "Т",
+      "О"
+    ]
+  },
+  "ru-olbpdmmodcmg": {
+    "difficulty": "Hard",
+    "clues": [
+      "О",
+      "Е"
+    ]
+  },
+  "ru-aoblapiacbie": {
+    "difficulty": "Easy",
+    "clues": [
+      "О",
+      "Т",
+      "Щ",
+      "У",
+      "Н",
+      "С",
+      "Ю",
+      "Ч",
+      "В",
+      "Ё",
+      "Й",
+      "М",
+      "Д",
+      "Л"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 9586,
+      "steps": 3,
+      "unresolved": 0,
+      "anchors": [
+        "ЧТО",
+        "ИЩЕТ",
+        "ОН",
+        "В",
+        "СТРАНЕ",
+        "КРАЮ"
+      ]
+    }
+  },
+  "ru-aehodmnfpbdh": {
+    "difficulty": "Hard",
+    "clues": [
+      "И",
+      "О"
+    ]
+  },
+  "ru-ppidaefijjko": {
+    "difficulty": "Hard",
+    "clues": [
+      "Н",
+      "О"
+    ]
+  },
+  "ru-njdiaheohmig": {
+    "difficulty": "Easy",
+    "clues": [
+      "Г",
+      "О",
+      "Д",
+      "Ы",
+      "А",
+      "И",
+      "Л",
+      "П",
+      "Р",
+      "Х",
+      "У",
+      "Е",
+      "С"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 5954,
+      "steps": 3,
+      "unresolved": 0,
+      "anchors": [
+        "А",
+        "ГОДЫ",
+        "ПРОХОДЯТ",
+        "ВСЕ",
+        "ЛУЧШИЕ"
+      ]
+    }
+  },
+  "ru-bgblonniepff": {
+    "difficulty": "Medium",
+    "clues": [
+      "Л",
+      "О"
+    ]
+  },
+  "ru-jicgjjgiblkm": {
+    "difficulty": "Medium",
+    "clues": [
+      "Т",
+      "А"
+    ]
+  },
+  "ru-naaclbocfapn": {
+    "difficulty": "Medium",
+    "clues": [
+      "Т",
+      "О"
+    ]
+  },
+  "ru-fieimbeckdeb": {
+    "difficulty": "Easy",
+    "clues": [
+      "Т",
+      "О",
+      "Н",
+      "Д",
+      "Ч",
+      "В",
+      "Е",
+      "Я",
+      "А",
+      "Ю",
+      "Б",
+      "П"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 11523,
+      "steps": 4,
+      "unresolved": 0,
+      "anchors": [
+        "ДА",
+        "БЫЛИ",
+        "ЛЮДИ",
+        "В",
+        "НАШЕ",
+        "ВРЕМЯ",
+        "НЕ",
+        "ТО",
+        "ЧТО"
+      ]
+    }
+  },
+  "ru-dhlceeeadjib": {
+    "difficulty": "Medium",
+    "clues": [
+      "О",
+      "Л"
+    ]
+  },
+  "ru-mbolmbdlepda": {
+    "difficulty": "Medium",
+    "clues": [
+      "О",
+      "И"
+    ]
+  },
+  "ru-bnfndomkicdc": {
+    "difficulty": "Medium",
+    "clues": [
+      "Л",
+      "О"
+    ]
+  },
+  "ru-dkghneejpoce": {
+    "difficulty": "Easy",
+    "clues": [
+      "О",
+      "Л",
+      "В",
+      "Н",
+      "Ш",
+      "Е",
+      "Д",
+      "П",
+      "З",
+      "Р",
+      "У",
+      "Я"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 9419,
+      "steps": 4,
+      "unresolved": 0,
+      "anchors": [
+        "И",
+        "ВОТ",
+        "НАШЛИ",
+        "БОЛЬШОЕ",
+        "ПОЛЕ",
+        "ЕСТЬ",
+        "ГДЕ",
+        "НА",
+        "ВОЛЕ"
+      ]
+    }
+  },
+  "ru-fgcjaojeipid": {
+    "difficulty": "Medium",
+    "clues": [
+      "Д",
+      "О"
+    ]
+  },
+  "ru-ammkmhlomjpd": {
+    "difficulty": "Medium",
+    "clues": [
+      "Т",
+      "Е"
+    ]
+  },
+  "ru-cjgcjjoklbbc": {
+    "difficulty": "Medium",
+    "clues": [
+      "Т",
+      "О"
+    ]
+  },
+  "ru-eiebdhhhicej": {
+    "difficulty": "Medium",
+    "clues": [
+      "Л",
+      "О"
+    ]
+  },
+  "ru-hhajeadfejik": {
+    "difficulty": "Medium",
+    "clues": [
+      "Т",
+      "Л"
+    ]
+  },
+  "ru-phdahhaalpmh": {
+    "difficulty": "Hard",
+    "clues": [
+      "Т",
+      "Е"
+    ]
+  },
+  "ru-bpdkcflfdndo": {
+    "difficulty": "Medium",
+    "clues": [
+      "Д",
+      "И"
+    ]
+  },
+  "ru-bklakjdkebjp": {
+    "difficulty": "Medium",
+    "clues": [
+      "Н",
+      "О"
+    ]
+  },
+  "ru-nngfeibiplmc": {
+    "difficulty": "Easy",
+    "clues": [
+      "Т",
+      "О",
+      "М",
+      "П",
+      "И",
+      "Н",
+      "Е",
+      "В",
+      "Г",
+      "З",
+      "Ч",
+      "Я"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 10734,
+      "steps": 4,
+      "unresolved": 0,
+      "anchors": [
+        "УТРОМ",
+        "В",
+        "ПУТЬ",
+        "ОНА",
+        "РАНО",
+        "ПО",
+        "ВЕСЕЛО"
+      ]
+    }
+  },
+  "ru-ehbbldaooaja": {
+    "difficulty": "Medium",
+    "clues": [
+      "Т",
+      "О"
+    ]
+  },
+  "ru-ihbpdelibfld": {
+    "difficulty": "Hard",
+    "clues": [
+      "О",
+      "Л"
+    ]
+  },
+  "ru-nipcpdaadook": {
+    "difficulty": "Medium",
+    "clues": [
+      "О",
+      "А"
+    ]
+  },
+  "ru-gkcnmkihphfb": {
+    "difficulty": "Medium",
+    "clues": [
+      "О",
+      "Р"
+    ]
+  },
+  "ru-ogdbhcpofeni": {
+    "difficulty": "Hard",
+    "clues": [
+      "О",
+      "Е"
+    ]
+  },
+  "ru-dbocbhnmhjki": {
+    "difficulty": "Medium",
+    "clues": [
+      "Н",
+      "О"
+    ]
+  },
+  "ru-lomedobhclgg": {
+    "difficulty": "Easy",
+    "clues": [
+      "О",
+      "Л",
+      "Д",
+      "И",
+      "В",
+      "У",
+      "А",
+      "Г",
+      "Н",
+      "Б",
+      "М",
+      "С",
+      "Т",
+      "Ц",
+      "Ю"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 3830,
+      "steps": 2,
+      "unresolved": 0,
+      "anchors": [
+        "Я",
+        "ДЛЯ",
+        "НЕГО",
+        "И"
+      ]
+    }
+  },
+  "ru-chcleknomncg": {
+    "difficulty": "Hard",
+    "clues": [
+      "Т",
+      "О"
+    ]
+  },
+  "ru-fafnamcnklbg": {
+    "difficulty": "Medium",
+    "clues": [
+      "К",
+      "Е"
+    ]
+  },
+  "ru-bpcbgnnhgdoe": {
+    "difficulty": "Hard",
+    "clues": [
+      "Т",
+      "О"
+    ]
+  },
+  "ru-hnhokaloliph": {
+    "difficulty": "Medium",
+    "clues": [
+      "Н",
+      "Е"
+    ]
+  },
+  "ru-meebnedfkkbb": {
+    "difficulty": "Medium",
+    "clues": [
+      "Т",
+      "О"
+    ]
+  },
+  "ru-ebffblbjcknb": {
+    "difficulty": "Medium",
+    "clues": [
+      "Т",
+      "И"
+    ]
+  },
+  "ru-akgoaalohhkj": {
+    "difficulty": "Medium",
+    "clues": [
+      "Т",
+      "И"
+    ]
+  },
+  "ru-boeghjdabffm": {
+    "difficulty": "Hard",
+    "clues": [
+      "Т",
+      "И"
+    ]
+  },
+  "ru-nebcdoibjncc": {
+    "difficulty": "Medium",
+    "clues": [
+      "Т",
+      "О"
+    ]
+  },
+  "ru-dhlhaaglkkmc": {
+    "difficulty": "Easy",
+    "clues": [
+      "Т",
+      "О",
+      "М",
+      "Д",
+      "Ё",
+      "А",
+      "Ч",
+      "И",
+      "П",
+      "Я"
+    ],
+    "audit": {
+      "version": 1,
+      "work": 7374,
+      "steps": 3,
+      "unresolved": 0,
+      "anchors": [
+        "С",
+        "ВЕЧЕРА",
+        "ВСЁ",
+        "НА",
+        "ДВОРЕ",
+        "ТЕМНО"
+      ]
+    }
+  },
+  "ru-ieohilmdbejh": {
+    "difficulty": "Medium",
+    "clues": [
+      "Т",
+      "О"
+    ]
+  },
+  "ru-kbpichpleahi": {
+    "difficulty": "Medium",
+    "clues": [
+      "Р",
+      "О"
+    ]
+  },
+  "ru-pdkeooidpdao": {
+    "difficulty": "Medium",
+    "clues": [
+      "Т",
+      "Е"
+    ]
+  },
+  "ru-ccfjkkijjcdl": {
+    "difficulty": "Medium",
+    "clues": [
+      "И",
+      "О"
+    ]
+  },
+  "ru-jdjbihdkgbak": {
+    "difficulty": "Medium",
+    "clues": [
+      "Л",
+      "И"
+    ]
+  },
+  "ru-fgllakphkhgc": {
+    "difficulty": "Medium",
+    "clues": [
+      "Л",
+      "И"
+    ]
+  },
+  "ru-liegcpbmpdal": {
+    "difficulty": "Medium",
+    "clues": [
+      "А",
+      "Л"
+    ]
+  },
+  "ru-dnhpnbkhdpdm": {
+    "difficulty": "Hard",
+    "clues": [
+      "О",
+      "Е"
+    ]
+  },
+  "ru-ijlfkkhjpmfa": {
+    "difficulty": "Medium",
+    "clues": [
+      "Е",
+      "Л"
+    ]
+  },
+  "ru-komampdejagd": {
+    "difficulty": "Medium",
+    "clues": [
+      "Т",
+      "О"
+    ]
+  },
+  "ru-haclkalkhaik": {
+    "difficulty": "Medium",
+    "clues": [
+      "Н",
+      "О"
+    ]
+  },
+  "ru-hlmodpgdmaoe": {
+    "difficulty": "Medium",
+    "clues": [
+      "Т",
+      "О"
+    ]
+  },
+  "ru-lbbdojbphgja": {
+    "difficulty": "Medium",
+    "clues": [
+      "Т",
+      "О"
+    ]
+  },
+  "ru-olkkjfckilfa": {
+    "difficulty": "Medium",
+    "clues": [
+      "Л",
+      "А",
+      "О"
+    ]
+  }
+}

@@ -2,7 +2,7 @@
 
 A functional, local-first cryptogram game built with Vue 3, TypeScript, Vite, Pinia, SCSS and IndexedDB
 
-Current revision: 0.3.1.
+Current revision: 0.4.0.
 
 Working directory: `/Users/virtualp1/Documents/personal/CODE`. All subsequent changes belong here.
 
@@ -14,6 +14,7 @@ Use Node 24 (tested with 24.18.0) and the committed lockfile.
 npm ci
 npm run dev
 npm test
+npm run content:audit
 npm run build
 npm run preview
 ```
@@ -25,7 +26,7 @@ Open the local address printed by Vite. Production preview is needed to test ser
 1. Read .agents/AGENTS.md and docs/PRODUCT.md, docs/DESIGN.md, docs/PUZZLE_ENGINE.md.
 2. Run npm test and npm run build.
 3. Keep the current boundary: no advanced generator, remote quote API, statistics or Android packaging.
-4. The next content phase needs audited provenance, a licensed word list, an ambiguity-aware solver and measured difficulty. The current 200 samples have editorial difficulty labels, not solver-certified fairness.
+4. The 200 sourced quotes include 20 Easy per language with fixed clues and a bounded common-word deduction audit. Medium/Hard remain editorial. The audit is not an exhaustive uniqueness proof or measured human difficulty; later work can broaden solver evaluation and playtest calibration without adding a runtime generator.
 
 ## Working behavior
 
@@ -68,7 +69,7 @@ Warm paper, near-black ink, olive selection, precise rules and restrained typogr
 
 ## Validation and limits
 
-See docs/QA.md for recorded automated and browser checks. Desktop browser emulation does not certify Samsung hardware, TalkBack, Android haptics, gesture navigation or installation behavior. Difficulty is editorial for now. No promise of a unique language solution has been made for these samples; solver certification is phase 2. Source provenance and font/icon licenses are in docs/CONTENT.md and docs/THIRD_PARTY.md.
+See docs/QA.md for recorded automated and browser checks. Desktop browser emulation does not certify Samsung hardware, TalkBack, Android haptics, gesture navigation or installation behavior. Medium/Hard difficulty remains editorial. Easy has a bounded independent familiar-word deduction route, not a promise of a unique solution across all language or a substitute for human playtesting. Source provenance and font/icon licenses are in docs/CONTENT.md and docs/THIRD_PARTY.md.
 
 
 ## Releases and PWA updates
@@ -79,7 +80,7 @@ CI runs tests and a production build on branches and pull requests. A pushed `vX
 
 Release notes use `#/updates`, with browser/Android Back returning to the puzzle. Opening them directly and reloading works offline. There is no quote API, account or release API dependency. A downloaded version only activates after explicit Update & restart. During flush/activation the modal cannot be dismissed and gameplay is inert. Save and worker waits are each capped at 30 seconds and can be retried. Another tab's activation never forces this tab to reload. IndexedDB schema remains 1.
 
-Local validation: 251 Vitest tests plus 3 release-tool tests, production build and browser checks (recorded in docs/QA.md). Remote GitHub Actions and hosted Android updates require the workflows to be pushed and the host connected; these have not run from this local session.
+Local validation is recorded in docs/QA.md; rerun the commands above before subsequent releases. The 0.4.0 pass adds focused migration, ambiguity, backup rollback/cancellation and bilingual resume coverage. Remote GitHub Actions and hosted Android updates require the workflows to be pushed and the host connected; these have not run from this local session.
 
 
 ## Phone layout contract — 0.2.4
@@ -131,3 +132,16 @@ Exactly 100 quotes per language. Keep the original 16 English records in puzzles
 App.vue owns four small hash destinations and responsive matchMedia state. AppDialog uses a section for phone destination screens, with a sticky Back button; desktop and destructive confirmations retain native dialog. Both presentations preserve background scroll/focus restoration. Drawer remains a native animated modal. While a phone screen is open the game stays mounted but hidden/inert. Changing viewport recreates only the presentation; browser Back closes the current destination. Updates keep dismissal blocked while saving/activating.
 
 Desktop quote rows/attribution are centered. A ResizeObserver sets a bounded workspace top offset from measured quote, toolbar, keyboard and feedback heights: cipher centered at 50% of the viewport if it fits, otherwise lift the group to preserve input visibility. Metadata is 1rem on desktop. The observer never changes cipher state and disconnects on unmount. Phone fitting and keyboard geometry remain independent.
+
+
+## Current quality pass — 0.4.0
+
+- `publishedQuotes` preserves all 200 original records, answer text, IDs, order and numeric seeds. `clue-profiles.json` supplies reviewed difficulty and fixed clues: EN 20/55/25 and RU 20/50/30 Easy/Medium/Hard. Changed clues use quote revision 2 with `previousClues`; no database or session-envelope bump.
+- `engine/fairness.ts` is developer-only. `npm run content:audit` evaluates the 40 fixed Easy profiles with independent frequency dictionaries, pattern/one-to-one constraints and forced-letter propagation. Short familiar anchors allow at most two unknown symbols, a 200,000-candidate budget and no answer-corpus lookup. It does not branch over complete language solutions. `scripts/audit-content.mjs --prepare` is an explicit editorial operation; do not regenerate profiles during normal builds. Lexicons, source pin, transformation details and CC BY-SA attribution remain under scripts/lexicons and out of runtime/PWA assets.
+- `engine/migration.ts` validates the published revision-1 session, adds new givens to current entries and every undo/redo snapshot, removes only guesses conflicting structurally with a new given, retains other neutral guesses/hints, and removes redundant adjacent history states. Completed old saves stay complete. Initialization writes migrated sessions back before ready; failed persistence warns without blocking play. Backup imports share this decoder.
+- `engine/collection.ts` owns new/started/complete status and next-puzzle preference (unfinished same difficulty, then other unfinished, wrapping). `PuzzleLibrary.vue` shows work titles, status/difficulty filtering and Continue. History/hints count as started; Restart makes a fresh puzzle.
+- Completion replaces the cipher with the original sentence-case quote and keeps attribution. Undo/Redo/restart remain available. Only newly earned completion animates and moves focus to Next; navigation to existing completion is immediate. Undo returns focus to the board. There is no correctness feedback on ordinary input.
+- `services/backup.ts` validates bounded format-1 JSON, snapshots memory including the latest move and hints/history, supports optional per-language resume pointers and plans a keep-local merge by default. Unknown future content/revisions are counted as unavailable; malformed known sessions reject the whole file. `ProgressBackup.vue` owns export/file picker/preview/explicit replace UI in Settings. No external account or API.
+- Restore writes the entire merged memory plus preferences in one queued IndexedDB transaction, before Pinia changes. Input, navigation and dialog dismissal freeze during restore; 30-second cancellation rolls back or prevents a queued job from writing late. Failure retains memory and allows retry. Existing progress retains current puzzle; a fresh locale adopts a valid imported resume pointer. Local theme, haptics and language are preserved.
+- Browser checks exercised completion/Undo/Redo, filters and actual export/import/reload with kept and explicitly replaced progress. Additional small-phone enlarged-text layout checks were sufficient; the user explicitly requested stopping exhaustive puzzle traversal. Physical-device behavior was accepted from the user's testing. See docs/QA.md for scope and remaining limits.
+- This pass belongs on `improve-puzzle-quality`; do not merge main without user authorization. A branch push is requested. No production release tag is requested.
