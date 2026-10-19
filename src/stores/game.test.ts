@@ -164,3 +164,59 @@ it('erases only explicitly checked mistakes, one grouped move at a time, retaini
   await vi.waitFor(() => expect(game.pendingSaves).toBe(0))
   vi.restoreAllMocks()
 })
+
+it('freezes moves during restore, changes memory only after durable commit, and preserves it on failure', async () => {
+  const { createBackup, parseBackup } = await import('../services/backup')
+  const { puzzles } = await import('./game')
+  vi.spyOn(storage, 'readRecord').mockResolvedValue(undefined)
+  vi.spyOn(storage, 'saveSession').mockResolvedValue(undefined)
+  const game = useGameStore(); await game.initialize()
+  game.apply(game.puzzle.solution[game.selected!]!)
+  const backup = parseBackup(JSON.stringify(createBackup(puzzles, game.sessions, '0.4.0')), puzzles)
+  const id = game.currentId, saved = JSON.stringify(game.session)
+  game.restart(); await vi.waitFor(() => expect(game.pendingSaves).toBe(0))
+  const fresh = JSON.stringify(game.sessions)
+  const write = vi.spyOn(storage, 'writeRecords').mockRejectedValue(new Error('Quota exceeded'))
+  expect(await game.restoreProgress(backup)).toBe(false)
+  expect(JSON.stringify(game.sessions)).toBe(fresh)
+  let commit!: () => void
+  write.mockImplementation(() => new Promise<void>(resolve => { commit = resolve }))
+  const restore = game.restoreProgress(backup)
+  expect(game.restoring).toBe(true)
+  expect(game.apply('Z')).toBe(false)
+  game.switchPuzzle('hamlet-possibility'); expect(game.currentId).toBe(id)
+  expect(JSON.stringify(game.sessions)).toBe(fresh)
+  commit(); expect(await restore).toBe(true)
+  expect(game.restoring).toBe(false)
+  expect(JSON.stringify(game.session)).toBe(saved)
+  vi.restoreAllMocks()
+})
+
+it('restores both resume pointers on a fresh device without replacing its language or appearance', async () => {
+  const { puzzles } = await import('./game')
+  const { edit, initialSession } = await import('../engine/cipher')
+  const { createBackup, parseBackup } = await import('../services/backup')
+  const records = new Map<string, unknown>([['preferences', { version: 2, language: 'en', theme: 'dark', haptics: true }]])
+  vi.spyOn(storage, 'readRecord').mockImplementation(async key => records.get(key))
+  vi.spyOn(storage, 'writeRecord').mockImplementation(async (key, value) => { records.set(key, JSON.parse(JSON.stringify(value))) })
+  vi.spyOn(storage, 'writeRecords').mockImplementation(async incoming => { for (const { key, value } of incoming) records.set(key, JSON.parse(JSON.stringify(value))) })
+  const sessions = Object.fromEntries(puzzles.map(p => [p.quote.id, initialSession(p)]))
+  const pointers: Partial<Record<'en' | 'ru', string>> = {}
+  for (const locale of ['en', 'ru'] as const) {
+    const p = puzzles.filter(p => (p.quote.locale ?? 'en') === locale)[1]!, symbol = p.symbols.find(n => !p.clues[n])!
+    pointers[locale] = p.quote.id
+    sessions[p.quote.id] = edit(p, sessions[p.quote.id]!, symbol, p.solution[symbol]!).session
+  }
+  const backup = parseBackup(JSON.stringify(createBackup(puzzles, sessions, '0.4.0', pointers)), puzzles)
+  const game = useGameStore(); await game.initialize()
+  expect(await game.restoreProgress(backup)).toBe(true)
+  expect(game.currentId).toBe(pointers.en)
+  const resumed = useGameStore(createPinia()); await resumed.initialize()
+  expect(resumed).toMatchObject({ language: 'en', theme: 'dark', haptics: true, currentId: pointers.en })
+  expect(resumed.resumePointers).toEqual(pointers)
+  resumed.setLanguage('ru')
+  expect(resumed.currentId).toBe(pointers.ru)
+  expect(resumed.session.entries).toEqual(sessions[pointers.ru!]!.entries)
+  await vi.waitFor(() => expect(resumed.pendingSaves).toBe(0))
+  vi.restoreAllMocks()
+})

@@ -37,7 +37,8 @@ function erase() {
   board.value?.querySelector<HTMLButtonElement>(`[data-index="${target.index}"]`)?.focus({ preventScroll: true })
   game.message = announcement
 }
-defineExpose({ navigate, advance, erase })
+function focusActive() { board.value?.querySelector<HTMLButtonElement>('[tabindex="0"]')?.focus({ preventScroll: true }) }
+defineExpose({ navigate, advance, erase, focusActive })
 function choose(symbol: number, index: number, pulse = true) {
   activeIndex.value = index
   game.select(symbol, pulse)
@@ -65,13 +66,13 @@ function revealSelection() {
 function fitPhoneBoard() {
   const element = board.value
   const region = element?.closest<HTMLElement>('.quote-region')
-  if (!element || !region) return
+  if (!element || !region || game.complete) return
   if (!window.matchMedia('(max-width: 700px) and (orientation: portrait)').matches) {
     delete element.dataset.size
     return
   }
   const style = getComputedStyle(region)
-  const siblings = [...region.children].filter(child => child !== element)
+  const siblings = [...region.children].filter(child => child !== element && !child.contains(element))
   const occupied = siblings.reduce((sum, child) => {
     const css = getComputedStyle(child)
     return sum + child.getBoundingClientRect().height + parseFloat(css.marginTop) + parseFloat(css.marginBottom)

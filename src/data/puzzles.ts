@@ -1,3 +1,4 @@
+import reviewedProfiles from './clue-profiles.json'
 import englishExpansion from './english-expansion.json'
 import russianExpansion from './russian-expansion.json'
 import { russianQuotes } from './russian-quotes'
@@ -7,6 +8,7 @@ export interface Quote {
   locale?: 'en' | 'ru'
   id: string
   revision: number
+  previousClues?: string[]
   text: string
   author: string
   work: string
@@ -19,7 +21,7 @@ export interface Quote {
 }
 
 // Excerpts from original English works published before 1931. Review non-US release jurisdictions.
-export const quotes: Quote[] = [
+export const publishedQuotes: Quote[] = [
   { id: 'austen-heart', revision: 1, text: 'There is no charm equal to tenderness of heart.', author: 'Jane Austen', work: 'Emma', year: 1815, difficulty: 'Easy', clues: ['E', 'T', 'R'], clueRationale: 'E and R link the repeated ending in THERE and TENDERNESS; T anchors TO and HEART. These span the sentence without exposing the key noun.', source: 'https://www.gutenberg.org/ebooks/158', reuse: 'Original English, 1815; public domain in the US. Austen died 1817.' },
   { id: 'hamlet-possibility', revision: 1, text: 'We know what we are, but know not what we may be.', author: 'William Shakespeare', work: 'Hamlet · Act IV, scene V', year: 1603, difficulty: 'Easy', clues: ['W', 'E'], clueRationale: 'Repeated WE and WHAT connect the sentence; short words provide useful anchors for the remaining consonants.', source: 'https://www.gutenberg.org/ebooks/1524', reuse: 'Original English play, 1603; public domain.' },
   { id: 'alcott-storms', revision: 1, text: "I'm not afraid of storms, for I'm learning how to sail my ship.", author: 'Louisa May Alcott', work: 'Little Women', year: 1868, difficulty: 'Medium', clues: ['I', 'O'], clueRationale: 'I anchors the repeated contraction; O connects OF, FOR, HOW and TO while preserving the main word patterns.', source: 'https://www.gutenberg.org/ebooks/514', reuse: 'Original English, 1868–1869; public domain in the US. Alcott died 1888.' },
@@ -40,3 +42,13 @@ export const quotes: Quote[] = [
   ...russianQuotes,
   ...russianExpansion as Quote[],
 ]
+
+interface ClueProfile { difficulty: Difficulty; clues: string[]; audit?: { anchors: string[] } }
+const profiles = reviewedProfiles as Record<string, ClueProfile>
+export const quotes: Quote[] = publishedQuotes.map(quote => {
+  const profile = profiles[quote.id]
+  if (!profile) throw new Error(`Missing reviewed profile: ${quote.id}`)
+  const changed = JSON.stringify(profile.clues) !== JSON.stringify(quote.clues)
+  return { ...quote, difficulty: profile.difficulty, clues: profile.clues,
+    ...(changed ? { revision: 2, previousClues: quote.clues, clueRationale: `Reviewed Easy clues cross familiar anchors: ${profile.audit?.anchors.join(', ')}. Bounded propagation uses short high-frequency words with at most two unknown symbols; no quote-recognition corpus is used.` } : {}) }
+})

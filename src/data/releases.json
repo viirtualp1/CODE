@@ -1,5 +1,27 @@
 [
   {
+    "version": "0.4.0",
+    "date": "2026-10-19",
+    "title": "Clues to reason with",
+    "changes": [
+      "Twenty Easy puzzles per language now have reviewed starting letters that lead through short, familiar words.",
+      "Solved puzzles reveal a clean, readable quotation. Undo still returns to solving.",
+      "The collection shows work titles, progress filters and a shortcut to continue an unfinished puzzle.",
+      "Export and restore progress in both languages, with a preview and protection for existing saves.",
+      "Earlier progress carries over when starting clues are updated."
+    ],
+    "ru": {
+      "title": "Буквы для разгадки",
+      "changes": [
+        "В каждом языке теперь по двадцать лёгких пазлов с проверенными начальными буквами и опорами на короткие знакомые слова.",
+        "Разгаданная цитата становится цельным текстом. Отмена по-прежнему возвращает к решению.",
+        "В коллекции видны произведения, фильтры прогресса и быстрый переход к начатому пазлу.",
+        "Прогресс в обоих языках можно сохранить в файл и восстановить с предварительным просмотром и защитой текущих сохранений.",
+        "При обновлении начальных подсказок прежний прогресс переносится."
+      ]
+    }
+  },
+  {
     "version": "0.3.1",
     "date": "2026-10-19",
     "title": "More room to play",

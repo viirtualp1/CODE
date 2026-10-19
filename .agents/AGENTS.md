@@ -30,14 +30,17 @@ Read docs/PRODUCT.md, docs/DESIGN.md and docs/PUZZLE_ENGINE.md before changing b
 - Support spatial arrow navigation, a single board tab stop, and typed input into the focused cell.
 - Every modal must lock body/document scrolling and restore styles, scroll position and focus on close.
 - Collection, help, settings and updates use full viewport screens on phones, native windows on desktop. Keep browser Back, explicit Back/close and focus restoration working. Hint/restart confirmations and the drawer remain modal.
-- Center the desktop cipher itself at 50% of viewport height/width when the keyboard fits below; clamp upward on shorter windows, preserving visible input and larger desktop metadata.
+- Center the whole desktop quote/actions/keyboard composition horizontally, with its midpoint 2vh (maximum 24px) above viewport center. Clamp to preserve the 56px top control clearance and visible input on short windows; the cipher alone is not the centering target.
 - Keep punctuation and word boundaries; do not split a word across lines.
 - Keyboard input must ignore editable controls, dialogs, composition and unrelated modifier shortcuts. Route input for the puzzle language: English preserves Latin-layout meaning with non-Latin physical-code fallback; Russian accepts А–Я/Ё directly and English physical keys via ЙЦУКЕН. Keep Е/Ё distinct.
 - Explicitly focus clicked cells on Safari/macOS. Successful letter entry advances from that occurrence to the next blank in reading order, wrapping once. Rejected/unchanged input and ordinary erase retain selection. While explicit Check marks exist, erase focuses and clears one marked assignment, retaining other marks; never silently calculate correctness.
 - Never add a hidden editable field for hardware typing: it risks opening Android IME. See docs/KEYBOARD_UX.md.
 - Do not display routine Saved/Saving labels; show actual storage failures only.
 - Keep keyboard and active symbol visible at narrow widths, landscape and enlarged text. Toolbar and keyboard share horizontal bounds at every size. Desktop release windows keep at least 24px top/bottom gaps plus safe-area protection; phone destinations use the full viewport. Show a green dot beside Update available in the drawer only when an update is downloaded.
-- Do not add telemetry, ads, payments, a quote API, statistics, native packaging, or a generator in this slice.
+- Do not add telemetry, ads, payments, a quote API, statistics, native packaging, or a runtime generator. The approved developer-only bounded common-word audit lives in src/engine/fairness.ts and scripts/; never bundle its lexicons into the app. Fixed Easy clues must retain an audited familiar-word route and at least two editable assignments; do not claim exhaustive linguistic uniqueness.
+- Completed puzzles show the natural quote without cipher numbers; Undo returns to solving. Animate only a newly earned completion, never navigation/loading.
+- Backup import previews changes, keeps local progress by default and requires explicit replacement selection. Validate before writing; persist all merged sessions and preferences atomically before changing memory. Bound and cancel stalled writes. Fresh-language progress may adopt its imported resume pointer; retain local appearance/language.
+- Changed published clues require an explicit revision migration preserving compatible guesses, hints and all history. Never reset a valid old completion.
 - Update docs when contracts, persistence schema or scope changes.
 - Every release updates package.json, package-lock.json and the newest entry in src/data/releases.json together; run release:check. Follow .agents/RELEASING.md. Never auto-reload active play or discard writes to apply an update.
 - Run npm test and npm run build before handing off; run browser checks for interaction/layout work.

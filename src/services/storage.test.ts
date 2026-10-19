@@ -38,3 +38,26 @@ describe('durable progress', () => {
     expect(decodeSession(puzzle, hint)).toBe(null)
   })
 })
+
+it('rolls back a failed multi-record restore and can commit again after the failure', async () => {
+  const { writeRecords } = await import('./storage')
+  await writeRecord('restore-one', { old: true })
+  await expect(writeRecords([{ key: 'restore-one', value: { changed: true } }, { key: undefined as unknown as string, value: { invalid: true } }])).rejects.toThrow()
+  expect(await readRecord('restore-one')).toEqual({ old: true })
+  await writeRecords([{ key: 'restore-one', value: { committed: true } }, { key: 'restore-two', value: { committed: true } }])
+  expect(await readRecord('restore-one')).toEqual({ committed: true })
+  expect(await readRecord('restore-two')).toEqual({ committed: true })
+})
+
+it('cancels queued restore writes without applying them later and recovers for subsequent saves', async () => {
+  const { writeRecords, flushWrites } = await import('./storage')
+  await writeRecord('cancelled-restore', { old: true })
+  const controller = new AbortController()
+  const restore = writeRecords([{ key: 'cancelled-restore', value: { restored: true } }], controller.signal)
+  controller.abort(new Error('Cancelled'))
+  await expect(restore).rejects.toThrow('Cancelled')
+  await expect(flushWrites()).rejects.toThrow('Cancelled')
+  expect(await readRecord('cancelled-restore')).toEqual({ old: true })
+  await writeRecord('after-cancel', { playable: true })
+  expect(await readRecord('after-cancel')).toEqual({ playable: true })
+})
