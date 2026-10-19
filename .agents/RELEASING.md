@@ -6,7 +6,7 @@ The current release source is `src/data/releases.json`, newest first. Its first 
 
 1. Run `npm version patch --no-git-tag-version` (or minor/major as appropriate). This changes package.json and package-lock.json, without committing/tagging.
 2. Add the matching version at the beginning of `src/data/releases.json`: version, actual release date (`YYYY-MM-DD`), title and nonempty changes. Keep descriptions in English to match the current interface. Use the user's local release date, not the CI machine clock.
-3. Update docs/HANDOFF.md's current revision and implementation notes, plus docs/QA.md. Keep README.md as a short player-facing overview. Revisit quote revisions or storage schema only when their actual compatibility changes.
+3. Update .agents/HANDOFF.md's current revision and implementation notes, plus docs/QA.md. Keep README.md as a short player-facing overview. Revisit quote revisions or storage schema only when their actual compatibility changes.
 4. Run `npm test`, `npm run build`, and browser checks. Preview an upgrade on the same origin as the preceding build; changing a port creates a separate profile. Test the final move before update, undo history afterwards, offline reload, Back, update failure and both themes.
 5. Review and commit the intended source, specs and workflow changes. Push the release commit to the branch connected to hosting. Create and push the matching annotated `vX.Y.Z` tag only when ready to publish. Never reuse a published tag.
 

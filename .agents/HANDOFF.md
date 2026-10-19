@@ -22,7 +22,7 @@ Open the local address printed by Vite. Production preview is needed to test ser
 
 ## Start here in a later session
 
-1. Read AGENTS.md and docs/PRODUCT.md, docs/DESIGN.md, docs/PUZZLE_ENGINE.md.
+1. Read .agents/AGENTS.md and docs/PRODUCT.md, docs/DESIGN.md, docs/PUZZLE_ENGINE.md.
 2. Run npm test and npm run build.
 3. Keep the current boundary: no advanced generator, remote quote API, statistics or Android packaging.
 4. The next content phase needs audited provenance, a licensed word list, an ambiguity-aware solver and measured difficulty. The current sixteen samples have editorial difficulty labels, not solver-certified fairness.
@@ -73,7 +73,7 @@ See docs/QA.md for recorded automated and browser checks. Desktop browser emulat
 
 ## Releases and PWA updates
 
-See [RELEASING.md](../RELEASING.md) for the release checklist, cache headers and hosting requirements. `npm run release:check` validates package/lockfile/history agreement; every production build runs it. `npm run release:notes` generates the GitHub release description from the same bundled data.
+See [RELEASING.md](RELEASING.md) for the release checklist, cache headers and hosting requirements. `npm run release:check` validates package/lockfile/history agreement; every production build runs it. `npm run release:notes` generates the GitHub release description from the same bundled data.
 
 CI runs tests and a production build on branches and pull requests. A pushed `vX.Y.Z` tag runs them again, verifies the exact version and creates a GitHub release with a web archive and SHA-256 checksum. No release or deployment is triggered by editing local files. The current hosting configuration targets Vercel, matching the Shotcaller reference; connect the repository in Vercel before publishing. The GitHub release archive alone does not update the hosted PWA.
 
@@ -105,3 +105,8 @@ The action toolbar shares the keyboard's horizontal bounds via the same width co
 CipherBoard owns a small DOM-based fit pass for portrait viewports up to 700px wide. It tries five bounded data-size tiers, largest first, and measures the real wrapping against quote-region content width/height after padding, attribution and completion status. It uses fixed cell slots and does not examine guesses or answer correctness. At 412×915 the bundled playing quotes use 25–32px letters, replacing the former 22px cap; short quotes can use 32px even at 384×824.
 
 A ResizeObserver watches the quote region and attribution, not the board itself, so changing tiers cannot create a resize feedback loop. Refit on content/viewport/attribution changes, then use existing focus navigation. No editor, persistent scale preference, general layout engine or resize animation is introduced. Landscape/desktop retain their CSS layout, and keyboard geometry is unchanged. Future content still needs explicit fit QA; minimum-size overflow must never be hidden.
+
+
+## Agent documentation
+
+Agent-only instructions live in .agents/: AGENTS.md contains repository-wide rules, HANDOFF.md contains commands/architecture/current behavior, and RELEASING.md contains release procedures. The root AGENTS.md is a short entry pointer. Product/design/engine specifications, provenance, licenses and QA records remain in docs/. Keep README.md focused on the game.

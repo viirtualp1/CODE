@@ -44,4 +44,4 @@ Difficulty labels in this slice describe author-selected samples; they are not s
 - **4 — release:** installation guidance, offline/update QA, privacy statement and optional Android packaging only when explicitly requested.
 
 ## Release acceptance
-Bundled history remains readable offline at `#/updates`; browser/Android Back restores play and scroll/focus. Package, lockfile, release history and release tag agree. CI tests/builds before producing a versioned archive. Hosting must refresh sw.js and HTML while retaining immutable hashed assets. See ../RELEASING.md.
+Bundled history remains readable offline at `#/updates`; browser/Android Back restores play and scroll/focus. Package, lockfile, release history and release tag agree. CI tests/builds before producing a versioned archive. Hosting must refresh sw.js and HTML while retaining immutable hashed assets. See ../.agents/RELEASING.md.
