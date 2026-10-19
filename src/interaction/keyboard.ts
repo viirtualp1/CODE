@@ -1,3 +1,5 @@
+import { alphabetFor } from '../engine/alphabet'
+import type { PuzzleLanguage } from '../engine/alphabet'
 import type { NavigationKey } from './navigation'
 
 export interface KeyInput {
@@ -17,16 +19,25 @@ export type KeyboardAction =
   | { type: 'navigate'; key: NavigationKey }
   | { type: 'history'; direction: 'undo' | 'redo' }
 
-/** Keep Latin layouts semantic; use English QWERTY positions for non-Latin letters. */
-export function keyboardAction(event: KeyInput): KeyboardAction | null {
+const russianKeys = Object.fromEntries([
+  ...[...'QWERTYUIOP'].map((letter, i) => [`Key${letter}`, 'ЙЦУКЕНГШЩЗ'[i]]),
+  ...[...'ASDFGHJKL'].map((letter, i) => [`Key${letter}`, 'ФЫВАПРОЛД'[i]]),
+  ...[...'ZXCVBNM'].map((letter, i) => [`Key${letter}`, 'ЯЧСМИТЬ'[i]]),
+  ['BracketLeft', 'Х'], ['BracketRight', 'Ъ'], ['Semicolon', 'Ж'], ['Quote', 'Э'], ['Comma', 'Б'], ['Period', 'Ю'], ['Backquote', 'Ё'],
+])
+/** Interpret letters for the puzzle alphabet; shortcuts retain their normal physical codes. */
+export function keyboardAction(event: KeyInput, language: PuzzleLanguage = 'en'): KeyboardAction | null {
   if (event.isComposing || event.altKey) return null
-  const letter = /^[a-z]$/i.test(event.key) ? event.key.toUpperCase()
-    : /^\p{L}$/u.test(event.key) && /^Key[A-Z]$/.test(event.code ?? '') ? event.code!.slice(3) : null
+  const shortcutLetter = /^[a-z]$/i.test(event.key) ? event.key.toUpperCase() : /^Key[A-Z]$/.test(event.code ?? '') ? event.code!.slice(3) : null
   if (event.ctrlKey || event.metaKey) {
-    if (letter === 'Z') return { type: 'history', direction: event.shiftKey ? 'redo' : 'undo' }
-    if (letter === 'Y') return { type: 'history', direction: 'redo' }
+    if (shortcutLetter === 'Z') return { type: 'history', direction: event.shiftKey ? 'redo' : 'undo' }
+    if (shortcutLetter === 'Y') return { type: 'history', direction: 'redo' }
     return null
   }
+  const key = event.key.toUpperCase()
+  const letter = key.length === 1 && alphabetFor(language).includes(key) ? key
+    : language === 'ru' && event.key.length === 1 ? russianKeys[event.code ?? '']
+    : language === 'en' && /^\p{L}$/u.test(event.key) && /^Key[A-Z]$/.test(event.code ?? '') ? event.code!.slice(3) : null
   if (letter) return { type: 'letter', letter }
   if (/^\p{L}$/u.test(event.key)) return { type: 'layout-help' }
   if (event.key === 'Enter') return { type: 'next' }

@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onBeforeUnmount, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useGameStore } from '../stores/game'
-import { isLocked, nextEmptyCell } from '../engine/cipher'
+import { isLocked, nextCheckedCell, nextEmptyCell } from '../engine/cipher'
 import { navigationTarget } from '../interaction/navigation'
 import type { NavigationKey } from '../interaction/navigation'
 const game = useGameStore()
+const { t } = useI18n()
 const board = ref<HTMLElement>()
 const activeIndex = ref<number | null>(null)
 const activeCellIndex = computed(() => {
@@ -21,11 +23,21 @@ function navigate(key: NavigationKey) {
 }
 function advance() {
   const next = nextEmptyCell(game.puzzle, game.session, activeCellIndex.value)
-  if (!next?.symbol) { game.message = 'Every number has a letter. You can check your guesses.'; return }
+  if (!next?.symbol) { game.message = t('allFilled'); return }
   choose(next.symbol, next.index, false)
   board.value?.querySelector<HTMLButtonElement>(`[data-index="${next.index}"]`)?.focus({ preventScroll: true })
 }
-defineExpose({ navigate, advance })
+function erase() {
+  if (!game.checked.length) { game.apply(''); return }
+  const target = nextCheckedCell(game.puzzle, game.checked, activeCellIndex.value)
+  if (!target?.symbol) return
+  choose(target.symbol, target.index, false)
+  if (!game.eraseChecked(target.symbol)) return
+  const announcement = game.message
+  board.value?.querySelector<HTMLButtonElement>(`[data-index="${target.index}"]`)?.focus({ preventScroll: true })
+  game.message = announcement
+}
+defineExpose({ navigate, advance, erase })
 function choose(symbol: number, index: number, pulse = true) {
   activeIndex.value = index
   game.select(symbol, pulse)
@@ -86,11 +98,11 @@ watch(() => [game.selected, game.currentId, activeIndex.value], async () => { aw
 </script>
 
 <template>
-  <div ref="board" class="cipher-board" role="group" aria-label="Encrypted quotation" aria-description="Arrow keys move between editable letters. Type A to Z to enter a guess. Backspace erases.">
+  <div ref="board" class="cipher-board" role="group" :aria-label="t('boardLabel')" :aria-description="t('boardDescription')">
     <div v-for="(word, wi) in game.puzzle.words" :key="`${game.currentId}-${wi}`" class="cipher-word">
       <template v-for="cell in word" :key="cell.index">
         <button v-if="cell.symbol" type="button" inputmode="none" class="cipher-cell" :class="{ selected: game.selected === cell.symbol, clue: isLocked(game.puzzle, game.session, cell.symbol), filled: game.session.entries[cell.symbol], mistake: game.checked.includes(cell.symbol) }"
-          :aria-label="`Number ${cell.symbol}${game.session.entries[cell.symbol] ? ', letter ' + game.session.entries[cell.symbol] : ', blank'}${isLocked(game.puzzle, game.session, cell.symbol) ? ', revealed clue' : ''}${game.checked.includes(cell.symbol) ? ', checked mistake' : ''}`"
+          :aria-label="(game.session.entries[cell.symbol] ? t('cellLetter', { number: cell.symbol, letter: game.session.entries[cell.symbol]! }) : t('cellBlank', { number: cell.symbol })) + (isLocked(game.puzzle, game.session, cell.symbol) ? t('clueSuffix') : '') + (game.checked.includes(cell.symbol) ? t('mistakeSuffix') : '')"
           :aria-pressed="game.selected === cell.symbol" :data-index="cell.index" :data-locked="isLocked(game.puzzle, game.session, cell.symbol)" :data-active="activeCellIndex === cell.index" :tabindex="activeCellIndex === cell.index ? 0 : -1" :disabled="!game.ready" @focus="choose(cell.symbol, cell.index, false)" @click="choose(cell.symbol, cell.index)">
           <span class="cell-letter" :key="game.session.entries[cell.symbol] || 'blank'">{{ game.session.entries[cell.symbol] || '\u00a0' }}</span>
           <span class="cell-number">{{ cell.symbol }}</span>

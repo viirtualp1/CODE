@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
+import legacyEnglish from './fixtures/english-v024.json'
+import { alphabetFor } from './alphabet'
 import { quotes } from '../data/puzzles'
-import { createPuzzle, edit, initialSession, isComplete, isLocked, mistakes, nextEmptyCell, nextUnanswered, travel, validSession } from './cipher'
+import { createPuzzle, edit, initialSession, isComplete, isLocked, mistakes, nextCheckedCell, nextEmptyCell, nextUnanswered, travel, validSession } from './cipher'
 import type { Session } from './cipher'
 
 const puzzle = createPuzzle(quotes[0]!)
@@ -18,11 +20,11 @@ describe('curated corpus and substitution invariants', () => {
     expect(createPuzzle(quote)).toEqual(p)
     expect(new Set(Object.values(p.solution)).size).toBe(p.symbols.length)
     expect(new Set(p.symbols).size).toBe(p.symbols.length)
-    expect(p.symbols.every(n => Number.isInteger(n) && n >= 1 && n <= 26)).toBe(true)
+    expect(p.symbols.every(n => Number.isInteger(n) && n >= 1 && n <= alphabetFor(quote.locale).length)).toBe(true)
     expect(p.words.map(word => word.map(cell => cell.symbol ? p.solution[cell.symbol] : cell.punctuation).join('')).join(' ')).toBe(quote.text.toUpperCase())
     expect(validSession(p, initialSession(p))).toBe(true)
     expect(p.words.every(word => word.filter(c => c.symbol).length <= 10)).toBe(true)
-    expect(quote.source).toMatch(/^https:\/\/www.gutenberg.org/)
+    expect(quote.source).toMatch(quote.locale === 'ru' ? /^https:\/\/ru.wikisource.org/ : /^https:\/\/www.gutenberg.org/)
     expect(quote.clueRationale.length).toBeGreaterThan(30)
     expect(new Set(quote.clues).size).toBe(quote.clues.length)
     let solved = initialSession(p)
@@ -112,5 +114,66 @@ describe('next empty occurrence', () => {
     expect(isComplete(p, session)).toBe(false)
     expect(nextEmptyCell(p, session, 0)).toBeNull()
     expect(nextEmptyCell(p, { entries: p.solution, hints: [] }, null)).toBeNull()
+  })
+})
+
+describe('Russian alphabet isolation', () => {
+  const russian = createPuzzle({ ...quotes[0]!, id: 'ru-alphabet-test', locale: 'ru', text: 'Ещё ёж ест. Ёж ждёт.', clues: ['Ж'] })
+  const symbolFor = (letter: string) => russian.symbols.find(n => russian.solution[n] === letter)!
+  it('keeps Е and Ё distinct and supports numbers beyond 26', () => {
+    expect(alphabetFor('ru')).toHaveLength(33)
+    expect(symbolFor('Е')).not.toBe(symbolFor('Ё'))
+    let session = initialSession(russian)
+    session = edit(russian, session, symbolFor('Е'), 'Е').session
+    expect(session.entries[symbolFor('Ё')]).toBeUndefined()
+    const result = edit(russian, session, symbolFor('Ё'), 'Ё')
+    expect(result.changed).toBe(true)
+    expect(validSession(russian, result.session)).toBe(true)
+    expect(edit(russian, session, symbolFor('Ё'), 'E').reason).toBe('useAlphabet')
+    expect(validSession(russian, { ...session, entries: { ...session.entries, [symbolFor('Ё')]: 'E' } })).toBe(false)
+    const full = createPuzzle({ ...quotes[0]!, locale: 'ru', text: alphabetFor('ru'), clues: ['А'] })
+    expect(Math.max(...full.symbols)).toBe(33)
+    expect(new Set(Object.values(full.solution)).size).toBe(33)
+  })
+  it('preserves neutral guesses, duplicate refusal and atomic hint undo in Russian', () => {
+    const first = edit(russian, initialSession(russian), symbolFor('Е'), 'Ё').session
+    expect(mistakes(russian, first)).toEqual([symbolFor('Е')])
+    expect(edit(russian, first, symbolFor('Ё'), 'Ё').reason).toBe('duplicate')
+    const hint = edit(russian, first, symbolFor('Ё'), 'Ё', true).session
+    expect(hint.entries[symbolFor('Е')]).toBeUndefined()
+    expect(travel(hint, 'undo').entries).toEqual(first.entries)
+    expect(() => createPuzzle({ ...quotes[0]!, locale: 'ru', text: 'Mixed текст.' })).toThrow('Unsupported quote characters')
+  })
+})
+
+// Golden permutations from the published 26-letter v0.2.4 seed algorithm.
+it('keeps every published English mapping and saved numeric assignment compatible', () => {
+  for (const [id, mapping] of Object.entries(legacyEnglish)) {
+    const quote = quotes.find(q => q.id === id)!
+    expect(quote.revision).toBe(1)
+    const puzzle = createPuzzle(quote)
+    const expected = Object.fromEntries(puzzle.symbols.map(n => [n, (mapping as Record<string, string>)[String(n)]]))
+    expect(puzzle.solution).toEqual(expected)
+  }
+})
+
+// The navigator receives explicit check marks, not guesses or an answer comparison.
+describe('checked mistake navigation', () => {
+  const p = createPuzzle({ ...quotes[0]!, text: 'AB AC, DA BA.', clues: ['D'] })
+  const cells = p.words.flat()
+  const a = cells[0]!.symbol!, b = cells[1]!.symbol!, c = cells[3]!.symbol!
+  it('keeps a focused marked occurrence and never jumps back to its first match', () => {
+    const lastA = cells.filter(cell => cell.symbol === a).at(-1)!
+    expect(nextCheckedCell(p, [a, b], lastA.index)).toEqual(lastA)
+  })
+  it('moves forward from a correct, clue or blank occurrence and wraps once', () => {
+    expect(nextCheckedCell(p, [b], cells[0]!.index)).toEqual(cells[1])
+    expect(nextCheckedCell(p, [b], cells.at(-1)!.index)).toEqual(cells[1])
+    expect(nextCheckedCell(p, [b], null)).toEqual(cells[1])
+  })
+  it('cannot infer mistakes without explicit check marks', () => {
+    expect(nextCheckedCell(p, [], 0)).toBeNull()
+    expect(nextCheckedCell(p, [999], 0)).toBeNull()
+    expect(nextCheckedCell(p, [c], 0)?.symbol).toBe(c)
   })
 })

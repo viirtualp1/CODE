@@ -13,6 +13,7 @@ Read docs/PRODUCT.md, docs/DESIGN.md and docs/PUZZLE_ENGINE.md before changing b
 ## Architecture
 - Vue 3 Composition API + TypeScript; Pinia owns session state.
 - src/engine: pure cipher and session operations, no Vue or storage imports.
+- src/i18n: complete en/ru Vue I18n messages, including accessibility; no engine imports of Vue/i18n. Language selection sits at the drawer foot.
 - src/data: bundled sample quotes with provenance and explicit clue letters.
 - src/services: IndexedDB and preferences; storage failure must not stop play.
 - src/components: presentation and user interaction; src/styles: SCSS tokens/layout.
@@ -29,8 +30,8 @@ Read docs/PRODUCT.md, docs/DESIGN.md and docs/PUZZLE_ENGINE.md before changing b
 - Support spatial arrow navigation, a single board tab stop, and typed input into the focused cell.
 - Every modal must lock body/document scrolling and restore styles, scroll position and focus on close.
 - Keep punctuation and word boundaries; do not split a word across lines.
-- Keyboard input must ignore editable controls, dialogs, composition and unrelated modifier shortcuts. Accept non-Latin hardware layouts through English physical codes, preserving Latin layout meaning.
-- Explicitly focus clicked cells on Safari/macOS. Successful letter entry advances from that occurrence to the next blank in reading order, wrapping once. Rejected/unchanged input and erase retain selection.
+- Keyboard input must ignore editable controls, dialogs, composition and unrelated modifier shortcuts. Route input for the puzzle language: English preserves Latin-layout meaning with non-Latin physical-code fallback; Russian accepts А–Я/Ё directly and English physical keys via ЙЦУКЕН. Keep Е/Ё distinct.
+- Explicitly focus clicked cells on Safari/macOS. Successful letter entry advances from that occurrence to the next blank in reading order, wrapping once. Rejected/unchanged input and ordinary erase retain selection. While explicit Check marks exist, erase focuses and clears one marked assignment, retaining other marks; never silently calculate correctness.
 - Never add a hidden editable field for hardware typing: it risks opening Android IME. See docs/KEYBOARD_UX.md.
 - Do not display routine Saved/Saving labels; show actual storage failures only.
 - Keep keyboard and active symbol visible at narrow widths, landscape and enlarged text. Toolbar and keyboard share horizontal bounds at every size. Release notes keep at least 24px top/bottom gaps plus safe-area protection. Show a green dot beside Update available in the drawer only when an update is downloaded.

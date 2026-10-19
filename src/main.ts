@@ -6,7 +6,14 @@ import '@fontsource/manrope/latin-600.css'
 import '@fontsource/manrope/latin-700.css'
 import '@fontsource/newsreader/latin-400.css'
 import '@fontsource/newsreader/latin-400-italic.css'
+import '@fontsource/noto-serif/cyrillic-400.css'
+import '@fontsource/noto-serif/cyrillic-400-italic.css'
 import './styles/main.scss'
 import App from './App.vue'
+import { i18n } from './i18n'
+import '@fontsource/manrope/cyrillic-400.css'
+import '@fontsource/manrope/cyrillic-500.css'
+import '@fontsource/manrope/cyrillic-600.css'
+import '@fontsource/manrope/cyrillic-700.css'
 
-createApp(App).use(createPinia()).mount('#app')
+createApp(App).use(createPinia()).use(i18n).mount('#app')

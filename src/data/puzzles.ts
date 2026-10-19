@@ -1,5 +1,8 @@
+import { russianQuotes } from './russian-quotes'
+
 export type Difficulty = 'Easy' | 'Medium' | 'Hard'
 export interface Quote {
+  locale?: 'en' | 'ru'
   id: string
   revision: number
   text: string
@@ -31,4 +34,5 @@ export const quotes: Quote[] = [
   {"id": "burnett-rose", "revision": 1, "text": "Where you tend a rose, my lad, a thistle cannot grow.", "author": "Frances Hodgson Burnett", "work": "The Secret Garden · Chapter XXVII", "year": 1911, "difficulty": "Medium", "clues": ["R", "T"], "clueRationale": "R links WHERE, ROSE and GROW; T crosses TEND, THISTLE and CANNOT. Repeated A and the doubled N supply useful anchors without revealing the nouns.", "source": "https://www.gutenberg.org/ebooks/113", "reuse": "Original English; public domain in the US. Burnett died 1924. Two lines of verse joined with a space; line-initial A lowercased."},
   {"id": "doyle-obvious", "revision": 1, "text": "There is nothing more deceptive than an obvious fact.", "author": "Arthur Conan Doyle", "work": "The Boscombe Valley Mystery", "year": 1891, "difficulty": "Hard", "clues": ["T", "E"], "clueRationale": "T connects THERE, NOTHING, THAN and FACT; E links THERE, MORE and DECEPTIVE. The repeated opening and internal E pattern give anchors without exposing IS or AN.", "source": "https://www.gutenberg.org/ebooks/1661", "reuse": "Original English; public domain in the US. Doyle died 1930. Story in The Adventures of Sherlock Holmes (1892)."},
   {"id": "wilde-temptation", "revision": 1, "text": "The only way to get rid of a temptation is to yield to it.", "author": "Oscar Wilde", "work": "The Picture of Dorian Gray · Chapter II", "year": 1891, "difficulty": "Easy", "clues": ["T", "O", "I"], "clueRationale": "T and O link three TO occurrences to THE and TEMPTATION; I connects RID, IS, YIELD and IT. Repeated short words make a gentle pattern-based puzzle.", "source": "https://www.gutenberg.org/ebooks/174", "reuse": "Original English; public domain in the US. Wilde died 1900. The sourced book edition is 1891."},
+  ...russianQuotes,
 ]

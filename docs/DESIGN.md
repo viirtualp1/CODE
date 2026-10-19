@@ -8,7 +8,7 @@ The first iteration's large headline and margin copy were removed following user
 ## Tokens and typography
 - Light: paper #f5f3ed; surface #fcfbf7; ink #262924; secondary #62685d; line #dcdfd3; accent #5e6c40; selection #e4e9d8.
 - Dark: paper #1d211e; surface #242924; ink #eeeee4; secondary #a5ad9e; line #3c443c; accent #b1c28c; selection #3a4730.
-- Interface: bundled Manrope. Attribution, dialog titles and library authors: bundled Newsreader. No runtime font service.
+- Interface: bundled Manrope with Latin/Cyrillic subsets. English attribution, dialog titles and library authors: bundled Newsreader; Russian uses bundled Noto Serif Cyrillic. No runtime font service.
 - Main quote: clear sans-serif fixed glyph slots, 22–32px on portrait phones when space permits (compact fallback for constrained content) and 32px on wide desktops; tabular number labels. Interface sizes use rem for device text scaling; cipher glyphs and keyboard key labels cap at their geometric slot size so words and keys remain usable. Browser zoom still scales the entire surface.
 - Spacing base 4px, rhythm 8/12/16/24/32/40px. Corner radii 2–4px. Rules 1px. No game-surface shadows, gradients or decorative illustrations.
 - Muted terracotta plus a dot marks mistakes only after requested checking. Selected cells use a light olive rectangle and stronger baseline. Revealed letters use olive; user guesses stay neutral.
@@ -34,17 +34,17 @@ Every matching symbol highlights. A single actual occurrence is the keyboard foc
 
 ## Keyboard contract
 - A–Z: use the typed Latin character; a non-Latin physical layout falls back to English KeyA–KeyZ positions. Preserve Latin AZERTY/QWERTZ/Dvorak meaning. Explicitly focus clicked cells for Safari/macOS. If physical codes are missing, show layout guidance instead of dropping input silently. Set the selected symbol everywhere, then advance actual focus to the next empty occurrence after the chosen occurrence, wrapping once. No correctness signal. Rejected/unchanged input retains focus.
-- Backspace/Delete: erase that assignment.
+- Backspace/Delete: normally erase that assignment, retaining selection. If explicit Check marks exist, clear the active marked assignment or jump to the next marked occurrence and clear it; focus the cleared cell and retain the other marks. Never infer correctness from deletion.
 - Left/right: previous/next editable occurrence in reading order, skipping initial and hinted clues. Keep the boundary rather than wrapping to the opposite end.
 - Up/down: nearest editable cell on the adjacent rendered row, based on actual geometry; responsive line wrapping is respected.
 - Home/End: first/last editable occurrence in the quote.
 - Ctrl/Command Z: undo; Shift Z or Ctrl/Command Y: redo. Undo/redo also works after completion.
 - Tab: standard navigation between the board and controls. Dialogs and editable form fields consume their own input. Ignore IME composition and modified letter shortcuts.
 - Custom Enter / physical Enter from a board cell: next empty occurrence, wrapping once, using the same pure helper as automatic advance. Enter on ordinary buttons retains normal activation. If no blanks remain, retain selection. Unlike arrows, this skips filled guesses.
-- Three keyboard rows with no header, mode controls or selected-symbol caption. Erase is at the far right of row two, directly above Enter in row three. Key geometry stays stable across guesses.
+- Three keyboard rows with no header, mode controls or selected-symbol caption. Erase is at the far right of row two, directly above Enter in row three. Russian uses 12 columns and all 33 letters, with Ё beside Ю in the third row. Key geometry stays stable across guesses.
 
 ## Modes, dialogs and feedback
-There is one gameplay view. Completion replaces the keyboard with Next puzzle; undoing completion restores it. No Read/Solve state, timer, score or artificial success color during normal input. Erase retains selection.
+There is one gameplay view. Completion replaces the keyboard with Next puzzle; undoing completion restores it. No Read/Solve state, timer, score or artificial success color during normal input. Ordinary erase retains selection; the explicit-check exception above can move to a marked occurrence.
 
 Toolbar: undo, redo, restart, Hint, Check. Its outer bounds match the keyboard, including landscape and desktop; both use the same --keyboard-width constraint. Native accessible dialogs provide puzzle selection, settings, help and confirmed hint/restart actions. The left drawer uses the same native modal component, with a 220ms slide in and 200ms slide out; reduced motion dismisses immediately. Its menu items form separated blocks, and secondary pages open only after drawer cleanup. Opening any dialog locks body/document scrolling, preserves scrollbar width, and retains the underlying scroll offset. Closing restores styles, offset and focus. A long dialog scrolls internally. Escape, close button and backdrop dismissal all restore the same state.
 
@@ -61,3 +61,6 @@ Keep the custom keyboard for the single-letter MVP; do not introduce a hidden ed
 A 6px olive dot on the floating menu button signals a downloaded update without adding gameplay chrome. The drawer's What’s new row includes the installed version and, when relevant, Update available beside an 8px green dot. Keep the text for accessibility; the dot appears only for a downloaded update and never merely an unsuccessful check. Its `#/updates` page uses the shared scroll-locked modal: at least 24px of viewport space above and below the window, increased for safe-area insets; internal scrolling and the sticky close control remain available. Show current edition and one update/check action above a chronological editorial list. Notes ship inside the cached app bundle. No automatic launch popup or interrupting gameplay banner.
 
 During a requested update the action and modal dismissal are disabled; the underlying game is inert. Show the save/activation stage and a specific recoverable error. Do not reload after a failed save or timeout. Browser/Android Back closes the page except during the short update operation; directly opened release links close to the puzzle without navigating away from CODE. Reduced motion and enlarged text use the existing dialog rules.
+
+## Locale selector
+Keep a native English / Русский selector at the bottom of the drawer, below appearance, with a 44px target and persistent device-local choice. It stays in the modal flow on short screens. Translate every screen, live announcement, error and release entry; native language names remain autonyms. Document lang/title follow the choice. Switching collections restores each language’s current puzzle without a restart. Russian labels and 12-column keys must fit at 360×640 and 200% root text.

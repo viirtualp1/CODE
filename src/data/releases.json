@@ -1,12 +1,39 @@
 [
   {
+    "version": "0.3.0",
+    "date": "2026-10-19",
+    "title": "CODE in Russian",
+    "changes": [
+      "Switch between English and Russian at the bottom of the menu.",
+      "Twelve original Russian literary puzzles, a Russian keyboard and full interface translation are available offline.",
+      "Each language remembers its puzzle and progress. English saves stay compatible.",
+      "After checking, Erase jumps to and clears one highlighted mistake at a time."
+    ],
+    "ru": {
+      "title": "CODE на русском",
+      "changes": [
+        "Переключайте язык внизу меню: English или Русский.",
+        "Двенадцать оригинальных русских цитат, русская клавиатура и весь интерфейс доступны без интернета.",
+        "У каждого языка сохраняются свой пазл и прогресс. Английские сохранения продолжают работать.",
+        "После проверки удаление переходит к подсвеченной ошибке и очищает её — по одной за нажатие."
+      ]
+    }
+  },
+  {
     "version": "0.2.4",
     "date": "2026-10-19",
     "title": "A larger puzzle on your phone",
     "changes": [
       "Portrait puzzles use larger letters and number labels when space allows.",
       "Quote size adapts to the actual sentence and available space, keeping every word and the keyboard visible."
-    ]
+    ],
+    "ru": {
+      "title": "Крупнее на телефоне",
+      "changes": [
+        "Буквы и числа в портретном режиме становятся крупнее, если позволяет место.",
+        "Размер цитаты учитывает её длину и доступное пространство; все слова и клавиатура остаются видны."
+      ]
+    }
   },
   {
     "version": "0.2.3",
@@ -19,7 +46,18 @@
       "The toolbar follows the keyboard width on landscape phones and desktop.",
       "A green dot in the menu highlights a downloaded update.",
       "Release notes keep space above and below the window, including on short screens."
-    ]
+    ],
+    "ru": {
+      "title": "Ещё десять пазлов",
+      "changes": [
+        "В офлайн-коллекции теперь шестнадцать литературных цитат с подобранными вручную начальными буквами.",
+        "Клавиши стали шире благодаря меньшим промежуткам и боковым отступам.",
+        "Прогресс в прежних пазлах сохраняется.",
+        "Панель действий совпадает с шириной клавиатуры на горизонтальном телефоне и компьютере.",
+        "Зелёная точка в меню отмечает скачанное обновление.",
+        "У окна истории изменений появились отступы сверху и снизу, в том числе на коротких экранах."
+      ]
+    }
   },
   {
     "version": "0.2.2",
@@ -29,7 +67,15 @@
       "Taller phone keys bring the keyboard higher for easier typing.",
       "The puzzle number and difficulty appear quietly at the top right, beside the menu.",
       "The full puzzle remains visible without scrolling on supported phone sizes."
-    ]
+    ],
+    "ru": {
+      "title": "Удобнее набирать",
+      "changes": [
+        "Более высокие клавиши подняли клавиатуру для удобного ввода.",
+        "Номер пазла и сложность видны справа сверху, рядом с меню.",
+        "На поддерживаемых размерах экранов вся цитата видна без прокрутки."
+      ]
+    }
   },
   {
     "version": "0.2.1",
@@ -39,7 +85,15 @@
       "The puzzle sits directly on the page, without a card or repeated metadata.",
       "The floating menu stays at the top-left edge. Puzzle details live in the drawer.",
       "A tighter phone layout keeps the puzzle and keyboard together without scrolling."
-    ]
+    ],
+    "ru": {
+      "title": "Больше места для игры",
+      "changes": [
+        "Цитата размещена прямо на странице, без карточки и повторяющихся подписей.",
+        "Плавающее меню находится у левого верхнего края. Подробности пазла — внутри меню.",
+        "Компактная раскладка сохраняет цитату и клавиатуру на экране без прокрутки."
+      ]
+    }
   },
   {
     "version": "0.2.0",
@@ -49,7 +103,15 @@
       "Check for new versions from the menu, or let CODE check quietly when you return.",
       "Install a downloaded update when you choose. Your latest move is saved before the game reloads.",
       "Read the release history from What’s new, including while offline."
-    ]
+    ],
+    "ru": {
+      "title": "Обновления и история изменений",
+      "changes": [
+        "Проверяйте новые версии через меню или при возвращении в игру.",
+        "Устанавливайте скачанную версию, когда удобно. Перед перезапуском последний ход сохраняется.",
+        "История изменений доступна в разделе «Что нового», даже без интернета."
+      ]
+    }
   },
   {
     "version": "0.1.2",
@@ -59,7 +121,15 @@
       "A floating menu keeps the puzzle at the top of the screen.",
       "Letter entry moves to the next blank. Erase now sits directly above Enter.",
       "Removed the Read/Solve tabs and the keyboard header."
-    ]
+    ],
+    "ru": {
+      "title": "Меню и клавиатура",
+      "changes": [
+        "Плавающее меню освобождает место для цитаты.",
+        "После ввода фокус переходит к следующей пустой клетке. Удаление находится над Enter.",
+        "Убраны режимы чтения и решения, вкладки и заголовок клавиатуры."
+      ]
+    }
   },
   {
     "version": "0.1.1",
@@ -69,7 +139,15 @@
       "Physical keyboards support non-Latin layouts through English key positions.",
       "Clicking a cell correctly focuses it on macOS.",
       "Larger desktop letters and fewer labels keep the game in focus."
-    ]
+    ],
+    "ru": {
+      "title": "Исправления ввода",
+      "changes": [
+        "Физическая клавиатура поддерживает нелатинские раскладки через позиции английских клавиш.",
+        "Нажатие на клетку корректно передаёт фокус в macOS.",
+        "Крупные буквы на компьютере и меньше подписей помогают сосредоточиться на игре."
+      ]
+    }
   },
   {
     "version": "0.1.0",
@@ -79,6 +157,14 @@
       "Six offline cryptograms with hand-selected starting clues.",
       "Grouped guesses, undo, redo, hints and optional mistake checking.",
       "Progress saved on this device, with light and dark appearances."
-    ]
+    ],
+    "ru": {
+      "title": "Первая версия",
+      "changes": [
+        "Шесть офлайн-криптограмм с выбранными вручную начальными буквами.",
+        "Общий ввод для одинаковых чисел, отмена, повтор, подсказки и проверка по желанию.",
+        "Сохранение прогресса на устройстве, светлая и тёмная темы."
+      ]
+    }
   }
 ]

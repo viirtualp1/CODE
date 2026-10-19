@@ -2,7 +2,7 @@ import { clone, validSession } from '../engine/cipher'
 import type { Puzzle, Session } from '../engine/cipher'
 
 export type Theme = 'light' | 'dark' | 'system'
-export interface Preferences { theme: Theme; haptics: boolean; currentId: string }
+export interface Preferences { version: 2; theme: Theme; haptics: boolean; currentId: string; language: 'en' | 'ru'; lastPuzzle: Partial<Record<'en' | 'ru', string>> }
 export interface SavedSession { version: 1; revision: number; session: Session }
 let database: Promise<IDBDatabase> | undefined
 let queue: Promise<unknown> = Promise.resolve()

@@ -1,18 +1,18 @@
 # CODE — product specification
 
 ## Promise
-A quiet, premium English cryptogram game for Android. Solve a sentence by finding the letter behind each number. No ads, subscription, currencies, paid features, account, network dependency or timer pressure.
+A quiet, premium English and Russian cryptogram game for Android. Solve a sentence by finding the letter behind each number. No ads, subscription, currencies, paid features, account, network dependency or timer pressure.
 
 ## First vertical slice
-A complete local session: sixteen public-domain sample passages, Easy/Medium/Hard labels with hand-authored clues, consistent substitution, custom keyboard, physical keyboard, selection, grouped entry, erase, undo/redo, optional checking, a confirmed hint, completion, puzzle selection and reset. Resume each puzzle through IndexedDB. Include a floating menu button with an animated left drawer, light/dark/system preference and optional haptics. App shell installability and offline caching through a PWA. No statistics, advanced generator, remote quote service or Android wrapper.
+A complete local session: twenty-eight public-domain sample passages (16 English, 12 Russian originals), Easy/Medium/Hard labels with hand-authored clues, consistent substitution, custom keyboard, physical keyboard, selection, grouped entry, erase, undo/redo, optional checking, a confirmed hint, completion, puzzle selection and reset. Resume each puzzle through IndexedDB. Include a floating menu button with an animated left drawer, light/dark/system preference and optional haptics. App shell installability and offline caching through a PWA. No statistics, advanced generator, remote quote service or Android wrapper.
 
 Difficulty labels in this slice describe author-selected samples; they are not solver-certified. There is no scheduled daily service in this slice. Puzzle numbers are stable collection positions. All answers ship with the application.
 
 ## Session contract
-- Every A–Z plaintext letter has one distinct numeric symbol in 1–26; punctuation and spaces are literal. Mapping remains stable across reloads.
-- Selecting an editable cell selects its symbol and highlights every occurrence. Accepted letter entry moves actual focus to the next empty occurrence to the right in reading order, skipping filled symbols, clues and punctuation, and wrapping once at the end. Enter performs the same navigation. A rejected or unchanged entry and erase retain selection. If all symbols are filled, keep selection; correctness never determines where to move.
+- Each English A–Z letter has a distinct symbol in 1–26; Russian А–Я plus Ё uses 1–33, keeping Е and Ё distinct; punctuation and spaces are literal. Mapping remains stable across reloads.
+- Selecting an editable cell selects its symbol and highlights every occurrence. Accepted letter entry moves actual focus to the next empty occurrence to the right in reading order, skipping filled symbols, clues and punctuation, and wrapping once at the end. Enter performs the same navigation. A rejected or unchanged entry and ordinary erase retain selection. Checked-mistake erase can move to the next explicitly marked occurrence. If all symbols are filled, keep selection; correctness never determines where to move.
 - Enter A–Z or erase globally for that symbol. A letter already used by another symbol is refused with a neutral explanation; this enforces the bijection without judging correctness. Initial clues and hint letters are locked.
-- Guesses look neutral. Check is explicit and marks incorrect *current assignments*. Any edit, undo or redo clears the check result. Correct guesses receive no unsolicited green feedback.
+- Guesses look neutral. Check is explicit and marks incorrect *current assignments*. Any ordinary edit, undo or redo clears the check result. While explicit mistakes remain marked, erase clears one marked assignment and focuses that occurrence, retaining other marks. It never checks unmarked guesses. Correct guesses receive no unsolicited green feedback.
 - Undo/redo operates on one whole mapping edit, including a hint; new edits invalidate redo. Clues are never undoable. A hint confirms before revealing the selected editable symbol (including an existing guess), or the first unanswered editable symbol when selection is unavailable. A hinted symbol is locked until that hint is undone. No hint counters or penalties.
 - Completion requires all substitutions to match the solution. Celebrate subtly, replace the keyboard with Next puzzle, expose the full readable quote and attribution, and retain undo/restart/library controls. Undoing completion brings back the keyboard.
 - Restart requires confirmation and resets that puzzle's saved progress. Switching puzzles preserves each session. No destructive actions on opening a dialog.
@@ -38,10 +38,13 @@ Difficulty labels in this slice describe author-selected samples; they are not s
 6. Tests and production build pass; verify keyboard/touch, drawer, completion and both themes in a browser. Actual Samsung hardware testing remains a release gate, not something desktop emulation can certify.
 
 ## Phases
-- **1 — this slice:** architecture, polished board, sixteen curated samples, reliable session, offline app shell, tests and documented handoff.
+- **1 — this slice:** architecture, polished board, twenty-eight curated samples, reliable session, offline app shell, tests and documented handoff.
 - **2 — content + fairness:** 100–200 curated legally reusable quotes; provenance audit, solver, clue selection, ambiguity rejection and measured difficulty. See PUZZLE_ENGINE.md.
 - **3 — Android refinement:** real-device gesture navigation, scale/accessibility/landscape tests, usability sessions, content revision and storage migration hardening.
 - **4 — release:** installation guidance, offline/update QA, privacy statement and optional Android packaging only when explicitly requested.
 
 ## Release acceptance
 Bundled history remains readable offline at `#/updates`; browser/Android Back restores play and scroll/focus. Package, lockfile, release history and release tag agree. CI tests/builds before producing a versioned archive. Hosting must refresh sw.js and HTML while retaining immutable hashed assets. See ../.agents/RELEASING.md.
+
+## Languages
+The bottom of the drawer has a native English / Русский selector. It switches the whole interface, accessibility labels, announcements, dates, release history, keyboard and original-language quote collection. Save the choice and last puzzle per language; preserve progress in both. Use device language only without a saved compatible preference. Russian hardware typing accepts Cyrillic directly or English physical positions; no hidden editable transport. All translations, original quotes and Cyrillic fonts ship offline.

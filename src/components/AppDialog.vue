@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onMounted, onBeforeUnmount, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { X } from '@lucide/vue'
+const { t } = useI18n()
 const props = defineProps<{ title: string; drawer?: boolean; busy?: boolean }>()
 const emit = defineEmits<{ close: [] }>()
 const dialog = ref<HTMLDialogElement>()
@@ -45,7 +47,7 @@ function backdrop(event: MouseEvent) {
 </script>
 <template>
   <dialog ref="dialog" class="app-dialog" :class="{ 'app-drawer': drawer, closing }" aria-labelledby="dialog-title" :aria-busy="busy" @cancel.prevent="requestClose" @click="backdrop">
-    <div class="dialog-header"><h2 id="dialog-title">{{ title }}</h2><button class="icon-button" aria-label="Close dialog" :disabled="busy" @click="requestClose"><X :size="20" /></button></div>
+    <div class="dialog-header"><h2 id="dialog-title">{{ title }}</h2><button class="icon-button" :aria-label="t('closeDialog')" :disabled="busy" @click="requestClose"><X :size="20" /></button></div>
     <slot />
   </dialog>
 </template>

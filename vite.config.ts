@@ -9,7 +9,7 @@ export default defineConfig({
   plugins: [vue(), VitePWA({
     registerType: 'prompt', includeAssets: ['icon.svg', 'icon-192.png', 'icon-512.png'],
     manifest: {
-      name: 'CODE — A little clarity', short_name: 'CODE', description: 'A quiet moment. A clever cryptogram. An offline puzzle game.',
+      name: 'CODE', short_name: 'CODE', description: 'Offline cryptograms · Криптограммы офлайн',
       theme_color: '#f5f3ed', background_color: '#f5f3ed', display: 'standalone', start_url: '/', scope: '/',
       icons: [{ src: '/icon-192.png', sizes: '192x192', type: 'image/png' }, { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' }],
     },
