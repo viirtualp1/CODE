@@ -4,7 +4,7 @@ import { createPuzzle, edit, initialSession, isComplete, validSession } from './
 import { decodeSession } from '../services/storage'
 
 describe('compatible reviewed-clue upgrade', () => {
-  it.each(quotes.filter(q => q.previousClues))('$id preserves compatible current state and every history snapshot', quote => {
+  it.each(['hamlet-possibility', 'ru-pushkin-morning'].map(id => quotes.find(q => q.id === id)!))('$id preserves compatible current state and every history snapshot', quote => {
     const old = createPuzzle(publishedQuotes.find(q => q.id === quote.id)!), puzzle = createPuzzle(quote)
     const editable = old.symbols.filter(n => !old.clues[n])
     let saved = initialSession(old)
@@ -29,7 +29,7 @@ describe('compatible reviewed-clue upgrade', () => {
     expect(result.entries[newSymbol]).toBe(puzzle.solution[newSymbol])
     expect(result.entries[second]).toBe(puzzle.solution[second])
     expect(validSession(puzzle, result)).toBe(true)
-    expect(decodeSession(puzzle, { version: 1, revision: 3, session: saved })).toBeNull()
+    expect(decodeSession(puzzle, { version: 1, revision: 4, session: saved })).toBeNull()
     expect(decodeSession(puzzle, { version: 1, revision: 1, session: { ...saved, hints: [999] } })).toBeNull()
   })
 })
@@ -44,4 +44,24 @@ it('preserves wrong unmarked guesses and hint locks that do not conflict with ne
   expect(restored.entries[first!]).toBe(wrong)
   expect(restored.hints).toContain(second)
   expect(restored.undo.some(state => state.entries[first!] === wrong)).toBe(true)
+})
+
+
+it.each(['hamlet-possibility', 'ru-pushkin-morning'])('%s withdraws automatic v2 givens without erasing guesses, hints or completed progress', id => {
+  const quote = quotes.find(q => q.id === id)!, puzzle = createPuzzle(quote)
+  const previous = createPuzzle({ ...quote, revision: 2, clues: quote.previousClues![2]! })
+  const fresh = decodeSession(puzzle, { version: 1, revision: 2, session: initialSession(previous) })!
+  expect(fresh).toEqual(initialSession(puzzle))
+  const [first, second] = previous.symbols.filter(symbol => !previous.clues[symbol])
+  let saved = edit(previous, initialSession(previous), first!, previous.solution[first!]!).session
+  saved = edit(previous, saved, second!, previous.solution[second!]!, true).session
+  const migrated = decodeSession(puzzle, { version: 1, revision: 2, session: saved })!
+  expect(migrated.entries[first!]).toBe(saved.entries[first!])
+  expect(migrated.hints).toContain(second)
+  expect(migrated.undo[0]!.entries).toEqual(puzzle.clues)
+  expect(validSession(puzzle, migrated)).toBe(true)
+  for (const symbol of previous.symbols.filter(symbol => !previous.clues[symbol])) saved = edit(previous, saved, symbol, previous.solution[symbol]!).session
+  const completed = decodeSession(puzzle, { version: 1, revision: 2, session: saved })!
+  expect(isComplete(puzzle, completed)).toBe(true)
+  expect(validSession(puzzle, completed)).toBe(true)
 })

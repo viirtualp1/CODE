@@ -158,3 +158,11 @@ The saved production preview was explicitly updated from 0.2.0 to 0.2.1 through 
 ### Optical desktop alignment follow-up
 
 The whole quote/actions/keyboard group is now the centering target. At 1440×1000 it spans y=229–731, centered at (720,480); at 1280×720 it spans y=108.59–582.59, centered at y=345.59. Both have document height equal to viewport height. At 412×915 the phone keyboard still ends at y=873, with document height 915 and width 412. No corpus traversal was needed. All 352 automated tests passed; TypeScript/release validation and production build passed.
+
+## Revision 0.4.1 — sparse clues and mixed progression
+
+- Restored sparse authored clues, retaining at most one extra previously reviewed Easy anchor. Tests validate the clue-density contract without re-running a whole-corpus linguistic audit. The developer diagnostic no longer forces automatic clue expansion.
+- Focused revision-1/revision-2 migration cases cover Hamlet and Pushkin: removed automatic givens, retained actual guesses/hints/history, fresh sessions and preserved completion. Backup revision whitelisting shares the storage decoder. IDs, answer text and numeric mappings stay stable.
+- Next-selection tests cover changed difficulty/author, deterministic ordering, skipping completed entries, remaining-level fallback, all-complete wrap and a single-puzzle collection. Manual collection numbering/filters are unchanged.
+- Browser reload of an actual saved Hamlet game removed the six excess automatic givens (nine became three), retained the player's N assignment and Undo, and displayed the sparse keyboard/board correctly. No exhaustive puzzle sweep was run.
+- All 275 Vitest tests plus 3 release-tool tests passed. TypeScript, release validation and production PWA build passed.

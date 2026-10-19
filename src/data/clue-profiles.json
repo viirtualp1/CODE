@@ -12,30 +12,8 @@
     "clues": [
       "W",
       "E",
-      "K",
-      "R",
-      "A",
-      "B",
-      "Y",
-      "M",
-      "U"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 3898,
-      "steps": 2,
-      "unresolved": 0,
-      "anchors": [
-        "WE",
-        "KNOW",
-        "WHAT",
-        "ARE",
-        "BUT",
-        "NOT",
-        "MAY",
-        "BE"
-      ]
-    }
+      "K"
+    ]
   },
   "alcott-storms": {
     "difficulty": "Medium",
@@ -49,32 +27,8 @@
     "clues": [
       "I",
       "E",
-      "D",
-      "G",
-      "W",
-      "F",
-      "Y"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 9401,
-      "steps": 8,
-      "unresolved": 0,
-      "anchors": [
-        "IT'S",
-        "NO",
-        "USE",
-        "GOING",
-        "BACK",
-        "TO",
-        "BECAUSE",
-        "I",
-        "WAS",
-        "A",
-        "PERSON",
-        "THEN"
-      ]
-    }
+      "D"
+    ]
   },
   "wilde-living": {
     "difficulty": "Hard",
@@ -122,33 +76,8 @@
     "clues": [
       "I",
       "E",
-      "N",
-      "U",
-      "Y",
-      "D",
-      "S",
-      "C",
-      "M"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 19745,
-      "steps": 6,
-      "unresolved": 0,
-      "anchors": [
-        "IT",
-        "IS",
-        "NOT",
-        "DOWN",
-        "IN",
-        "ANY",
-        "MAP",
-        "TRUE",
-        "PLACES",
-        "NEVER",
-        "ARE"
-      ]
-    }
+      "N"
+    ]
   },
   "shelley-change": {
     "difficulty": "Medium",
@@ -191,119 +120,32 @@
     "clues": [
       "E",
       "A",
-      "T",
-      "Y",
-      "W",
-      "N",
-      "M",
-      "K",
-      "B",
-      "R",
-      "V"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 3649,
-      "steps": 3,
-      "unresolved": 0,
-      "anchors": [
-        "HOW",
-        "THEY'LL",
-        "ALL",
-        "THINK",
-        "ME",
-        "AT",
-        "HOME"
-      ]
-    }
+      "T"
+    ]
   },
   "en-alice-s-adventures-in-wonderland-ojjalehnkl": {
     "difficulty": "Easy",
     "clues": [
       "T",
       "E",
-      "C",
-      "M",
-      "O",
-      "B",
-      "F",
-      "W"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 9018,
-      "steps": 5,
-      "unresolved": 0,
-      "anchors": [
-        "I",
-        "MUST",
-        "BE",
-        "GETTING",
-        "NEAR",
-        "THE",
-        "CENTRE",
-        "OF",
-        "EARTH"
-      ]
-    }
+      "C"
+    ]
   },
   "en-alice-s-adventures-in-wonderland-oflpindfpe": {
     "difficulty": "Easy",
     "clues": [
       "I",
       "E",
-      "F",
-      "O",
-      "C",
-      "B",
-      "D",
-      "R"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 7173,
-      "steps": 5,
-      "unresolved": 0,
-      "anchors": [
-        "I",
-        "ALMOST",
-        "THINK",
-        "CAN",
-        "FEELING",
-        "A",
-        "LITTLE"
-      ]
-    }
+      "F"
+    ]
   },
   "en-alice-s-adventures-in-wonderland-llkkaanhoc": {
     "difficulty": "Easy",
     "clues": [
       "T",
       "O",
-      "A",
-      "W",
-      "V",
-      "R",
-      "M",
-      "C",
-      "P"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 8298,
-      "steps": 4,
-      "unresolved": 0,
-      "anchors": [
-        "I",
-        "DO",
-        "WONDER",
-        "WHAT",
-        "CAN",
-        "HAVE",
-        "TO",
-        "ME"
-      ]
-    }
+      "A"
+    ]
   },
   "en-alice-s-adventures-in-wonderland-kfjgmmkmad": {
     "difficulty": "Hard",
@@ -317,98 +159,24 @@
     "clues": [
       "W",
       "E",
-      "A",
-      "P",
-      "F",
-      "G",
-      "T"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 14436,
-      "steps": 7,
-      "unresolved": 0,
-      "anchors": [
-        "WOULD",
-        "YOU",
-        "TELL",
-        "ME",
-        "PLEASE",
-        "WHICH",
-        "WAY",
-        "I",
-        "TO",
-        "GO",
-        "FROM",
-        "HERE"
-      ]
-    }
+      "A"
+    ]
   },
   "en-alice-s-adventures-in-wonderland-coicofiblh": {
     "difficulty": "Easy",
     "clues": [
       "T",
       "I",
-      "H",
-      "C",
-      "K",
-      "D",
-      "E",
-      "R",
-      "M",
-      "F",
-      "Y",
-      "U"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 8292,
-      "steps": 4,
-      "unresolved": 0,
-      "anchors": [
-        "DO",
-        "YOU",
-        "MEAN",
-        "THAT",
-        "THINK",
-        "CAN",
-        "FIND",
-        "OUT",
-        "THE",
-        "ANSWER",
-        "TO",
-        "IT"
-      ]
-    }
+      "H"
+    ]
   },
   "en-alice-s-adventures-in-wonderland-khdlbcipog": {
     "difficulty": "Easy",
     "clues": [
       "Y",
       "E",
-      "R",
-      "W",
-      "D",
-      "I",
-      "L"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 13320,
-      "steps": 5,
-      "unresolved": 0,
-      "anchors": [
-        "DOES",
-        "YOUR",
-        "WATCH",
-        "TELL",
-        "YOU",
-        "WHAT",
-        "YEAR",
-        "IT",
-        "IS"
-      ]
-    }
+      "R"
+    ]
   },
   "en-alice-s-adventures-in-wonderland-gldaoophoi": {
     "difficulty": "Medium",
@@ -471,62 +239,16 @@
     "clues": [
       "T",
       "O",
-      "P",
-      "A",
-      "N",
-      "L",
-      "F",
-      "B"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 8347,
-      "steps": 6,
-      "unresolved": 0,
-      "anchors": [
-        "I",
-        "TOOK",
-        "TWO",
-        "STEPS",
-        "FORWARD",
-        "AND",
-        "LOOKED",
-        "BACK"
-      ]
-    }
+      "P"
+    ]
   },
   "en-the-adventures-of-sherlock-holmes-ocmibmdfal": {
     "difficulty": "Easy",
     "clues": [
       "P",
       "E",
-      "I",
-      "G",
-      "F",
-      "M",
-      "O",
-      "D",
-      "N",
-      "H",
-      "C",
-      "S",
-      "L"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 2102,
-      "steps": 4,
-      "unresolved": 0,
-      "anchors": [
-        "GIVE",
-        "ME",
-        "A",
-        "AND",
-        "THAT",
-        "OF",
-        "PAPER"
-      ]
-    }
+      "I"
+    ]
   },
   "en-the-adventures-of-sherlock-holmes-naipjfkdan": {
     "difficulty": "Medium",
@@ -554,29 +276,8 @@
     "clues": [
       "E",
       "O",
-      "T",
-      "A",
-      "C",
-      "G",
-      "M"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 15357,
-      "steps": 7,
-      "unresolved": 0,
-      "anchors": [
-        "I",
-        "COULD",
-        "NOT",
-        "LIVE",
-        "THERE",
-        "LONGER",
-        "WITHOUT",
-        "SOME",
-        "ADVICE"
-      ]
-    }
+      "T"
+    ]
   },
   "en-the-adventures-of-tom-sawyer-kmhnobcidb": {
     "difficulty": "Medium",
@@ -780,29 +481,8 @@
     "clues": [
       "R",
       "E",
-      "Y",
-      "G",
-      "F",
-      "V",
-      "C",
-      "P",
-      "N"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 9429,
-      "steps": 5,
-      "unresolved": 0,
-      "anchors": [
-        "I",
-        "HAVE",
-        "A",
-        "HIGH",
-        "RESPECT",
-        "FOR",
-        "YOUR"
-      ]
-    }
+      "Y"
+    ]
   },
   "en-pride-and-prejudice-bmfaajiklj": {
     "difficulty": "Hard",
@@ -816,30 +496,8 @@
     "clues": [
       "O",
       "I",
-      "G",
-      "V",
-      "M",
-      "Y",
-      "F",
-      "S",
-      "L"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 5515,
-      "steps": 5,
-      "unresolved": 0,
-      "anchors": [
-        "MY",
-        "GOOD",
-        "OPINION",
-        "ONCE",
-        "LOST",
-        "IS",
-        "FOR",
-        "EVER"
-      ]
-    }
+      "G"
+    ]
   },
   "en-pride-and-prejudice-lpapdnooak": {
     "difficulty": "Medium",
@@ -860,29 +518,8 @@
     "clues": [
       "O",
       "U",
-      "W",
-      "Y",
-      "H",
-      "R",
-      "S",
-      "V",
-      "A"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 9849,
-      "steps": 4,
-      "unresolved": 0,
-      "anchors": [
-        "HOW",
-        "MUCH",
-        "YOU",
-        "MUST",
-        "HAVE",
-        "GONE",
-        "THROUGH"
-      ]
-    }
+      "W"
+    ]
   },
   "en-pride-and-prejudice-fekhfbnheh": {
     "difficulty": "Medium",
@@ -931,30 +568,8 @@
     "clues": [
       "E",
       "O",
-      "Y",
-      "G",
-      "D",
-      "B",
-      "F"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 10841,
-      "steps": 6,
-      "unresolved": 0,
-      "anchors": [
-        "FOR",
-        "A",
-        "MINUTE",
-        "I",
-        "THOUGHT",
-        "YOU",
-        "MIGHT",
-        "BE",
-        "DREAM",
-        "TOO"
-      ]
-    }
+      "Y"
+    ]
   },
   "en-the-secret-garden-aeeegeinlb": {
     "difficulty": "Medium",
@@ -968,32 +583,8 @@
     "clues": [
       "A",
       "T",
-      "W",
-      "M",
-      "L",
-      "D",
-      "N",
-      "C",
-      "H"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 2347,
-      "steps": 4,
-      "unresolved": 0,
-      "anchors": [
-        "IT'S",
-        "COOL",
-        "AND",
-        "WARM",
-        "SWEET",
-        "ALL",
-        "AT",
-        "THE",
-        "SAME",
-        "TIME"
-      ]
-    }
+      "W"
+    ]
   },
   "en-the-secret-garden-ijnbbdfjhm": {
     "difficulty": "Hard",
@@ -1036,32 +627,8 @@
       "L",
       "E",
       "A",
-      "W",
-      "B",
-      "P",
-      "M",
-      "I",
-      "D",
-      "N",
-      "K",
-      "U"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 6125,
-      "steps": 3,
-      "unresolved": 0,
-      "anchors": [
-        "SPEAK",
-        "LOW",
-        "AND",
-        "TELL",
-        "ME",
-        "ALL",
-        "ABOUT",
-        "IT"
-      ]
-    }
+      "W"
+    ]
   },
   "en-little-women-iafkpcfkaj": {
     "difficulty": "Medium",
@@ -1138,32 +705,8 @@
     "clues": [
       "H",
       "E",
-      "T",
-      "B",
-      "O",
-      "P",
-      "N",
-      "A",
-      "S",
-      "D",
-      "G",
-      "U"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 3526,
-      "steps": 2,
-      "unresolved": 0,
-      "anchors": [
-        "SHE",
-        "WAS",
-        "HAPPY",
-        "KNEW",
-        "AND",
-        "TO",
-        "BE"
-      ]
-    }
+      "T"
+    ]
   },
   "en-emma-aakimigflk": {
     "difficulty": "Hard",
@@ -1185,27 +728,8 @@
       "О",
       "Н",
       "Е",
-      "Ц",
-      "З",
-      "Д",
-      "И",
-      "Й",
-      "У",
-      "Ч",
-      "Ы"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 7392,
-      "steps": 3,
-      "unresolved": 0,
-      "anchors": [
-        "МОРОЗ",
-        "И",
-        "СОЛНЦЕ",
-        "ДЕНЬ"
-      ]
-    }
+      "Ц"
+    ]
   },
   "ru-lermontov-sail": {
     "difficulty": "Hard",
@@ -1229,205 +753,48 @@
       "С",
       "Е",
       "Р",
-      "Г",
-      "Д",
-      "Н",
-      "М",
-      "И",
-      "Ж",
-      "Х",
-      "Л",
-      "Т",
-      "Ч",
-      "Ы"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 12524,
-      "steps": 5,
-      "unresolved": 0,
-      "anchors": [
-        "ВСЕ",
-        "СЕМЬИ",
-        "ПОХОЖИ",
-        "ДРУГ",
-        "НА",
-        "ДРУГА"
-      ]
-    }
+      "Г"
+    ]
   },
   "ru-fet-greeting": {
     "difficulty": "Easy",
     "clues": [
       "Т",
       "Р",
-      "Ч",
-      "Б",
-      "Я",
-      "К",
-      "С",
-      "Н",
-      "Ё",
-      "Ш",
-      "З",
-      "М",
-      "Ь",
-      "В",
-      "А"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 10535,
-      "steps": 4,
-      "unresolved": 0,
-      "anchors": [
-        "Я",
-        "ПРИШЁЛ",
-        "К",
-        "ТЕБЕ",
-        "С",
-        "ЧТО",
-        "СОЛНЦЕ"
-      ]
-    }
+      "Ч"
+    ]
   },
   "ru-krylov-quartet": {
     "difficulty": "Easy",
     "clues": [
       "И",
       "Т",
-      "Н",
-      "А",
-      "Ы",
-      "Е",
-      "К",
-      "О",
-      "В",
-      "Ё",
-      "Г",
-      "М",
-      "Р",
-      "Я",
-      "З",
-      "У"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 5803,
-      "steps": 2,
-      "unresolved": 0,
-      "anchors": [
-        "А",
-        "ВЫ",
-        "ДРУЗЬЯ",
-        "КАК",
-        "НИ",
-        "ВСЁ",
-        "В",
-        "НЕ"
-      ]
-    }
+      "Н"
+    ]
   },
   "ru-gogol-road": {
     "difficulty": "Easy",
     "clues": [
       "К",
       "Й",
-      "Е",
-      "Ж",
-      "Н",
-      "И",
-      "У",
-      "Д",
-      "З",
-      "Л",
-      "Т",
-      "Ы"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 4119,
-      "steps": 3,
-      "unresolved": 0,
-      "anchors": [
-        "И",
-        "КАКОЙ",
-        "ЖЕ",
-        "РУССКИЙ",
-        "НЕ",
-        "ЛЮБИТ"
-      ]
-    }
+      "Е"
+    ]
   },
   "ru-chekhov-beauty": {
     "difficulty": "Easy",
     "clues": [
       "И",
       "О",
-      "Ц",
-      "Ж",
-      "Ч",
-      "Ы",
-      "У",
-      "Б",
-      "Ш",
-      "Ё",
-      "П",
-      "Р"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 19925,
-      "steps": 7,
-      "unresolved": 0,
-      "anchors": [
-        "В",
-        "ЧЕЛОВЕКЕ",
-        "ДОЛЖНО",
-        "БЫТЬ",
-        "ВСЁ",
-        "И",
-        "ЛИЦО",
-        "ОДЕЖДА",
-        "ДУША",
-        "МЫСЛИ"
-      ]
-    }
+      "Ц"
+    ]
   },
   "ru-pushkin-love": {
     "difficulty": "Easy",
     "clues": [
       "Л",
       "В",
-      "Ю",
-      "Й",
-      "Н",
-      "Ё",
-      "Я",
-      "А",
-      "Ш",
-      "Г"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 23998,
-      "steps": 8,
-      "unresolved": 0,
-      "anchors": [
-        "Я",
-        "ВАС",
-        "ЛЮБИЛ",
-        "ЛЮБОВЬ",
-        "ЕЩЁ",
-        "БЫТЬ",
-        "МОЖЕТ",
-        "В",
-        "ДУШЕ",
-        "МОЕЙ",
-        "НЕ",
-        "СОВСЕМ"
-      ]
-    }
+      "Ю"
+    ]
   },
   "ru-tyutchev-silence": {
     "difficulty": "Hard",
@@ -1523,66 +890,16 @@
     "clues": [
       "Е",
       "О",
-      "А",
-      "М",
-      "П",
-      "Х",
-      "Л",
-      "З",
-      "Ж",
-      "Ю",
-      "К",
-      "Й",
-      "Р",
-      "Ц"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 7740,
-      "steps": 3,
-      "unresolved": 0,
-      "anchors": [
-        "МНЕ",
-        "ПЕСНЮ",
-        "КАК",
-        "ТИХО",
-        "ЗА",
-        "ЖИЛА"
-      ]
-    }
+      "А"
+    ]
   },
   "ru-eiclmiipjhag": {
     "difficulty": "Easy",
     "clues": [
       "О",
       "А",
-      "Ш",
-      "В",
-      "Р",
-      "З",
-      "К",
-      "И",
-      "Т",
-      "Ц",
-      "Ю",
-      "С",
-      "Н",
-      "У"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 8120,
-      "steps": 4,
-      "unresolved": 0,
-      "anchors": [
-        "МНЕ",
-        "ПЕСНЮ",
-        "КАК",
-        "ЗА",
-        "ВОДОЙ",
-        "ШЛА"
-      ]
-    }
+      "Ш"
+    ]
   },
   "ru-ggikonmgakgb": {
     "difficulty": "Hard",
@@ -1611,28 +928,8 @@
       "Р",
       "О",
       "А",
-      "П",
-      "Ы",
-      "Т",
-      "В",
-      "М",
-      "Е",
-      "Л",
-      "Н",
-      "Ь"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 6453,
-      "steps": 2,
-      "unresolved": 0,
-      "anchors": [
-        "МЫ",
-        "ПТИЦЫ",
-        "ПОРА",
-        "БРАТ"
-      ]
-    }
+      "П"
+    ]
   },
   "ru-hcbmdgmgccdc": {
     "difficulty": "Hard",
@@ -1681,36 +978,8 @@
     "clues": [
       "О",
       "Н",
-      "В",
-      "С",
-      "Ы",
-      "Я",
-      "Ж",
-      "Д",
-      "Т",
-      "Л",
-      "Г",
-      "Ё",
-      "И",
-      "У",
-      "Х",
-      "Ь",
-      "Ш"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 8988,
-      "steps": 3,
-      "unresolved": 0,
-      "anchors": [
-        "ОДНА",
-        "В",
-        "ЛЕСОВ",
-        "ДАВНО",
-        "ТЫ",
-        "МЕНЯ"
-      ]
-    }
+      "В"
+    ]
   },
   "ru-befpjhmeanjc": {
     "difficulty": "Hard",
@@ -1731,34 +1000,8 @@
     "clues": [
       "М",
       "О",
-      "Ю",
-      "Р",
-      "Ы",
-      "Я",
-      "Т",
-      "А",
-      "Г",
-      "И",
-      "Л",
-      "С",
-      "У",
-      "Ч",
-      "В",
-      "Ь"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 6912,
-      "steps": 3,
-      "unresolved": 0,
-      "anchors": [
-        "Я",
-        "ПОМНЮ",
-        "ПЕРЕДО",
-        "МНОЙ",
-        "ТЫ"
-      ]
-    }
+      "Ю"
+    ]
   },
   "ru-enemejmhfnjh": {
     "difficulty": "Hard",
@@ -1779,32 +1022,8 @@
     "clues": [
       "Т",
       "И",
-      "Й",
-      "Я",
-      "А",
-      "Ж",
-      "З",
-      "Ы",
-      "Р",
-      "Г",
-      "С",
-      "Н"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 10712,
-      "steps": 4,
-      "unresolved": 0,
-      "anchors": [
-        "И",
-        "Я",
-        "ЗАБЫЛ",
-        "ТВОЙ",
-        "ГОЛОС",
-        "ТВОИ",
-        "ЧЕРТЫ"
-      ]
-    }
+      "Й"
+    ]
   },
   "ru-ggmdnmhmpdgg": {
     "difficulty": "Hard",
@@ -1860,33 +1079,8 @@
     "clues": [
       "О",
       "Т",
-      "Щ",
-      "У",
-      "Н",
-      "С",
-      "Ю",
-      "Ч",
-      "В",
-      "Ё",
-      "Й",
-      "М",
-      "Д",
-      "Л"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 9586,
-      "steps": 3,
-      "unresolved": 0,
-      "anchors": [
-        "ЧТО",
-        "ИЩЕТ",
-        "ОН",
-        "В",
-        "СТРАНЕ",
-        "КРАЮ"
-      ]
-    }
+      "Щ"
+    ]
   },
   "ru-aehodmnfpbdh": {
     "difficulty": "Hard",
@@ -1908,30 +1102,8 @@
       "Г",
       "О",
       "Д",
-      "Ы",
-      "А",
-      "И",
-      "Л",
-      "П",
-      "Р",
-      "Х",
-      "У",
-      "Е",
-      "С"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 5954,
-      "steps": 3,
-      "unresolved": 0,
-      "anchors": [
-        "А",
-        "ГОДЫ",
-        "ПРОХОДЯТ",
-        "ВСЕ",
-        "ЛУЧШИЕ"
-      ]
-    }
+      "Ы"
+    ]
   },
   "ru-bgblonniepff": {
     "difficulty": "Medium",
@@ -1959,34 +1131,8 @@
     "clues": [
       "Т",
       "О",
-      "Н",
-      "Д",
-      "Ч",
-      "В",
-      "Е",
-      "Я",
-      "А",
-      "Ю",
-      "Б",
-      "П"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 11523,
-      "steps": 4,
-      "unresolved": 0,
-      "anchors": [
-        "ДА",
-        "БЫЛИ",
-        "ЛЮДИ",
-        "В",
-        "НАШЕ",
-        "ВРЕМЯ",
-        "НЕ",
-        "ТО",
-        "ЧТО"
-      ]
-    }
+      "Н"
+    ]
   },
   "ru-dhlceeeadjib": {
     "difficulty": "Medium",
@@ -2014,34 +1160,8 @@
     "clues": [
       "О",
       "Л",
-      "В",
-      "Н",
-      "Ш",
-      "Е",
-      "Д",
-      "П",
-      "З",
-      "Р",
-      "У",
-      "Я"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 9419,
-      "steps": 4,
-      "unresolved": 0,
-      "anchors": [
-        "И",
-        "ВОТ",
-        "НАШЛИ",
-        "БОЛЬШОЕ",
-        "ПОЛЕ",
-        "ЕСТЬ",
-        "ГДЕ",
-        "НА",
-        "ВОЛЕ"
-      ]
-    }
+      "В"
+    ]
   },
   "ru-fgcjaojeipid": {
     "difficulty": "Medium",
@@ -2104,32 +1224,8 @@
     "clues": [
       "Т",
       "О",
-      "М",
-      "П",
-      "И",
-      "Н",
-      "Е",
-      "В",
-      "Г",
-      "З",
-      "Ч",
-      "Я"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 10734,
-      "steps": 4,
-      "unresolved": 0,
-      "anchors": [
-        "УТРОМ",
-        "В",
-        "ПУТЬ",
-        "ОНА",
-        "РАНО",
-        "ПО",
-        "ВЕСЕЛО"
-      ]
-    }
+      "М"
+    ]
   },
   "ru-ehbbldaooaja": {
     "difficulty": "Medium",
@@ -2178,32 +1274,8 @@
     "clues": [
       "О",
       "Л",
-      "Д",
-      "И",
-      "В",
-      "У",
-      "А",
-      "Г",
-      "Н",
-      "Б",
-      "М",
-      "С",
-      "Т",
-      "Ц",
-      "Ю"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 3830,
-      "steps": 2,
-      "unresolved": 0,
-      "anchors": [
-        "Я",
-        "ДЛЯ",
-        "НЕГО",
-        "И"
-      ]
-    }
+      "Д"
+    ]
   },
   "ru-chcleknomncg": {
     "difficulty": "Hard",
@@ -2273,29 +1345,8 @@
     "clues": [
       "Т",
       "О",
-      "М",
-      "Д",
-      "Ё",
-      "А",
-      "Ч",
-      "И",
-      "П",
-      "Я"
-    ],
-    "audit": {
-      "version": 1,
-      "work": 7374,
-      "steps": 3,
-      "unresolved": 0,
-      "anchors": [
-        "С",
-        "ВЕЧЕРА",
-        "ВСЁ",
-        "НА",
-        "ДВОРЕ",
-        "ТЕМНО"
-      ]
-    }
+      "М"
+    ]
   },
   "ru-ieohilmdbejh": {
     "difficulty": "Medium",

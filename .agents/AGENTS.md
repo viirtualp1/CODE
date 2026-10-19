@@ -37,10 +37,10 @@ Read docs/PRODUCT.md, docs/DESIGN.md and docs/PUZZLE_ENGINE.md before changing b
 - Never add a hidden editable field for hardware typing: it risks opening Android IME. See docs/KEYBOARD_UX.md.
 - Do not display routine Saved/Saving labels; show actual storage failures only.
 - Keep keyboard and active symbol visible at narrow widths, landscape and enlarged text. Toolbar and keyboard share horizontal bounds at every size. Desktop release windows keep at least 24px top/bottom gaps plus safe-area protection; phone destinations use the full viewport. Show a green dot beside Update available in the drawer only when an update is downloaded.
-- Do not add telemetry, ads, payments, a quote API, statistics, native packaging, or a runtime generator. The approved developer-only bounded common-word audit lives in src/engine/fairness.ts and scripts/; never bundle its lexicons into the app. Fixed Easy clues must retain an audited familiar-word route and at least two editable assignments; do not claim exhaustive linguistic uniqueness.
+- Do not add telemetry, ads, payments, a quote API, statistics, native packaging, or a runtime generator. The approved developer-only bounded common-word audit lives in src/engine/fairness.ts and scripts/; never bundle its lexicons into the app. Following the user's 0.4.1 difficulty reversal, keep sparse original clues with at most one extra reviewed Easy anchor. Do not automatically expand clues to satisfy the limited solver. Difficulty is editorial and may require vocabulary/context. Do not claim exhaustive linguistic uniqueness.
 - Completed puzzles show the natural quote without cipher numbers; Undo returns to solving. Animate only a newly earned completion, never navigation/loading.
 - Backup import previews changes, keeps local progress by default and requires explicit replacement selection. Validate before writing; persist all merged sessions and preferences atomically before changing memory. Bound and cancel stalled writes. Fresh-language progress may adopt its imported resume pointer; retain local appearance/language.
-- Changed published clues require an explicit revision migration preserving compatible guesses, hints and all history. Never reset a valid old completion.
+- Changed published clues require explicit revision compatibility preserving guesses, hints and history. Withdrawn automatic givens are removed from unfinished snapshots; completed snapshots retain all solved entries. Never reset a valid old completion.
 - Update docs when contracts, persistence schema or scope changes.
 - Every release updates package.json, package-lock.json and the newest entry in src/data/releases.json together; run release:check. Follow .agents/RELEASING.md. Never auto-reload active play or discard writes to apply an update.
 - Run npm test and npm run build before handing off; run browser checks for interaction/layout work.
@@ -49,3 +49,5 @@ Read docs/PRODUCT.md, docs/DESIGN.md and docs/PUZZLE_ENGINE.md before changing b
 
 ## Handoff
 Record current behavior, known limitations, validation and next steps in .agents/HANDOFF.md. Keep quotes' sources and reuse rationale attached to their data. Storage migrations require a version bump and explicit compatibility handling.
+
+- Next puzzle uses stable shuffled ID order, preferring a different difficulty and author while skipping completed entries; it no longer prefers the same difficulty.
