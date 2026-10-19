@@ -12,7 +12,6 @@ export const useGameStore = defineStore('game', () => {
   const sessions = ref<Record<string, Session>>(Object.fromEntries(puzzles.map(p => [p.quote.id, initialSession(p)])))
   const ready = ref(false)
   const selected = ref<number | null>(null)
-  const mode = ref<'solve' | 'read'>('solve')
   const theme = ref<Theme>('system')
   const haptics = ref(false)
   const message = ref('Select a number, then enter a letter.')
@@ -26,6 +25,9 @@ export const useGameStore = defineStore('game', () => {
   const locked = computed(() => selected.value === null || isLocked(puzzle.value, session.value, selected.value))
   const hintTarget = computed(() => complete.value ? null : selected.value && !isLocked(puzzle.value, session.value, selected.value) ? selected.value : puzzle.value.symbols.find(n => !isLocked(puzzle.value, session.value, n) && !session.value.entries[n]) ?? puzzle.value.symbols.find(n => !isLocked(puzzle.value, session.value, n)) ?? null)
 
+  function startingSelection() {
+    return nextUnanswered(puzzle.value, session.value, null) ?? puzzle.value.symbols.find(n => !isLocked(puzzle.value, session.value, n)) ?? null
+  }
   async function persist(job: Promise<unknown>) {
     pendingSaves.value++
     try { await job } catch { storageError.value = true }
@@ -44,8 +46,7 @@ export const useGameStore = defineStore('game', () => {
         if (p.currentId && puzzles.some(puzzle => puzzle.quote.id === p.currentId)) currentId.value = p.currentId
       }
     } catch { storageError.value = true }
-    selected.value = nextUnanswered(puzzle.value, session.value, null)
-    if (complete.value) mode.value = 'read'
+    selected.value = startingSelection()
     ready.value = true
   }
   function tick() { if (haptics.value && typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(8) }
@@ -56,21 +57,20 @@ export const useGameStore = defineStore('game', () => {
     if (pulse) tick()
   }
   function apply(letter: string, hint = false, symbol = selected.value) {
-    if (!ready.value) return
+    if (!ready.value) return false
     const result = edit(puzzle.value, session.value, symbol, letter, hint)
-    if (!result.changed) { if (result.reason) { message.value = result.reason; feedback.value = result.reason }; return }
+    if (!result.changed) { if (result.reason) { message.value = result.reason; feedback.value = result.reason }; return false }
     sessions.value[currentId.value] = result.session
     feedback.value = ''
     checked.value = []
-    if (complete.value) mode.value = 'read'
     message.value = complete.value ? 'Puzzle decoded.' : hint ? `Number ${symbol} is ${letter}. Hint revealed; undo is available.` : letter ? `${letter} entered for every number ${symbol}.` : `Number ${symbol} erased.`
-    tick(); save()
+    tick(); save(); return true
   }
   function revealHint() { const symbol = hintTarget.value; if (symbol) { selected.value = symbol; apply(puzzle.value.solution[symbol]!, true, symbol) } }
   function history(direction: 'undo' | 'redo') {
     if (!ready.value || !session.value[direction].length) return
     sessions.value[currentId.value] = travel(session.value, direction)
-    mode.value = complete.value ? 'read' : 'solve'
+    if (selected.value === null) selected.value = startingSelection()
     feedback.value = ''
     checked.value = []; message.value = direction === 'undo' ? 'Last move undone.' : 'Move restored.'
     tick(); save()
@@ -81,14 +81,13 @@ export const useGameStore = defineStore('game', () => {
     message.value = checked.value.length ? `${checked.value.length} ${checked.value.length === 1 ? 'assignment needs' : 'assignments need'} another look. Marked with a dot.` : guesses ? 'Your entered letters look good. Keep going.' : 'No guesses to check yet. Try a letter first.'
     feedback.value = message.value
   }
-  function next() { feedback.value = ''; selected.value = nextUnanswered(puzzle.value, session.value, selected.value); message.value = selected.value ? `Number ${selected.value} selected.` : 'Every number has a letter. You can check your guesses.' }
   function switchPuzzle(id: string) {
     if (!puzzles.some(p => p.quote.id === id)) return
-    currentId.value = id; mode.value = complete.value ? 'read' : 'solve'; selected.value = nextUnanswered(puzzle.value, session.value, null); checked.value = []
+    currentId.value = id; selected.value = startingSelection(); checked.value = []
     feedback.value = ''; message.value = 'Puzzle selected.'; savePreferences()
   }
-  function restart() { feedback.value = ''; mode.value = 'solve'; sessions.value[currentId.value] = initialSession(puzzle.value); selected.value = nextUnanswered(puzzle.value, session.value, null); checked.value = []; message.value = 'Puzzle restarted.'; save() }
+  function restart() { feedback.value = ''; sessions.value[currentId.value] = initialSession(puzzle.value); selected.value = startingSelection(); checked.value = []; message.value = 'Puzzle restarted.'; save() }
   function setTheme(value: Theme) { theme.value = value; savePreferences() }
   function setHaptics(value: boolean) { haptics.value = value; tick(); savePreferences() }
-  return { ready, currentId, sessions, selected, mode, theme, haptics, message, feedback, checked, storageError, pendingSaves, puzzle, session, complete, locked, hintTarget, initialize, select, apply, revealHint, history, check, next, switchPuzzle, restart, setTheme, setHaptics }
+  return { ready, currentId, sessions, selected, theme, haptics, message, feedback, checked, storageError, pendingSaves, puzzle, session, complete, locked, hintTarget, initialize, select, apply, revealHint, history, check, switchPuzzle, restart, setTheme, setHaptics }
 })

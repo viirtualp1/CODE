@@ -77,6 +77,16 @@ export const nextUnanswered = (puzzle: Puzzle, session: Snapshot, selected: numb
   }
   return null
 }
+/** Seek occurrences, rather than unique symbols: a repeated cell may be selected late in the quote. */
+export function nextEmptyCell(puzzle: Puzzle, session: Snapshot, fromIndex: number | null): Cell | null {
+  const cells = puzzle.words.flat()
+  const start = fromIndex === null ? -1 : cells.findIndex(cell => cell.index === fromIndex)
+  for (let offset = 1; offset <= cells.length; offset++) {
+    const cell = cells[(start + offset) % cells.length]!
+    if (cell.symbol && !session.entries[cell.symbol]) return cell
+  }
+  return null
+}
 export function validSnapshot(puzzle: Puzzle, value: unknown): value is Snapshot {
   if (!value || typeof value !== 'object') return false
   const s = value as Snapshot

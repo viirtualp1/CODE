@@ -12,6 +12,7 @@ export interface KeyInput {
 export type KeyboardAction =
   | { type: 'letter'; letter: string }
   | { type: 'erase' }
+  | { type: 'next' }
   | { type: 'layout-help' }
   | { type: 'navigate'; key: NavigationKey }
   | { type: 'history'; direction: 'undo' | 'redo' }
@@ -28,6 +29,7 @@ export function keyboardAction(event: KeyInput): KeyboardAction | null {
   }
   if (letter) return { type: 'letter', letter }
   if (/^\p{L}$/u.test(event.key)) return { type: 'layout-help' }
+  if (event.key === 'Enter') return { type: 'next' }
   if (event.key === 'Backspace' || event.key === 'Delete') return { type: 'erase' }
   if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].includes(event.key)) {
     return { type: 'navigate', key: event.key as NavigationKey }

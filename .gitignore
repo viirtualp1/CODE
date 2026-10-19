@@ -6,4 +6,8 @@ outputs/
 
 dist/
 
-docs/
+.DS_Store
+coverage/
+CODE-v*-web.zip
+SHA256SUMS.txt
+release-notes.md

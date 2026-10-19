@@ -29,29 +29,9 @@ p, h1, h2, h3 { margin: 0; }
 
 // App chrome. The game is the only content area.
 .app-shell { min-height: 100dvh; }
-.side-rail { position: fixed; inset: 0 auto 0 0; width: 84px; background: var(--rail); border-right: 1px solid var(--line); display: flex; align-items: center; flex-direction: column; z-index: 3; }
-.brand-symbol {
-  width: 36px; height: 36px; background: var(--ink); color: var(--paper); display: flex; align-items: center; justify-content: center; position: relative; margin-top: 30px; border-radius: 2px;
-  span { font-size: 27px; font-weight: 600; line-height: 1; padding-bottom: 1px; }
-  i { position: absolute; height: 4px; width: 8px; background: var(--accent); right: 6px; top: 16px; }
-}
-.rail-actions { margin-top: 88px; display: flex; flex-direction: column; gap: 15px; }
-.rail-button {
-  display: grid; place-items: center; width: 44px; height: 44px; color: var(--muted); border-radius: 4px;
-  &:hover { background: var(--selected); color: var(--ink); }
-  &.active {
-    background: var(--selected); color: var(--accent); position: relative;
-    &::before { content: ''; position: absolute; left: -20px; top: 13px; height: 18px; width: 2px; background: var(--accent); }
-  }
-}
-.rail-settings { margin-top: auto; margin-bottom: 30px; }
-.app-body { margin-left: 84px; min-height: 100dvh; display: flex; flex-direction: column; }
-.masthead { min-height: 98px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; padding: 16px 58px; gap: 8px; flex-shrink: 0; }
-.wordmark { font-size: 1.5625rem; letter-spacing: .17em; font-weight: 600; line-height: 1; }
-.wordmark-dot { color: var(--accent); letter-spacing: 0; }
-.header-actions { display: flex; align-items: center; }
-.mobile-action { display: none; }
-.main-content { width: 100%; max-width: 960px; margin: 0 auto; padding: 32px 36px 20px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+.menu-toggle { position: fixed; z-index: 3; left: calc(env(safe-area-inset-left) + 24px); top: calc(env(safe-area-inset-top) + 16px); background: var(--surface); }
+.app-body { min-height: 100dvh; display: flex; flex-direction: column; }
+.main-content { width: 100%; max-width: 960px; margin: 0 auto; padding: 12px 36px 20px; flex: 1; display: flex; flex-direction: column; justify-content: flex-start; }
 .workspace, .game-column { width: 100%; min-width: 0; }
 .game-column { max-width: 840px; margin: 0 auto; }
 
@@ -107,34 +87,23 @@ p, h1, h2, h3 { margin: 0; }
 
 // The custom keyboard stays in flow, below a separately scrollable mobile board.
 .input-deck { margin-top: 16px; }
-.mode-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 13px; gap: 10px; }
-.mode-switch {
-  display: inline-flex; border-bottom: 1px solid var(--line);
-  button {
-    min-height: 44px; display: inline-flex; align-items: center; gap: 7px; font-size: .6875rem; padding: 5px 12px; color: var(--muted); margin-bottom: -1px;
-    &.chosen { color: var(--ink); border-bottom: 2px solid var(--accent); }
-    &:hover { color: var(--accent); }
-  }
-}
-.selection-label { color: var(--muted); font-size: .6875rem; display: flex; align-items: center; gap: 10px; strong { font-size: .875rem; color: var(--accent); min-width: 11px; } }
 .keyboard { max-width: 590px; margin: 0 auto; display: flex; flex-direction: column; gap: 6px; }
-.key-row { display: flex; justify-content: center; gap: 6px; }
+.key-row { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 6px; }
+.key-row-2 .letter-key:first-child { grid-column: 2; }
+.next-key { grid-column: 10; }
 .key {
-  width: calc((100% - 54px) / 10); min-height: 47px; background: var(--key); border: 1px solid transparent; border-bottom-color: var(--line); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: min(1rem, 24px); font-weight: 500; position: relative;
+  width: 100%; min-width: 0; min-height: 47px; background: var(--key); border: 1px solid transparent; border-bottom-color: var(--line); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: min(1rem, 24px); font-weight: 500; position: relative;
   &.used { color: var(--muted); }
   &.current { background: var(--selected); color: var(--accent); border-color: var(--accent); }
   &:hover:not(:disabled) { background: var(--key-hover); }
   &:disabled { opacity: .45; }
 }
 .used-mark { position: absolute; bottom: 5px; height: 2px; width: 2px; background: var(--accent); border-radius: 50%; }
-.special-key { width: calc((100% - 54px) / 10 * 1.5 + 3px); color: var(--muted); background: transparent; border: 1px solid var(--line); }
+.special-key { color: var(--muted); background: transparent; border: 1px solid var(--line); }
 .next-key { background: var(--ink); border-color: var(--ink); color: var(--paper); &:hover:not(:disabled) { background: var(--accent); color: var(--paper); } }
-.input-caption { color: var(--muted); font-size: .625rem; display: flex; align-items: center; justify-content: space-between; margin-top: 14px; gap: 8px; line-height: 1.6; min-height: 16px; }
-.physical-keyboard { display: flex; align-items: center; gap: 8px; }
 .resume-button { min-height: 54px; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; width: 100%; gap: 14px; color: var(--accent); font-size: .75rem; &:hover { background: var(--selected); } }
 .feedback-message { font-size: .75rem; color: var(--muted); line-height: 1.7; margin: 12px auto 0; width: 100%; max-width: 840px; min-height: 21px; }
-.storage-warning, .update-notice { font-size: .75rem; padding: 12px; border: 1px solid var(--line); margin-top: 12px; background: var(--surface); }
-.update-notice { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+.storage-warning { font-size: .75rem; padding: 12px; border: 1px solid var(--line); margin-top: 12px; background: var(--surface); }
 
 // Dialogs use the same restrained surfaces and type as the game.
 .app-dialog {
@@ -177,23 +146,16 @@ p, h1, h2, h3 { margin: 0; }
 @keyframes letter-arrive { from { opacity: .2; transform: translateY(2px); } to { opacity: 1; transform: translateY(0); } }
 
 @media (max-width: 1000px) {
-  .masthead { padding-left: 36px; padding-right: 36px; }
   .main-content { padding-left: 28px; padding-right: 28px; }
   .play-scroll { padding-left: 30px; padding-right: 30px; }
 }
 @media (max-width: 700px) {
-  .side-rail { display: none; }
   .app-body { margin: 0; height: 100dvh; min-height: 0; }
-  .masthead { min-height: 73px; padding: max(12px, env(safe-area-inset-top)) 24px 12px; flex-wrap: wrap; }
-  .wordmark { font-size: 1.4375rem; }
-  .mobile-action { display: inline-flex; }
-  .header-actions { margin-right: -10px; }
-  .header-actions .icon-button { width: 40px; }
-  .main-content { padding: 18px 20px 0; min-height: 0; max-width: 580px; justify-content: flex-start; }
+  .main-content { padding: max(12px, calc(env(safe-area-inset-top) + 12px)) 20px 0; min-height: 0; max-width: 580px; justify-content: flex-start; }
   .workspace { flex: 1; display: flex; min-height: 0; }
   .game-column { flex: 1; display: flex; flex-direction: column; min-height: 0; }
   .puzzle-paper { flex: 1; min-height: 125px; display: flex; flex-direction: column; }
-  .puzzle-topline { min-height: 45px; height: auto; flex-shrink: 0; margin: 0 20px; padding: 3px 0; }
+  .puzzle-topline { min-height: 45px; height: auto; flex-shrink: 0; margin: 0 20px 0 64px; padding: 3px 0; }
   .puzzle-identifier { gap: 12px; flex-shrink: 0; }
   .puzzle-identifier .eyebrow { font-size: .5625rem; }
   .difficulty, .paper-menu { font-size: .625rem; }
@@ -212,39 +174,29 @@ p, h1, h2, h3 { margin: 0; }
   .tool-button { font-size: .6875rem; padding: 5px 8px; gap: 5px; span { overflow-wrap: anywhere; } }
   .check-button { margin-left: 0; }
   .input-deck { margin-top: 8px; flex-shrink: 0; background: var(--paper); padding-bottom: max(3px, env(safe-area-inset-bottom)); }
-  .mode-bar { margin-bottom: 9px; }
-  .mode-switch button { padding-left: 11px; padding-right: 11px; font-size: .6875rem; }
-  .selection-label { font-size: .6875rem; gap: 7px; }
   .keyboard { gap: 6px; margin-left: -8px; margin-right: -8px; }
   .key-row { gap: 4px; }
-  .key { width: calc((100% - 36px) / 10); min-height: 48px; }
-  .special-key { width: calc((100% - 36px) / 10 * 1.5 + 2px); }
-  .input-caption { justify-content: flex-end; margin-top: 7px; font-size: .5625rem; min-height: 13px; }
-  .physical-keyboard { display: none; }
+  .key { min-height: 48px; }
   .feedback-message { flex-shrink: 0; min-height: 17px; margin-top: 3px; margin-bottom: 5px; font-size: .625rem; text-align: center; }
-  .storage-warning, .update-notice { flex-shrink: 0; font-size: .625rem; padding: 5px; margin: 0 0 7px; }
-  .reading-mode .input-deck { padding-bottom: 10px; }
-  .reading-mode .cipher-board { row-gap: 29px; }
+  .storage-warning { flex-shrink: 0; font-size: .625rem; padding: 5px; margin: 0 0 7px; }
   .app-dialog { padding: 24px; width: min(480px, calc(100% - 28px)); }
   .dialog-header h2 { font-size: 2rem; }
 }
 @media (max-width: 380px) {
   .main-content { padding-left: 15px; padding-right: 15px; }
-  .masthead { padding-left: 20px; padding-right: 16px; }
   .play-scroll { padding-left: 15px; padding-right: 15px; }
-  .puzzle-topline { margin-left: 15px; margin-right: 15px; }
+  .puzzle-topline { margin-left: 60px; margin-right: 15px; }
   .puzzle-toolbar { padding-left: 5px; padding-right: 5px; }
   .keyboard { margin-left: -5px; margin-right: -5px; }
 }
 @media (max-height: 580px) and (orientation: landscape) {
-  .side-rail, .masthead, .input-caption { display: none; }
   .app-body { margin: 0; height: 100dvh; min-height: 0; }
-  .main-content { padding: 12px 20px 0; max-width: none; min-height: 0; justify-content: flex-start; }
+  .main-content { padding: max(12px, calc(env(safe-area-inset-top) + 12px)) max(20px, env(safe-area-inset-right)) 0 max(20px, env(safe-area-inset-left)); max-width: none; min-height: 0; justify-content: flex-start; }
   .workspace { flex: 1; display: flex; min-height: 0; }
   .game-column { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; max-width: none; min-height: 0; }
   .puzzle-paper { display: flex; flex-direction: column; min-height: 0; }
   .play-scroll { flex: 1; min-height: 0; padding: 22px 18px; }
-  .puzzle-topline { min-height: 40px; height: 40px; margin: 0 18px; }
+  .puzzle-topline { min-height: 40px; height: 40px; margin: 0 18px 0 60px; }
   .cipher-cell { width: 25px; height: 49px; .cell-letter { width: 23px; font-size: 21px; } }
   .cipher-word { gap: 2px; }
   .cipher-board { column-gap: 14px; row-gap: 18px; }
@@ -254,9 +206,6 @@ p, h1, h2, h3 { margin: 0; }
   .input-deck { align-self: center; margin: 0; }
   .key { min-height: 48px; }
   .feedback-message { margin: 5px 0; }
-  .reading-mode { display: flex; }
-  .reading-mode .puzzle-paper { flex: 1; }
-  .reading-mode .input-deck { width: 40%; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
 @media (prefers-contrast: more) { :root { --muted: #50564b; --line: #9ba190; } :root[data-theme='dark'] { --muted: #c0cbb4; --line: #727f68; } }
@@ -283,12 +232,51 @@ p, h1, h2, h3 { margin: 0; }
   .key { min-height: 51px; font-size: min(1.125rem, 26px); }
 }
 @media (min-width: 701px) and (min-height: 581px) and (max-height: 850px) {
-  .masthead { min-height: 78px; }
-  .main-content { padding-top: 16px; padding-bottom: 8px; }
+  .main-content { padding-top: 12px; padding-bottom: 8px; }
   .play-scroll { min-height: 240px; max-height: max(240px, calc(100dvh - 490px)); padding-top: 24px; padding-bottom: 24px; }
   .input-deck { margin-top: 12px; }
-  .mode-bar { margin-bottom: 10px; }
   .key { min-height: 44px; }
-  .input-caption { margin-top: 10px; }
 }
-@media (max-width: 700px) { .input-caption { display: none; } }
+
+
+// The menu is a native modal: focus trap, inert background and shared scroll restoration.
+.app-dialog.app-drawer {
+  inset: 0 auto 0 0; margin: 0; width: min(352px, calc(100% - 40px)); height: 100dvh; max-height: 100dvh;
+  padding: max(26px, env(safe-area-inset-top)) 26px max(24px, env(safe-area-inset-bottom)); border-width: 0 1px 0 0; border-radius: 0;
+  animation: drawer-enter 220ms cubic-bezier(.2, .7, .2, 1) both;
+  &::backdrop { animation: backdrop-enter 220ms ease-out both; }
+  &.closing { animation: drawer-exit 200ms ease-in both; &::backdrop { animation: backdrop-exit 200ms ease-in both; } }
+  .dialog-header { align-items: center; margin-bottom: 38px; }
+  .dialog-header h2 { font-family: var(--sans); font-size: 1.5625rem; font-weight: 600; letter-spacing: .17em; }
+  .dialog-header .icon-button { margin-top: 0; }
+}
+.drawer-menu { border-top: 1px solid var(--line); }
+.drawer-item {
+  width: 100%; min-height: 72px; display: flex; align-items: center; gap: 16px; padding: 16px 4px;
+  text-align: left; border-bottom: 1px solid var(--line); font-size: .8125rem; line-height: 1.5;
+  > span:first-of-type { flex: 1; }
+  > svg { color: var(--muted); }
+  strong { display: block; font-size: .875rem; font-weight: 600; }
+  small { display: block; font-size: .6875rem; color: var(--muted); margin-top: 5px; }
+  &:hover { background: var(--selected); }
+}
+.current-puzzle { padding: 22px 12px; margin-bottom: 14px; background: var(--selected); border-bottom: 0; }
+.menu-count { color: var(--muted); font-size: .6875rem; }
+.theme-menu-item { margin-top: 32px; color: var(--muted); border-bottom: 0; min-height: 52px; }
+@keyframes drawer-enter { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+@keyframes drawer-exit { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+@keyframes backdrop-enter { from { opacity: 0; } to { opacity: 1; } }
+@keyframes backdrop-exit { from { opacity: 1; } to { opacity: 0; } }
+
+// Release information stays behind the menu; gameplay only gets a quiet availability dot.
+.update-dot { position: absolute; width: 6px; height: 6px; right: 5px; top: 5px; background: var(--accent); border-radius: 50%; }
+.app-dialog.release-dialog { width: min(620px, calc(100% - 28px)); padding: 0 24px 24px; }
+.release-dialog .dialog-header { position: sticky; top: 0; padding: 24px 0 16px; background: var(--surface); z-index: 1; border-bottom: 1px solid var(--line); }
+.release-update { margin-top: 26px; padding: 20px; background: var(--paper); border: 1px solid var(--line); }
+.edition-line { display: flex; justify-content: space-between; gap: 12px; font-size: .75rem; color: var(--muted); strong { color: var(--ink); font-weight: 600; } }
+.release-status { font-size: .75rem; color: var(--muted); line-height: 1.8; margin: 12px 0 18px; overflow-wrap: anywhere; }
+.release-update button { width: 100%; }
+.release-entry { padding: 28px 0; border-bottom: 1px solid var(--line); &:last-child { border-bottom: 0; padding-bottom: 0; } }
+.release-meta { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; font-size: .6875rem; color: var(--muted); > span { color: var(--accent); font-weight: 600; } small { color: var(--muted); font-size: .625rem; margin-left: 10px; font-weight: 400; } }
+.release-entry h3 { margin-top: 12px; font-family: var(--serif); font-size: 1.625rem; font-weight: 400; line-height: 1.2; }
+.release-entry ul { padding-left: 18px; margin: 15px 0 0; color: var(--muted); font-size: .8125rem; line-height: 1.85; li + li { margin-top: 8px; } }

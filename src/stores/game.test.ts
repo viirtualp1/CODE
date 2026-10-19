@@ -60,11 +60,26 @@ describe('completion and hint intent', () => {
       game.select(n); game.apply(game.puzzle.solution[n]!)
     }
     expect(game.complete).toBe(true)
-    expect(game.mode).toBe('read')
+    game.selected = null // A completed save may have no remaining blank selection.
     game.history('undo')
     expect(game.complete).toBe(false)
-    expect(game.mode).toBe('solve')
+    expect(game.selected).not.toBeNull()
+    expect(game.locked).toBe(false)
     await vi.waitFor(() => expect(game.pendingSaves).toBe(0))
     vi.restoreAllMocks()
   })
+})
+
+it('reports accepted edits without advancing selection on rejected or unchanged input', async () => {
+  vi.spyOn(storage, 'readRecord').mockResolvedValue(undefined)
+  const game = useGameStore()
+  await game.initialize()
+  const symbol = game.selected!, letter = game.puzzle.solution[symbol]!
+  expect(game.apply(letter)).toBe(true)
+  expect(game.selected).toBe(symbol) // The board controller owns occurrence-based focus.
+  expect(game.apply(letter)).toBe(false)
+  expect(game.apply(Object.values(game.puzzle.clues)[0]!)).toBe(false)
+  expect(game.session.undo).toHaveLength(1)
+  await vi.waitFor(() => expect(game.pendingSaves).toBe(0))
+  vi.restoreAllMocks()
 })

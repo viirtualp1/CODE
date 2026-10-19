@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onBeforeUnmount, ref, watch } from 'vue'
 import { useGameStore } from '../stores/game'
-import { isLocked } from '../engine/cipher'
+import { isLocked, nextEmptyCell } from '../engine/cipher'
 import { navigationTarget } from '../interaction/navigation'
 import type { NavigationKey } from '../interaction/navigation'
 const game = useGameStore()
@@ -19,10 +19,15 @@ function navigate(key: NavigationKey) {
   }), activeCellIndex.value, key)
   buttons.find(button => Number(button.dataset.index) === target)?.focus({ preventScroll: true })
 }
-defineExpose({ navigate })
+function advance() {
+  const next = nextEmptyCell(game.puzzle, game.session, activeCellIndex.value)
+  if (!next?.symbol) { game.message = 'Every number has a letter. You can check your guesses.'; return }
+  choose(next.symbol, next.index, false)
+  board.value?.querySelector<HTMLButtonElement>(`[data-index="${next.index}"]`)?.focus({ preventScroll: true })
+}
+defineExpose({ navigate, advance })
 function choose(symbol: number, index: number, pulse = true) {
   activeIndex.value = index
-  if (pulse && !game.complete && !isLocked(game.puzzle, game.session, symbol)) game.mode = 'solve'
   game.select(symbol, pulse)
   // Safari on macOS does not focus buttons on mouse click by default.
   if (pulse) board.value?.querySelector<HTMLButtonElement>(`[data-index="${index}"]`)?.focus({ preventScroll: true })
@@ -48,7 +53,7 @@ onMounted(() => {
 })
 onBeforeUnmount(() => resizeObserver?.disconnect())
 watch(() => game.currentId, () => { activeIndex.value = null })
-watch(() => [game.selected, game.mode, game.currentId, activeIndex.value], async () => { await nextTick(); revealSelection() })
+watch(() => [game.selected, game.currentId, activeIndex.value], async () => { await nextTick(); revealSelection() })
 </script>
 
 <template>

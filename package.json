@@ -1,14 +1,16 @@
 {
   "name": "code-cryptogram",
   "private": true,
-  "version": "0.1.1",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "npm run release:check && vue-tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "test": "vitest run && node --test scripts/*.test.mjs",
+    "test:watch": "vitest",
+    "release:check": "node scripts/release.mjs check",
+    "release:notes": "node scripts/release.mjs notes"
   },
   "dependencies": {
     "@fontsource/manrope": "^5.2.8",

@@ -28,13 +28,17 @@ describe('physical keyboard interpretation', () => {
     expect(keyboardAction({ key: 'Unidentified', code: 'KeyE' })).toBeNull()
     expect(keyboardAction({ key: 'р' })).toEqual({ type: 'layout-help' })
   })
-  it('routes deletion and every navigation key without treating Space/Enter as letters', () => {
+  it('routes deletion and every navigation key without treating Space as a letter', () => {
     expect(keyboardAction({ key: 'Backspace' })).toEqual({ type: 'erase' })
     expect(keyboardAction({ key: 'Delete' })).toEqual({ type: 'erase' })
     for (const key of ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End']) {
       expect(keyboardAction({ key })).toEqual({ type: 'navigate', key })
     }
     expect(keyboardAction({ key: ' ' })).toBeNull()
-    expect(keyboardAction({ key: 'Enter' })).toBeNull()
   })
+})
+
+it('routes unmodified Enter to the next blank but preserves modifier shortcuts', () => {
+  expect(keyboardAction({ key: 'Enter' })).toEqual({ type: 'next' })
+  expect(keyboardAction({ key: 'Enter', metaKey: true })).toBeNull()
 })

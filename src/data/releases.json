@@ -1,0 +1,42 @@
+[
+  {
+    "version": "0.2.0",
+    "date": "2026-10-19",
+    "title": "Updates & release notes",
+    "changes": [
+      "Check for new versions from the menu, or let CODE check quietly when you return.",
+      "Install a downloaded update when you choose. Your latest move is saved before the game reloads.",
+      "Read the release history from What’s new, including while offline."
+    ]
+  },
+  {
+    "version": "0.1.2",
+    "date": "2026-10-19",
+    "title": "Menu & keyboard",
+    "changes": [
+      "A floating menu keeps the puzzle at the top of the screen.",
+      "Letter entry moves to the next blank. Erase now sits directly above Enter.",
+      "Removed the Read/Solve tabs and the keyboard header."
+    ]
+  },
+  {
+    "version": "0.1.1",
+    "date": "2026-10-19",
+    "title": "Keyboard fixes",
+    "changes": [
+      "Physical keyboards support non-Latin layouts through English key positions.",
+      "Clicking a cell correctly focuses it on macOS.",
+      "Larger desktop letters and fewer labels keep the game in focus."
+    ]
+  },
+  {
+    "version": "0.1.0",
+    "date": "2026-10-19",
+    "title": "First playable edition",
+    "changes": [
+      "Six offline cryptograms with hand-selected starting clues.",
+      "Grouped guesses, undo, redo, hints and optional mistake checking.",
+      "Progress saved on this device, with light and dark appearances."
+    ]
+  }
+]

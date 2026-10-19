@@ -1,27 +1,58 @@
 <script setup lang="ts">
-import { computed, onMounted, onBeforeUnmount, ref, watch } from 'vue'
-import { ArrowDown, ArrowRight, ArrowUpRight, BookOpen, Check, ChevronDown, CircleHelp, Command, Grid2X2, Lightbulb, Moon, RotateCcw, Settings2, ShieldCheck, Sun, Undo2, Redo2 } from '@lucide/vue'
-import { useRegisterSW } from 'virtual:pwa-register/vue'
+import { computed, nextTick, onMounted, onBeforeUnmount, ref, watch } from 'vue'
+import { ArrowRight, ArrowUpRight, Check, ChevronDown, CircleHelp, Menu, Grid2X2, Lightbulb, Moon, RotateCcw, Settings2, ScrollText, ShieldCheck, Sun, Undo2, Redo2 } from '@lucide/vue'
+import { useAppUpdate } from './composables/useAppUpdate'
+import releases from './data/releases.json'
+import ReleaseNotes from './components/ReleaseNotes.vue'
 import { useGameStore, puzzles } from './stores/game'
 import { isComplete } from './engine/cipher'
 import CipherBoard from './components/CipherBoard.vue'
 import GameKeyboard from './components/GameKeyboard.vue'
 import AppDialog from './components/AppDialog.vue'
 import type { Difficulty } from './data/puzzles'
-import { flushWrites } from './services/storage'
 import type { Theme } from './services/storage'
 import { keyboardAction } from './interaction/keyboard'
 
 const game = useGameStore()
 const cipher = ref<InstanceType<typeof CipherBoard>>()
-const dialog = ref<'library' | 'help' | 'settings' | 'hint' | 'restart' | null>(null)
+const dialog = ref<'library' | 'help' | 'settings' | 'hint' | 'restart' | 'updates' | null>(null)
+const menuOpen = ref(false)
+const menuDialog = ref<InstanceType<typeof AppDialog>>()
+let menuDestination: 'library' | 'help' | 'settings' | 'updates' | null = null
+function openMenuPage(page: typeof menuDestination) { menuDestination = page; menuDialog.value?.requestClose() }
+async function closeMenu() {
+  menuOpen.value = false; await nextTick()
+  const destination = menuDestination; menuDestination = null
+  if (destination === 'updates') openUpdates(); else dialog.value = destination
+}
+const updatesHash = '#/updates'
+let updatesOpenedHere = false
+function openUpdates() { updatesOpenedHere = true; window.location.hash = updatesHash; syncUpdatesPage() }
+function syncUpdatesPage() {
+  if (updating.value && window.location.hash !== updatesHash) {
+    window.history.replaceState(null, '', updatesHash); return
+  }
+  if (window.location.hash === updatesHash) dialog.value = 'updates'
+  else if (dialog.value === 'updates') dialog.value = null
+}
+function closeUpdates() {
+  if (updating.value) return
+  if (updatesOpenedHere && window.location.hash === updatesHash) { updatesOpenedHere = false; window.history.back() }
+  else { window.history.replaceState(null, '', window.location.pathname + window.location.search); dialog.value = null }
+}
+function enterLetter(letter: string) {
+  if (!game.apply(letter) || game.complete) return
+  const entered = game.message
+  cipher.value?.advance()
+  game.message = `${entered} ${game.message}`
+}
 const filter = ref<'All' | Difficulty>('All')
 const index = computed(() => puzzles.findIndex(p => p.quote.id === game.currentId))
 const number = computed(() => String(index.value + 1).padStart(3, '0'))
 const filtered = computed(() => puzzles.filter(p => filter.value === 'All' || p.quote.difficulty === filter.value))
 const isDark = ref(false)
 const systemDark = window.matchMedia('(prefers-color-scheme: dark)')
-const { needRefresh, updateServiceWorker } = useRegisterSW()
+const { needRefresh, busy: updating, phase: updatePhase, failure: updateFailure, checking: checkingUpdate, result: updateResult, check: checkForUpdates, apply: applyUpdate } = useAppUpdate()
 function applyTheme() {
   isDark.value = game.theme === 'dark' || (game.theme === 'system' && systemDark.matches)
   document.documentElement.dataset.theme = isDark.value ? 'dark' : 'light'
@@ -30,59 +61,33 @@ function applyTheme() {
 watch(() => game.theme, applyTheme, { immediate: true })
 function keyboard(event: KeyboardEvent) {
   const target = event.target instanceof HTMLElement ? event.target : null
-  if (dialog.value || !game.ready || target?.closest('input, textarea, select, [contenteditable="true"], [role="textbox"]')) return
+  if (dialog.value || menuOpen.value || !game.ready || target?.closest('input, textarea, select, [contenteditable="true"], [role="textbox"]')) return
   const action = keyboardAction(event)
   if (!action) return
+  if (action.type === 'next' && !target?.closest('.cipher-cell')) return
   if (action.type === 'history') { event.preventDefault(); game.history(action.direction); return }
   if (game.complete) return
-  // Focusing a cipher cell is an editing intent, even if Read was previously active.
-  if (game.mode === 'read') {
-    if (!target?.closest('.cipher-cell')) return
-    game.mode = 'solve'
-  }
   event.preventDefault()
   if (action.type === 'layout-help') { game.feedback = 'Use the English layout or the on-screen keys.'; game.message = game.feedback }
   else if (action.type === 'navigate') cipher.value?.navigate(action.key)
-  else if (action.type === 'letter') game.apply(action.letter)
+  else if (action.type === 'letter') enterLetter(action.letter)
+  else if (action.type === 'next') cipher.value?.advance()
   else game.apply('')
-}
-async function refreshEdition() {
-  try { await flushWrites(); await updateServiceWorker(true) }
-  catch { game.storageError = true; game.message = 'Progress could not be saved. The current edition is still open.' }
 }
 function choose(id: string) { game.switchPuzzle(id); dialog.value = null }
 function nextPuzzle() { game.switchPuzzle(puzzles[(index.value + 1) % puzzles.length]!.quote.id) }
-onMounted(() => { void game.initialize(); window.addEventListener('keydown', keyboard, true); systemDark.addEventListener('change', applyTheme) })
-onBeforeUnmount(() => { window.removeEventListener('keydown', keyboard, true); systemDark.removeEventListener('change', applyTheme) })
+onMounted(() => { syncUpdatesPage(); window.addEventListener('hashchange', syncUpdatesPage); void game.initialize(); window.addEventListener('keydown', keyboard, true); systemDark.addEventListener('change', applyTheme) })
+onBeforeUnmount(() => { window.removeEventListener('hashchange', syncUpdatesPage); window.removeEventListener('keydown', keyboard, true); systemDark.removeEventListener('change', applyTheme) })
 </script>
 
 <template>
   <div class="app-shell">
-    <nav class="side-rail" aria-label="Main navigation">
-      <a href="#main" class="brand-symbol" aria-label="CODE, go to puzzle"><span>C</span><i></i></a>
-      <div class="rail-actions">
-        <button class="rail-button active" aria-label="Current puzzle" aria-current="page" @click="dialog = null; game.mode = game.complete ? 'read' : 'solve'"><Command :size="23" :stroke-width="1.4" /></button>
-        <button class="rail-button" aria-label="Open puzzle collection" @click="dialog = 'library'"><Grid2X2 :size="21" :stroke-width="1.4" /></button>
-        <button class="rail-button" aria-label="How to play" @click="dialog = 'help'"><CircleHelp :size="22" :stroke-width="1.4" /></button>
-      </div>
-      <button class="rail-button rail-settings" aria-label="Open settings" @click="dialog = 'settings'"><Settings2 :size="22" :stroke-width="1.4" /></button>
-    </nav>
-
-    <div class="app-body">
-      <header class="masthead">
-        <a class="wordmark" href="#main" aria-label="CODE home">CODE<span class="wordmark-dot">.</span></a>
-        <div class="header-actions">
-          <button class="icon-button mobile-action" aria-label="Open puzzle collection" @click="dialog = 'library'"><Grid2X2 :size="19" /></button>
-          <button class="icon-button theme-button" :aria-label="isDark ? 'Switch to light theme' : 'Switch to dark theme'" @click="game.setTheme(isDark ? 'light' : 'dark')"><Sun v-if="isDark" :size="20" :stroke-width="1.5" /><Moon v-else :size="20" :stroke-width="1.5" /></button>
-          <button class="icon-button mobile-action" aria-label="How to play" @click="dialog = 'help'"><CircleHelp :size="19" :stroke-width="1.5" /></button>
-          <button class="icon-button mobile-action" aria-label="Open settings" @click="dialog = 'settings'"><Settings2 :size="19" /></button>
-        </div>
-      </header>
-
+    <button class="icon-button menu-toggle" aria-label="Open menu" aria-haspopup="dialog" :aria-expanded="menuOpen" :aria-describedby="needRefresh ? 'update-available' : undefined" :disabled="updating" @click="menuOpen = true"><Menu :size="23" :stroke-width="1.5" /><span v-if="needRefresh" class="update-dot" aria-hidden="true"></span><span v-if="needRefresh" id="update-available" class="sr-only">Update available</span></button>
+    <div class="app-body" :inert="updating">
       <main id="main" class="main-content">
         <h1 class="sr-only">Cryptogram {{ number }}</h1>
         <div class="workspace">
-          <section class="game-column" aria-label="Cryptogram game" :class="{ 'reading-mode': game.mode === 'read' }">
+          <section class="game-column" aria-label="Cryptogram game">
             <div class="puzzle-paper">
               <div class="puzzle-topline">
                 <div class="puzzle-identifier"><span class="eyebrow">Nº {{ number }}</span><span class="thin-divider"></span><span class="difficulty"><span class="difficulty-bars" aria-hidden="true"><i></i><i :class="{ lit: game.puzzle.quote.difficulty !== 'Easy' }"></i><i :class="{ lit: game.puzzle.quote.difficulty === 'Hard' }"></i></span>{{ game.puzzle.quote.difficulty }}</span></div>
@@ -104,22 +109,31 @@ onBeforeUnmount(() => { window.removeEventListener('keydown', keyboard, true); s
             </div>
 
             <div class="input-deck">
-              <div class="mode-bar">
-                <div class="mode-switch" aria-label="Puzzle view"><button :class="{ chosen: game.mode === 'solve' }" :aria-pressed="game.mode === 'solve'" :disabled="game.complete" @click="game.mode = 'solve'"><Command :size="14" /> Solve</button><button :class="{ chosen: game.mode === 'read' }" :aria-pressed="game.mode === 'read'" @click="game.mode = 'read'"><BookOpen :size="15" /> Read</button></div>
-                <span v-if="game.mode === 'solve'" class="selection-label" :aria-label="game.selected ? `Selected number ${game.selected}` : 'Select a number'">{{ game.selected ?? 'Select a number' }}<template v-if="game.selected"><ArrowRight :size="12" /><strong>{{ game.session.entries[game.selected] || '?' }}</strong></template></span>
-              </div>
-              <GameKeyboard v-if="game.mode === 'solve'" />
-              <button v-else-if="game.complete" class="resume-button" @click="nextPuzzle">Next puzzle <ArrowRight :size="17" /></button><button v-else class="resume-button" @click="game.mode = 'solve'">Continue solving <ArrowRight :size="17" /></button>
-              <div v-if="game.mode === 'solve'" class="input-caption"><span class="physical-keyboard">A–Z to enter<span>·</span>← ↑ ↓ → to move<span>·</span>Backspace to erase</span></div>
+              <GameKeyboard v-if="!game.complete" @letter="enterLetter" @next="cipher?.advance()" />
+              <button v-else class="resume-button" @click="nextPuzzle">Next puzzle <ArrowRight :size="17" /></button>
             </div>
           </section>
         </div>
         <div class="status-region sr-only" role="status" aria-live="polite" aria-atomic="true">{{ game.message }}</div>
         <p class="feedback-message">{{ game.feedback }}</p>
         <div v-if="game.storageError" class="storage-warning" role="alert">Progress cannot be saved on this device. Keep this tab open to continue.</div>
-        <div v-if="needRefresh" class="update-notice">An update is ready.<button class="text-button" @click="refreshEdition()">Save &amp; refresh <ArrowDown :size="15" /></button><button class="text-button" @click="needRefresh = false">Later</button></div>
       </main>
     </div>
+
+    <AppDialog v-if="menuOpen" ref="menuDialog" title="CODE." drawer @close="closeMenu">
+      <nav class="drawer-menu" aria-label="Main navigation">
+        <button class="drawer-item current-puzzle" @click="openMenuPage(null)"><span><strong>Current puzzle</strong><small>Nº {{ number }} · {{ game.puzzle.quote.difficulty }}</small></span><ArrowRight :size="19" /></button>
+        <button class="drawer-item" @click="openMenuPage('library')"><Grid2X2 :size="20" /><span>Puzzle collection</span><span class="menu-count">{{ puzzles.length }}</span></button>
+        <button class="drawer-item" @click="openMenuPage('help')"><CircleHelp :size="20" /><span>How to play</span><ArrowUpRight :size="17" /></button>
+        <button class="drawer-item" @click="openMenuPage('settings')"><Settings2 :size="20" /><span>Settings</span><ArrowUpRight :size="17" /></button>
+        <button class="drawer-item" @click="openMenuPage('updates')"><ScrollText :size="20" /><span><strong>What’s new</strong><small v-if="needRefresh">Update available</small></span><span class="menu-count">v{{ releases[0]!.version }}</span></button>
+      </nav>
+      <button class="drawer-item theme-menu-item" :aria-label="isDark ? 'Switch to light theme' : 'Switch to dark theme'" @click="game.setTheme(isDark ? 'light' : 'dark')"><Sun v-if="isDark" :size="20" /><Moon v-else :size="20" /><span>{{ isDark ? 'Light appearance' : 'Dark appearance' }}</span></button>
+    </AppDialog>
+
+    <AppDialog v-if="dialog === 'updates'" title="What’s new" class="release-dialog" :busy="updating" @close="closeUpdates">
+      <ReleaseNotes :available="needRefresh" :busy="updating" :checking="checkingUpdate" :phase="updatePhase" :failure="updateFailure" :result="updateResult" @check="checkForUpdates()" @apply="applyUpdate()" />
+    </AppDialog>
 
     <AppDialog v-if="dialog === 'library'" title="Choose a puzzle" @close="dialog = null">
       <div class="filter-tabs" aria-label="Filter by difficulty"><button v-for="level in (['All', 'Easy', 'Medium', 'Hard'] as const)" :key="level" :class="{ chosen: filter === level }" :aria-pressed="filter === level" @click="filter = level">{{ level }}</button></div>
@@ -128,9 +142,8 @@ onBeforeUnmount(() => { window.removeEventListener('keydown', keyboard, true); s
 
     <AppDialog v-if="dialog === 'help'" title="How to play" @close="dialog = null">
       <div class="help-demo" aria-hidden="true"><span><b>A</b><small>12</small></span><ArrowRight :size="18" /><span><b>A</b><small>12</small></span><span class="demo-caption">Same number.<br />Same letter.</span></div>
-      <ol class="help-steps"><li><strong>Find the pattern.</strong><p>Each number stands for one letter. A few letters are already revealed.</p></li><li><strong>Enter a guess.</strong><p>Select a number, then a letter. Every matching number updates together. Each letter can belong to only one number.</p></li><li><strong>Check when you want.</strong><p>Guesses stay neutral. Check highlights mistakes, Hint reveals one letter, and undo works for both guesses and hints.</p></li></ol>
-      <p class="dialog-footnote">Read hides the keyboard without revealing the answer. Select an editable cell to continue solving.</p>
-      <dl class="keyboard-shortcuts"><dt>A–Z</dt><dd>Enter a letter; non-Latin layouts use English key positions</dd><dt>← →</dt><dd>Previous / next editable cell</dd><dt>↑ ↓</dt><dd>Move between rows</dd><dt>Home / End</dt><dd>First / last editable cell</dd><dt>Backspace / Delete</dt><dd>Erase selected number</dd><dt>Ctrl/⌘ Z · Shift Z</dt><dd>Undo · Redo</dd><dt>Tab</dt><dd>Move between the board and controls</dd></dl>
+      <ol class="help-steps"><li><strong>Find the pattern.</strong><p>Each number stands for one letter. A few letters are already revealed.</p></li><li><strong>Enter a guess.</strong><p>Select a number, then a letter. Every matching number updates together. Selection moves to the next blank on the right, wrapping at the end. Each letter can belong to only one number.</p></li><li><strong>Check when you want.</strong><p>Guesses stay neutral. Check highlights mistakes, Hint reveals one letter, and undo works for both guesses and hints.</p></li></ol>
+      <dl class="keyboard-shortcuts"><dt>A–Z</dt><dd>Enter a letter; non-Latin layouts use English key positions</dd><dt>← →</dt><dd>Previous / next editable cell</dd><dt>↑ ↓</dt><dd>Move between rows</dd><dt>Home / End</dt><dd>First / last editable cell</dd><dt>Enter</dt><dd>Next blank, wrapping at the end</dd><dt>Backspace / Delete</dt><dd>Erase selected number</dd><dt>Ctrl/⌘ Z · Shift Z</dt><dd>Undo · Redo</dd><dt>Tab</dt><dd>Move between the board and controls</dd></dl>
       <button class="primary-button" @click="dialog = null">Got it <Check :size="17" /></button>
     </AppDialog>
 

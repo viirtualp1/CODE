@@ -1,0 +1,33 @@
+# CODE — puzzle engine specification
+
+## Current slice
+Pure TypeScript functions encode a curated quote with a seeded, deterministic permutation of 1–26. No random clue generation. Each sample includes explicit clue letters selected by hand for repetition, word shape and useful anchors; inspectable metadata explains the choice. Validate quote IDs, alphabet coverage, unique numeric mapping, clue presence and at least one editable symbol. UI and Pinia never implement their own cipher rules.
+
+A session consists of puzzle ID, assignments keyed by numeric symbol, hint-lock symbols, undo/redo snapshots and a record version. Initial clues are derived from content rather than trusted from storage. Entry is atomic: validate selected symbol, A–Z input, locked status and letter availability, then create one history entry. Clearing uses the same operation. Keep up to 100 history steps. Selection, active occurrence and check highlights are ephemeral. Check returns incorrect assigned symbols. Completion compares every used symbol against its solution.
+
+Focus navigation is separate from assignment mutation. `apply` reports whether an edit changed the session; the app advances only successful regular letter edits. The pure `nextEmptyCell` helper scans occurrences after the actual focused index, wraps once and tests assignment presence, never solution correctness. This avoids jumping backward when a repeated symbol was selected late in the quote. The board owns DOM focus and scroll visibility. Erase, hint, history and rejected/no-op edits do not auto-advance. No blank means no focus change.
+
+Storage is IndexedDB with a versioned database and one record per puzzle plus preferences. Writes are serialized to avoid an older asynchronous save overwriting a newer state. Reads validate all record fields and every history snapshot; unknown version, quote revision mismatch, invalid symbols, duplicate letters and changed clues trigger a safe reset. Progress is device-local; no sync, account or external service. Persist on each mutation, not only on unload.
+
+## Future fairness pipeline — explicitly not implemented
+1. **Curate** 100–200 English sentences. Record work, author, edition/translation, date, direct source, reuse rationale and jurisdiction review. Modern translations can remain copyrighted even for ancient authors. Avoid dubious attributions and modern quotation compilations. License status is content metadata, not an assumption based on an author's death.
+2. **Normalize** uppercase A–Z while preserving editorial punctuation; normalize typographic apostrophes; reject unsupported letters, unsupported word lengths, obscurity, excessive proper names and fragments lacking context. Curate lengths initially around 40–120 letters; test shorter quotes separately.
+3. **Analyze** word signatures (e.g. LETTER → 0.1.2.2.1.3), repeated words, distinct-letter count, frequency, common bigrams/trigrams, contractions, one-letter words and intersecting repeated symbols. Avoid relying on raw frequency alone.
+4. **Solve heuristically** using a bundled, licensed English lexicon indexed by length/signature. Constraint propagation intersects candidates with the global bijection; score language likelihood and use bounded branching with an explicit work budget. No external API, NLP model or heavy dependency for MVP.
+5. **Choose clues strategically**: test each candidate reveal for reduction in candidate space and branch work, with preference for repeated anchor letters spanning several words. Evaluate combinations greedily with bounded look-ahead, never reveal letters randomly. Deterministic seed only breaks equally scored ties.
+6. **Reject** unresolved ambiguity, budget-exhausted cases, unacceptable proper-name dependence, trivial fully exposed phrases and solutions that require unjustified guessing. A solver finding one answer is not a uniqueness proof. Flag equivalent valid sentences for editorial review; do not quietly accept only the stored wording.
+7. **Calibrate** Easy/Medium/Hard against solver work plus human playtests. Easy: several anchors and mostly propagation. Medium: pattern reasoning with modest branching. Hard: fewer anchors and deeper but bounded inference; never ambiguity as a substitute for difficulty. Store measured solver version and metrics so difficulty is reproducible.
+
+## Future acceptance criteria
+- All shipped entries pass provenance review and deterministic validation.
+- Identical content + engine version yields identical puzzle/clues/metrics.
+- Every clue removes meaningful ambiguity; no random reveal policy.
+- Solver respects a fixed operation budget and exposes “unknown” separately from “unsolvable.”
+- Golden fixtures cover repeated letters/words, punctuation, contractions, proper nouns, short quotes, ambiguous alternatives and budget exhaustion.
+- Human testing establishes difficulty ranges before labels are advertised as calibrated.
+
+## Important decisions
+Mapping is per puzzle, not global across the collection. Enforcing a one-to-one assignment is a structural rule, not an automatic mistake check. Incorrect hints are impossible because hints use the stored solution, but asking for one is always explicit. Undo restores the entire prior assignment/hint state, ensuring hints never become accidentally permanent. Corrupt storage must never manufacture valid-looking progress. A bounded pure engine supports later solver work without coupling it to Vue or persistence.
+
+## Updating the app
+Update metadata and UI do not modify puzzle rules or the IndexedDB schema. A requested PWA update first disables gameplay and awaits the serialized write queue. Only successful saving allows service-worker activation and reload. Quote revisions still control progress compatibility independently of app versions. Ordinary UI releases must not change quote IDs/revisions or clear storage.

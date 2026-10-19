@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { quotes } from '../data/puzzles'
-import { createPuzzle, edit, initialSession, isComplete, isLocked, mistakes, nextUnanswered, travel, validSession } from './cipher'
+import { createPuzzle, edit, initialSession, isComplete, isLocked, mistakes, nextEmptyCell, nextUnanswered, travel, validSession } from './cipher'
 import type { Session } from './cipher'
 
 const puzzle = createPuzzle(quotes[0]!)
@@ -73,5 +73,30 @@ describe('session operations', () => {
     for (let i = 0; i < 120; i++) session = edit(puzzle, session, editable[0]!, i % 2 ? '' : freeLetter(initial)).session
     expect(session.undo).toHaveLength(100)
     expect(validSession(puzzle, session)).toBe(true)
+  })
+})
+
+describe('next empty occurrence', () => {
+  const p = createPuzzle({ ...quotes[0]!, text: 'AB AC, DA BA.', clues: ['D'] })
+  const cells = p.words.flat()
+  const find = (letter: string) => Number(Object.keys(p.solution).find(n => p.solution[Number(n)] === letter))
+  it('starts after the clicked repeated occurrence, skipping punctuation, clues and all filled matches', () => {
+    const session = edit(p, initialSession(p), find('A'), 'X').session
+    const lateA = cells.filter(c => c.symbol === find('A')).at(-2)!
+    const target = nextEmptyCell(p, session, lateA.index)!
+    expect(target.index).toBe([...cells].reverse().find(c => c.symbol === find('B'))!.index)
+    expect(nextEmptyCell(p, session, cells[1]!.index)?.symbol).toBe(find('C'))
+  })
+  it('wraps once and starts at the first blank when no occurrence is selected', () => {
+    const session = initialSession(p)
+    expect(nextEmptyCell(p, session, cells.at(-1)!.index)).toEqual(cells[0])
+    expect(nextEmptyCell(p, session, null)).toEqual(cells[0])
+  })
+  it('uses emptiness, never correctness, and retains focus when every symbol has an assignment', () => {
+    let session = initialSession(p)
+    for (const [letter, guess] of [['A', 'X'], ['B', 'Y'], ['C', 'Z']]) session = edit(p, session, find(letter!), guess!).session
+    expect(isComplete(p, session)).toBe(false)
+    expect(nextEmptyCell(p, session, 0)).toBeNull()
+    expect(nextEmptyCell(p, { entries: p.solution, hints: [] }, null)).toBeNull()
   })
 })
