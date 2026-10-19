@@ -113,19 +113,17 @@ function centerDesktop() {
   layoutFrame = requestAnimationFrame(() => {
     if (isPhone.value || isPage.value) return
     const workspace = document.querySelector<HTMLElement>('.workspace')
-    const quote = document.querySelector<HTMLElement>('.quote-region')
     const column = document.querySelector<HTMLElement>('.game-column')
-    if (!workspace || !quote || !column) return
-    const height = quote.getBoundingClientRect().height
-    const remainder = column.getBoundingClientRect().height - height
+    if (!workspace || !column) return
+    const height = column.getBoundingClientRect().height
     const feedbackElement = document.querySelector<HTMLElement>('.feedback-message')
     const feedbackStyle = feedbackElement ? getComputedStyle(feedbackElement) : null
     const feedback = (feedbackElement?.getBoundingClientRect().height ?? 0) + parseFloat(feedbackStyle?.marginTop ?? '0') + parseFloat(feedbackStyle?.marginBottom ?? '0')
-    const boardHeight = quote.querySelector(game.complete ? '.decoded-quote' : '.cipher-board')?.getBoundingClientRect().height ?? height
-    const desired = window.innerHeight / 2 - boardHeight / 2
+    // Balance the whole playing surface, including the keyboard, slightly above geometric center.
+    const desired = window.innerHeight / 2 - height / 2 - Math.min(24, window.innerHeight * .02)
     const main = document.querySelector('.main-content')
     const bottomRoom = (main ? parseFloat(getComputedStyle(main).paddingBottom) : 16) + 8
-    const available = window.innerHeight - height - remainder - feedback - bottomRoom
+    const available = window.innerHeight - height - feedback - bottomRoom
     workspace.style.setProperty('--desktop-offset', `${Math.max(56, Math.min(desired, available))}px`)
   })
 }

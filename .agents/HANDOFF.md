@@ -131,7 +131,7 @@ Exactly 100 quotes per language. Keep the original 16 English records in puzzles
 
 App.vue owns four small hash destinations and responsive matchMedia state. AppDialog uses a section for phone destination screens, with a sticky Back button; desktop and destructive confirmations retain native dialog. Both presentations preserve background scroll/focus restoration. Drawer remains a native animated modal. While a phone screen is open the game stays mounted but hidden/inert. Changing viewport recreates only the presentation; browser Back closes the current destination. Updates keep dismissal blocked while saving/activating.
 
-Desktop quote rows/attribution are centered. A ResizeObserver sets a bounded workspace top offset from measured quote, toolbar, keyboard and feedback heights: cipher centered at 50% of the viewport if it fits, otherwise lift the group to preserve input visibility. Metadata is 1rem on desktop. The observer never changes cipher state and disconnects on unmount. Phone fitting and keyboard geometry remain independent.
+Desktop quote rows/attribution are centered. A ResizeObserver sets a bounded workspace top offset from measured quote, toolbar, keyboard and feedback heights: whole quote/actions/keyboard group centered 2vh (capped at 24px) above the viewport midpoint if it fits, otherwise clamp to preserve top controls and input visibility. Metadata is 1rem on desktop. The observer never changes cipher state and disconnects on unmount. Phone fitting and keyboard geometry remain independent.
 
 
 ## Current quality pass — 0.4.0
@@ -145,3 +145,8 @@ Desktop quote rows/attribution are centered. A ResizeObserver sets a bounded wor
 - Restore writes the entire merged memory plus preferences in one queued IndexedDB transaction, before Pinia changes. Input, navigation and dialog dismissal freeze during restore; 30-second cancellation rolls back or prevents a queued job from writing late. Failure retains memory and allows retry. Existing progress retains current puzzle; a fresh locale adopts a valid imported resume pointer. Local theme, haptics and language are preserved.
 - Browser checks exercised completion/Undo/Redo, filters and actual export/import/reload with kept and explicitly replaced progress. Additional small-phone enlarged-text layout checks were sufficient; the user explicitly requested stopping exhaustive puzzle traversal. Physical-device behavior was accepted from the user's testing. See docs/QA.md for scope and remaining limits.
 - This pass belongs on `improve-puzzle-quality`; do not merge main without user authorization. A branch push is requested. No production release tag is requested.
+
+
+## Optical desktop alignment
+
+Following user feedback, centerDesktop measures the entire game-column rather than only the cipher. It places the quote, attribution, toolbar and keyboard as one composition, 2vh (maximum 24px) above the viewport midpoint. Existing top/bottom clamps and horizontal widths remain. Phone fitting and keyboard geometry are unchanged. Verify one roomy desktop, one short laptop window and one phone; no corpus-wide layout sweep is needed for this offset change.

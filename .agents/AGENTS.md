@@ -30,7 +30,7 @@ Read docs/PRODUCT.md, docs/DESIGN.md and docs/PUZZLE_ENGINE.md before changing b
 - Support spatial arrow navigation, a single board tab stop, and typed input into the focused cell.
 - Every modal must lock body/document scrolling and restore styles, scroll position and focus on close.
 - Collection, help, settings and updates use full viewport screens on phones, native windows on desktop. Keep browser Back, explicit Back/close and focus restoration working. Hint/restart confirmations and the drawer remain modal.
-- Center the desktop cipher itself at 50% of viewport height/width when the keyboard fits below; clamp upward on shorter windows, preserving visible input and larger desktop metadata.
+- Center the whole desktop quote/actions/keyboard composition horizontally, with its midpoint 2vh (maximum 24px) above viewport center. Clamp to preserve the 56px top control clearance and visible input on short windows; the cipher alone is not the centering target.
 - Keep punctuation and word boundaries; do not split a word across lines.
 - Keyboard input must ignore editable controls, dialogs, composition and unrelated modifier shortcuts. Route input for the puzzle language: English preserves Latin-layout meaning with non-Latin physical-code fallback; Russian accepts А–Я/Ё directly and English physical keys via ЙЦУКЕН. Keep Е/Ё distinct.
 - Explicitly focus clicked cells on Safari/macOS. Successful letter entry advances from that occurrence to the next blank in reading order, wrapping once. Rejected/unchanged input and ordinary erase retain selection. While explicit Check marks exist, erase focuses and clears one marked assignment, retaining other marks; never silently calculate correctness.

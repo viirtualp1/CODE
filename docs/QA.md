@@ -154,3 +154,7 @@ The saved production preview was explicitly updated from 0.2.0 to 0.2.1 through 
 - Small-phone enlarged-text checks covered both playing and completed presentations, including long excerpts. Further exhaustive browser traversal was stopped at the user's request; these checks are browser emulation. Physical-device behavior was accepted from the user's own testing, not independently certified here.
 - Automated recovery checks cover clue revision 1→2 with guesses/hints/history, ambiguous-word and work-budget limits, malformed backups, default keep/explicit replacement, atomic rollback, cancellation without late writes, and fresh-device bilingual resume with local appearance retained.
 - Final validation passed: 349 Vitest tests plus 3 release-tool tests, the offline Easy audit, TypeScript/release checks and production PWA build (index-9g1peOCs.js). Database schema and session envelope remain 1; changed clue profiles use quote revision 2 and explicit compatibility migration.
+
+### Optical desktop alignment follow-up
+
+The whole quote/actions/keyboard group is now the centering target. At 1440×1000 it spans y=229–731, centered at (720,480); at 1280×720 it spans y=108.59–582.59, centered at y=345.59. Both have document height equal to viewport height. At 412×915 the phone keyboard still ends at y=873, with document height 915 and width 412. No corpus traversal was needed. All 352 automated tests passed; TypeScript/release validation and production build passed.
