@@ -1,26 +1,19 @@
-import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { quotes, publishedQuotes } from '../data/puzzles'
 import { auditClues, indexWords, quoteWords, suggestClues, wordPattern } from './fairness'
-const lexicons = Object.fromEntries((['en', 'ru'] as const).map(language => [language, indexWords(readFileSync(new URL(`../../scripts/lexicons/${language}.tsv`, import.meta.url), 'utf8').trim().split('\n').map(line => { const [word, frequency] = line.split('\t'); return { word: word!, frequency: Number(frequency) } }))]))
 describe('reviewed beginner content', () => {
   it('keeps 20 genuine beginner choices in each language and keeps answers/numbering stable', () => {
     for (const language of ['en', 'ru']) expect(quotes.filter(q => (q.locale ?? 'en') === language && q.difficulty === 'Easy')).toHaveLength(20)
     expect(quotes.map(q => [q.id, q.text])).toEqual(publishedQuotes.map(q => [q.id, q.text]))
   })
-  it.each(quotes.filter(q => q.difficulty === 'Easy'))('$id can be deduced through common words without recognising its source', quote => {
-    const language = quote.locale ?? 'en', lexicon = lexicons[language]!
-    const result = auditClues(quote.text, language, quote.clues, lexicon)
-    expect(result.solved).toBe(true)
-    expect(result.exhausted).toBe(false)
-    expect(result.letters - quote.clues.length).toBeGreaterThanOrEqual(2)
-    expect(result.steps.length).toBeGreaterThan(0)
-    for (const step of result.steps) {
-      expect(step.letters.length).toBeLessThanOrEqual(2)
-      expect(step.word.length).toBeLessThanOrEqual(language === 'ru' ? 8 : 7)
-      expect(lexicon.frequencies.get(step.word)).toBeGreaterThanOrEqual(language === 'ru' ? 4 : 4.5)
+  it('keeps sparse authored clues, with no more than one extra Easy anchor', () => {
+    for (const quote of quotes) {
+      const original = publishedQuotes.find(q => q.id === quote.id)!
+      expect(original.clues.every(letter => quote.clues.includes(letter))).toBe(true)
+      expect(quote.clues.length - original.clues.length).toBeLessThanOrEqual(quote.difficulty === 'Easy' ? 1 : 0)
+      expect(quoteWords(quote.text, quote.locale ?? 'en').join('').split('').filter(letter => /^[A-ZА-ЯЁ]$/.test(letter) && !quote.clues.includes(letter)).length).toBeGreaterThan(0)
     }
-    expect(quote.previousClues?.every(letter => quote.clues.includes(letter))).toBe(true)
+    expect(quotes.find(q => q.id === 'hamlet-possibility')!.clues).toEqual(['W', 'E', 'K'])
   })
   it('respects repeated letters, apostrophes and distinct Е/Ё', () => {
     expect(wordPattern('LETTER')).toBe('0.1.2.2.1.3')

@@ -1,5 +1,23 @@
 [
   {
+    "version": "0.4.1",
+    "date": "2026-10-20",
+    "title": "More to decipher",
+    "changes": [
+      "Fewer starting letters bring back the challenge. Easy keeps one extra anchor; Medium and Hard retain their sparse clues.",
+      "Next puzzle mixes difficulties and authors while skipping completed puzzles.",
+      "Saved guesses, hints and completed puzzles carry over when extra automatic letters are withdrawn."
+    ],
+    "ru": {
+      "title": "Больше загадки",
+      "changes": [
+        "Меньше начальных букв — больше простора для разгадки. В лёгких остаётся одна дополнительная опора; средние и сложные сохраняют редкие подсказки.",
+        "Следующий пазл чередует сложности и авторов, пропуская уже пройденное.",
+        "Введённые буквы, подсказки и завершённые пазлы сохраняются при удалении лишних автоматических букв."
+      ]
+    }
+  },
+  {
     "version": "0.4.0",
     "date": "2026-10-19",
     "title": "Clues to reason with",

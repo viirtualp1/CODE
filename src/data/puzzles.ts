@@ -1,4 +1,5 @@
 import reviewedProfiles from './clue-profiles.json'
+import legacyClues from './legacy-clues-v2.json'
 import englishExpansion from './english-expansion.json'
 import russianExpansion from './russian-expansion.json'
 import { russianQuotes } from './russian-quotes'
@@ -8,7 +9,7 @@ export interface Quote {
   locale?: 'en' | 'ru'
   id: string
   revision: number
-  previousClues?: string[]
+  previousClues?: Record<number, string[]>
   text: string
   author: string
   work: string
@@ -43,12 +44,14 @@ export const publishedQuotes: Quote[] = [
   ...russianExpansion as Quote[],
 ]
 
-interface ClueProfile { difficulty: Difficulty; clues: string[]; audit?: { anchors: string[] } }
+interface ClueProfile { difficulty: Difficulty; clues: string[] }
 const profiles = reviewedProfiles as Record<string, ClueProfile>
+const previousProfiles = legacyClues as Record<string, string[]>
 export const quotes: Quote[] = publishedQuotes.map(quote => {
   const profile = profiles[quote.id]
   if (!profile) throw new Error(`Missing reviewed profile: ${quote.id}`)
-  const changed = JSON.stringify(profile.clues) !== JSON.stringify(quote.clues)
+  const previous = previousProfiles[quote.id]
   return { ...quote, difficulty: profile.difficulty, clues: profile.clues,
-    ...(changed ? { revision: 2, previousClues: quote.clues, clueRationale: `Reviewed Easy clues cross familiar anchors: ${profile.audit?.anchors.join(', ')}. Bounded propagation uses short high-frequency words with at most two unknown symbols; no quote-recognition corpus is used.` } : {}) }
+    ...(previous ? { revision: 3, previousClues: { 1: quote.clues, 2: previous },
+      clueRationale: `${quote.clueRationale} One additional previously reviewed anchor supports Easy without revealing the whole deduction route.` } : {}) }
 })

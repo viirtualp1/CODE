@@ -1,13 +1,20 @@
 import { clone, createPuzzle, validSession } from './cipher'
 import type { Puzzle, Session, Snapshot } from './cipher'
-/** Only the published v1 -> reviewed clues v2 transition is compatible; answers/seeds stay identical. */
-export function migrateClues(puzzle: Puzzle, value: unknown): Session | null {
-  if (puzzle.quote.revision !== 2 || !puzzle.quote.previousClues) return null
-  const previous = createPuzzle({ ...puzzle.quote, revision: 1, clues: puzzle.quote.previousClues })
+/** Only explicitly recorded clue revisions are compatible; answers and seeds stay identical. */
+export function migrateClues(puzzle: Puzzle, value: unknown, revision = 1): Session | null {
+  const clues = puzzle.quote.previousClues?.[revision]
+  if (!clues) return null
+  const previous = createPuzzle({ ...puzzle.quote, revision, clues })
   if (!validSession(previous, value)) return null
   const reserved = new Set(Object.values(puzzle.clues))
   function upgrade(state: Snapshot): Snapshot {
-    const entries = Object.fromEntries(Object.entries(state.entries).filter(([key, letter]) => !reserved.has(letter) || puzzle.clues[Number(key)] === letter))
+    const complete = previous.symbols.every(symbol => state.entries[symbol] === previous.solution[symbol])
+    const entries = Object.fromEntries(Object.entries(state.entries).filter(([key, letter]) => {
+      const symbol = Number(key)
+      // Remove withdrawn automatic givens from unfinished snapshots, never a player's guess or hint.
+      if (!complete && previous.clues[symbol] && !puzzle.clues[symbol]) return false
+      return !reserved.has(letter) || puzzle.clues[symbol] === letter
+    }))
     Object.assign(entries, puzzle.clues)
     return { entries, hints: state.hints.filter(symbol => !puzzle.clues[symbol]) }
   }

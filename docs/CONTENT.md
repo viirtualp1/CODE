@@ -110,3 +110,8 @@ No answers, excerpt boundaries, sources or numeric seeds changed. src/data/puzzl
 The 40 Easy clue sets are supersets of their previous givens and pass the independent common-word propagation route described in PUZZLE_ENGINE.md. Profiles store audit version/work/steps/anchor metadata; tests rerun the actual deductions against the broad independent TSVs rather than trusting these metadata. Old revision-1 sessions migrate explicitly to revision 2 without changing their answers. All other records remain revision 1. Medium/Hard labels still require human calibration; frequency/word patterns do not prove universal uniqueness.
 
 Frequency data: Robyn Speer, wordfreq, pinned commit 912caf64b657478d1dff1138efdc078947d54bb1, derived lists under CC BY-SA 4.0. Attribution, source checksums, filtering and upstream NOTICE are in scripts/lexicons/README.md. Lists are used by tests/editorial tools only, not shipped in the game bundle and not fetched at runtime.
+
+
+## Sparse clue revision — 0.4.1
+
+Supersedes the expanded-clue policy above at the user's request. Keep reviewed difficulty labels (20 Easy per language), restore original authored givens, and retain only the first additional previously reviewed anchor for Easy. Hamlet therefore starts with W/E/K (three clues), rather than nine or the original two. Medium/Hard retain their original givens. The prior forty expanded arrays remain in legacy-clues-v2.json exclusively for explicit revision compatibility; current profiles have no stale solved-audit metadata. No quote text, source, numbering or cipher seed changes. Difficulty is intentionally editorial and more demanding; the word-frequency diagnostic is not a certification gate.

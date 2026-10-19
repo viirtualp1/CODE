@@ -30,7 +30,7 @@ export function parseBackup(text: string, puzzles: readonly Puzzle[]): ParsedBac
     if (!item || typeof item.id !== 'string' || !/^[a-z]+(?:-[a-z]+)+$/.test(item.id) || item.id.length > 160 || seen.has(item.id) || item.version !== 1 || !Number.isInteger(item.revision) || item.revision < 1) throw new Error('Invalid backup record')
     seen.add(item.id)
     const puzzle = puzzles.find(p => p.quote.id === item.id)
-    if (!puzzle || (item.revision !== puzzle.quote.revision && !(item.revision === 1 && puzzle.quote.previousClues))) { unavailable++; continue }
+    if (!puzzle || (item.revision !== puzzle.quote.revision && !puzzle.quote.previousClues?.[item.revision])) { unavailable++; continue }
     const session = decodeSession(puzzle, item)
     if (!session) throw new Error('Corrupt puzzle progress')
     if (progressStatus(puzzle, session) !== 'new') sessions[item.id] = session

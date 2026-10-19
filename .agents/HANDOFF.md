@@ -2,7 +2,7 @@
 
 A functional, local-first cryptogram game built with Vue 3, TypeScript, Vite, Pinia, SCSS and IndexedDB
 
-Current revision: 0.4.0.
+Current revision: 0.4.1.
 
 Working directory: `/Users/virtualp1/Documents/personal/CODE`. All subsequent changes belong here.
 
@@ -26,7 +26,7 @@ Open the local address printed by Vite. Production preview is needed to test ser
 1. Read .agents/AGENTS.md and docs/PRODUCT.md, docs/DESIGN.md, docs/PUZZLE_ENGINE.md.
 2. Run npm test and npm run build.
 3. Keep the current boundary: no advanced generator, remote quote API, statistics or Android packaging.
-4. The 200 sourced quotes include 20 Easy per language with fixed clues and a bounded common-word deduction audit. Medium/Hard remain editorial. The audit is not an exhaustive uniqueness proof or measured human difficulty; later work can broaden solver evaluation and playtest calibration without adding a runtime generator.
+4. The 200 sourced quotes include 20 Easy per language with sparse authored clues plus at most one extra reviewed anchor. All levels are editorial; the user reversed the earlier easy-solver gate in favour of a more demanding game. The common-word audit is diagnostic only. The audit is not an exhaustive uniqueness proof or measured human difficulty; later work can broaden solver evaluation and playtest calibration without adding a runtime generator.
 
 ## Working behavior
 
@@ -150,3 +150,12 @@ Desktop quote rows/attribution are centered. A ResizeObserver sets a bounded wor
 ## Optical desktop alignment
 
 Following user feedback, centerDesktop measures the entire game-column rather than only the cipher. It places the quote, attribution, toolbar and keyboard as one composition, 2vh (maximum 24px) above the viewport midpoint. Existing top/bottom clamps and horizontal widths remain. Phone fitting and keyboard geometry are unchanged. Verify one roomy desktop, one short laptop window and one phone; no corpus-wide layout sweep is needed for this offset change.
+
+
+## Difficulty reversal and mixed progression — 0.4.1 (current)
+
+The user found expanded Easy profiles too trivial and requested almost-original difficulty and more mixing of levels. Current clue-profiles.json uses authored givens plus at most one earlier-reviewed extra letter in Easy; Medium/Hard use authored givens. Keep labels/counts stable. Solver propagation is no longer an acceptance gate; content:audit is diagnostic and --prepare rejects automatic expansion. Fairness tests retain ambiguity/budget/pattern cases and sparse-clue invariants rather than re-solving the corpus.
+
+legacy-clues-v2.json stores the 40 expanded clue arrays for compatibility. Those quotes now have revision 3 and previousClues:{1:original,2:expanded}. The same decoder handles storage and backups. Withdrawn automatic givens disappear from unfinished snapshots only; actual guesses/hints remain. Completed snapshots keep all answers. Restart/new sessions use sparse givens. Database schema/envelope stay 1. Focused migration cases cover Hamlet and Pushkin, revision 1 and 2, history/hints and completion.
+
+Next puzzle uses stable shuffled ID order, with unfinished different-difficulty/different-author preference, then different level, another author, or any remaining entry. It skips completed entries, wraps after all are complete and handles a single entry. Collection numbering and manual difficulty filters remain stable. No new shuffle preference, schema or recent-history system is needed.

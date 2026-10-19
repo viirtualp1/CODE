@@ -71,7 +71,7 @@ export function decodeSession(puzzle: Puzzle, value: unknown): Session | null {
   const record = value as SavedSession
   if (record.version !== 1) return null
   if (record.revision === puzzle.quote.revision) return validSession(puzzle, record.session) ? clone(record.session) : null
-  return record.revision === 1 ? migrateClues(puzzle, record.session) : null
+  return migrateClues(puzzle, record.session, record.revision)
 }
 export async function saveSession(puzzle: Puzzle, session: Session) {
   await writeRecord(`puzzle:${puzzle.quote.id}`, { version: 1, revision: puzzle.quote.revision, session })

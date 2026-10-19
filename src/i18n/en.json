@@ -127,7 +127,7 @@
   "progress.complete": "Completed",
   "noPuzzles": "No puzzles match these filters.",
   "clearFilters": "Clear filters",
-  "difficultyHelp": "Easy gives more starting letters and uses short, familiar words as stepping stones. Medium asks for more pattern reasoning. Hard can include rarer vocabulary and literary phrasing. Knowing the original quote is never required for Easy.",
+  "difficultyHelp": "Easy keeps a few useful starting letters. Medium and Hard reveal less and ask for more pattern reasoning, vocabulary and context. Literary wording can be challenging at every level; hints are always optional.",
   "backup.title": "Your progress",
   "backup.description": "Keep a backup file to restore your puzzles, hints and move history in both languages. The file stays with you; nothing is uploaded.",
   "backup.export": "Export progress",
