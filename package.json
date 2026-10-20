@@ -12,7 +12,8 @@
     "release:check": "node scripts/release.mjs check",
     "release:notes": "node scripts/release.mjs notes",
     "content:audit": "node scripts/audit-content.mjs",
-    "content:review": "node scripts/review-content.mjs"
+    "content:review": "node scripts/review-content.mjs",
+    "content:review:ci": "node scripts/review-ci.mjs plan && node scripts/review-ci.mjs run"
   },
   "dependencies": {
     "@fontsource/manrope": "^5.2.8",

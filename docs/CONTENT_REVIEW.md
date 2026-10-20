@@ -16,3 +16,32 @@ Interpret statuses carefully:
 - inconclusive: a search limit or vocabulary gap prevents a stronger statement. Never silently convert this to success or failure.
 
 Review flags identify alternative readings, dictionary gaps, reached limits, deeper search (four or more branch choices) and absent dictionary solutions. These are editorial signals, not calibrated difficulty ratings. Keep the sparse clue policy; do not expand clues until a solver can finish. Human playtesting still decides whether difficulty feels interesting.
+
+## Automatic GitHub reports
+
+The CI workflow includes a **Content review** job on pushes and pull requests. Its cheap change-selection step runs first; installing dictionaries/dependencies and running the solver happen only for relevant changes. UI, SCSS, ordinary release notes, storage, documentation and gameplay sequencing changes do not trigger this analysis. Normal CI tests/builds still run as before.
+
+- New/changed quote text, alphabet/locale, starting clues or difficulty: review only those current puzzle IDs. Compare the actual exported content against the base commit, so a metadata-only edit or clue reordering does not cause a solver run. Deleted entries are reported without solving removed content.
+- Analyzer/cipher/alphabet code, review tooling or frequency TSV changes: add just two representative samples (English and Russian), not the whole collection. Changed quote IDs are included as well, without duplicates.
+- No usable comparison baseline: report that limitation and review only representative samples. No automatic full-corpus fallback.
+
+For a push, comparison uses the previous commit supplied by GitHub. For a pull request it uses the PR base commit and checked-out merge result. A new branch uses its merge base with origin/main. Snapshot extraction is limited to bundled data files; no separate checkout or progress data is modified.
+
+Open the run under GitHub → Actions → CI → Summary. The summary shows stable language/puzzle numbers, authors, search results/flags and expandable source/candidate texts. Download **code-content-review** from **Artifacts** for report.json and report.md (retained 30 days). The report is attached to the exact commit and does not post PR comments or change content.
+
+Multiple candidates, vocabulary gaps and budget exhaustion are manual-review signals, not automatic red CI. A broken script, invalid content or failed execution still fails the job. A single finite-dictionary result is not human-language certification.
+
+## Local use
+
+```sh
+# Two representative examples; inspect the JSON printed in the terminal.
+npm run content:review
+
+# One chosen puzzle, with full source and candidate texts saved locally.
+npm run content:review -- --id=hamlet-possibility --out=work/review.json
+
+# Commit-scoped selection, using the current branch against origin/main by default.
+npm run content:review:ci
+```
+
+The commit-scoped command reads committed changes; use the direct command for edits that are not committed yet. Generated CI-style files are in work/ci-content-review/. For later implementation sessions: after changing analyzer logic, run the two samples; after adding/changing quote inputs, review just those IDs. UI-only changes need no content-review run. Do not use --all unless explicitly requested.
