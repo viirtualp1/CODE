@@ -324,6 +324,7 @@ p, h1, h2, h3 { margin: 0; }
   .cipher-board { justify-content: center; }
   .attribution, .completion-note { justify-content: center; }
   .puzzle-meta { font-size: 1rem; gap: 20px; right: 24px; min-height: 64px; }
+  .feedback-message { text-align: center; }
   .feedback-message:empty { min-height: 0; margin: 0; }
 }
 
