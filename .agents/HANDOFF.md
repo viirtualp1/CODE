@@ -2,7 +2,7 @@
 
 A functional, local-first cryptogram game built with Vue 3, TypeScript, Vite, Pinia, SCSS and IndexedDB
 
-Current revision: 0.4.1.
+Current revision: 0.5.0.
 
 Working directory: `/Users/virtualp1/Documents/personal/CODE`. All subsequent changes belong here.
 
@@ -61,7 +61,7 @@ One game view and four local hash destinations do not require a router dependenc
 
 History snapshots include both guesses and hint locks, capped at 100 steps. New edits clear redo. A hint may displace a conflicting guessed assignment; one undo restores both. Structural duplicate-letter rejection is not a correctness check.
 
-IndexedDB database `code-cryptogram`, schema 1, store `records`: puzzle:<id> → {version:1, revision, session}; preferences v2 → theme/haptics/currentId/language/lastPuzzle per language. Unversioned preferences migrate by their valid current puzzle; unsupported versions are ignored. Database and session envelopes remain version 1. Initial clues derive from source data, never storage. Selection, current occurrence, visible check marks, and dialogs are ephemeral; completion replaces the keyboard with Next puzzle. Undoing completion restores the keyboard. There is no view-mode state. When no blanks remain, initial selection falls back to an editable symbol so filled guesses remain keyboard-accessible. All writes serialize. Multiple browser tabs use last-writer-wins; cross-tab synchronization is outside this slice. Storage is per browser/origin, so changing host or preview port starts a separate local profile.
+IndexedDB database `code-cryptogram`, schema 2 (records preserved from schema 1), store `records`: puzzle:<id> → {version:1, revision, session}; preferences v2 → theme/haptics/currentId/language/lastPuzzle per language. Unversioned preferences migrate by their valid current puzzle; unsupported versions are ignored. Session envelopes remain version 1; database schema is 2. Initial clues derive from source data, never storage. Selection, current occurrence, visible check marks, and dialogs are ephemeral; completion replaces the keyboard with Next puzzle. Undoing completion restores the keyboard. There is no view-mode state. When no blanks remain, initial selection falls back to an editable symbol so filled guesses remain keyboard-accessible. All writes serialize. Updated tabs synchronize committed progress and atomically reject stale writes; see the 0.5.0 contract below. Preferences still use last-write semantics. Storage is per browser/origin, so changing host or preview port starts a separate local profile.
 
 ## Visual direction
 
@@ -134,7 +134,7 @@ App.vue owns four small hash destinations and responsive matchMedia state. AppDi
 Desktop quote rows/attribution are centered. A ResizeObserver sets a bounded workspace top offset from measured quote, toolbar, keyboard and feedback heights: whole quote/actions/keyboard group centered 2vh (capped at 24px) above the viewport midpoint if it fits, otherwise clamp to preserve top controls and input visibility. Metadata is 1rem on desktop. The observer never changes cipher state and disconnects on unmount. Phone fitting and keyboard geometry remain independent.
 
 
-## Current quality pass — 0.4.0
+## Earlier quality pass — 0.4.0
 
 - `publishedQuotes` preserves all 200 original records, answer text, IDs, order and numeric seeds. `clue-profiles.json` supplies reviewed difficulty and fixed clues: EN 20/55/25 and RU 20/50/30 Easy/Medium/Hard. Changed clues use quote revision 2 with `previousClues`; no database or session-envelope bump.
 - `engine/fairness.ts` is developer-only. `npm run content:audit` evaluates the 40 fixed Easy profiles with independent frequency dictionaries, pattern/one-to-one constraints and forced-letter propagation. Short familiar anchors allow at most two unknown symbols, a 200,000-candidate budget and no answer-corpus lookup. It does not branch over complete language solutions. `scripts/audit-content.mjs --prepare` is an explicit editorial operation; do not regenerate profiles during normal builds. Lexicons, source pin, transformation details and CC BY-SA attribution remain under scripts/lexicons and out of runtime/PWA assets.
@@ -159,3 +159,17 @@ The user found expanded Easy profiles too trivial and requested almost-original 
 legacy-clues-v2.json stores the 40 expanded clue arrays for compatibility. Those quotes now have revision 3 and previousClues:{1:original,2:expanded}. The same decoder handles storage and backups. Withdrawn automatic givens disappear from unfinished snapshots only; actual guesses/hints remain. Completed snapshots keep all answers. Restart/new sessions use sparse givens. Database schema/envelope stay 1. Focused migration cases cover Hamlet and Pushkin, revision 1 and 2, history/hints and completion.
 
 Next puzzle uses stable shuffled ID order, with unfinished different-difficulty/different-author preference, then different level, another author, or any remaining entry. It skips completed entries, wraps after all are complete and handles a single entry. Collection numbering and manual difficulty filters remain stable. No new shuffle preference, schema or recent-history system is needed.
+
+
+## Review, rhythm and protected saves — 0.5.0 (current)
+
+- `engine/content-review.ts` is a pure developer-only CSP search over full word-pattern domains. Shared-symbol intersections/forced bindings, most-constrained-word branching and frequency order produce complete candidate readings; explicit budgets cap work/nodes/depth/count. Status/flags distinguish alternatives, finite-dictionary single/no solution, missing words and incomplete search. Frequency does not establish grammatical plausibility. No clue/content mutation or runtime import. `npm run content:review -- --id=hamlet-possibility --out=work/review.json`; default samples Hamlet/Pushkin, --all explicit only. See docs/CONTENT_REVIEW.md. The existing limited content:audit remains diagnostic.
+- `collection.ts` uses bounded length-adjusted editorial effort and a seven-step calm/calm/peak/recovery curve indexed by completed count. Author penalty/shuffled proximity are soft weights. Same-level runs are intentional, unlike 0.4.1's mandatory different-level preference. No new persisted history, language mixing, renumbering or profiling. Standard fallback/all-complete/single-entry behavior remains.
+- Native IndexedDB schema 2 reuses records and forces old-version connections to close; schema-1 code cannot reopen writes and bypass concurrency checks. No session envelope, preferences, quote revision or backup format change. Older builds must update before writing after upgrade; rollback must retain schema-2 support.
+- `storage.ts` observes exact puzzle envelopes per tab. One transaction reads/checks all protected puzzle keys before any put, rejecting stale batches with ProgressConflict. Idempotent identical writes are safe. Only commit updates baselines and broadcasts keys. Preferences stay last-write; the primary invariant is no lost puzzle progress.
+- Pinia listens for optional BroadcastChannel commits and refreshes on visible return. Without pending writes/errors/restores it stages reads and adopts matching memory/baselines together. Partial failures cannot update compare baselines. Unchanged refreshes retain selection/check marks; external changes to other puzzles do not disturb the current board.
+- True conflict retains the unsaved local branch, latches autosaves and blocks flush/reload even after later preferences writes. Play and memory export remain usable. Settings requires explicit discard acknowledgement before syncProgress(true) adopts saved progress and clears the latch/failed queue. No automatic history merge or overwrite. Recovery failure retains the local copy and allows retry. Backup restore also uses the transaction guard.
+- Focused tests cover English/Russian alternatives, finite-search/lexicon limits, deeper branching, calm/peak/recovery selection, two isolated tab modules, atomic restore rollback, rapid own writes, explicit recovery, optional notification failure and schema-1 upgrade preservation/old-writer closure. Browser checks use a disposable origin; no need to sweep the corpus.
+- Work belongs on refine-puzzle-flow-and-saves. Push the feature branch; no main merge or release tag is requested.
+
+Final 0.5.0 validation: 290 Vitest + 3 release tests, TypeScript/release checks and production PWA build passed. Two developer review samples and two browser tab scenarios were sufficient; no corpus sweep. Foreground reads defer adoption if a local move occurs, so the first key is never dropped. See docs/QA.md.

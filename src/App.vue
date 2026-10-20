@@ -39,6 +39,7 @@ let pageOpenedHere = false
 const phoneQuery = window.matchMedia('(max-width: 700px), (max-height: 580px) and (orientation: landscape)')
 const isPhone = ref(phoneQuery.matches)
 const isPage = computed(() => isPhone.value && dialog.value !== null && dialog.value in pages)
+function refreshVisibleProgress() { if (document.visibilityState === 'visible') game.refreshProgress() }
 function viewportChanged() { isPhone.value = phoneQuery.matches }
 function openPage(page: Page) { pageOpenedHere = true; window.location.hash = pages[page]; syncPage() }
 function syncPage() {
@@ -138,8 +139,8 @@ onMounted(() => {
   centerDesktop()
 })
 onBeforeUnmount(() => { layoutObserver?.disconnect(); cancelAnimationFrame(layoutFrame); window.removeEventListener('resize', centerDesktop) })
-onMounted(() => { phoneQuery.addEventListener('change', viewportChanged); syncPage(); window.addEventListener('hashchange', syncPage); void game.initialize(); window.addEventListener('keydown', keyboard, true); systemDark.addEventListener('change', applyTheme) })
-onBeforeUnmount(() => { phoneQuery.removeEventListener('change', viewportChanged); window.removeEventListener('hashchange', syncPage); window.removeEventListener('keydown', keyboard, true); systemDark.removeEventListener('change', applyTheme) })
+onMounted(() => { window.addEventListener('focus', refreshVisibleProgress); document.addEventListener('visibilitychange', refreshVisibleProgress); phoneQuery.addEventListener('change', viewportChanged); syncPage(); window.addEventListener('hashchange', syncPage); void game.initialize(); window.addEventListener('keydown', keyboard, true); systemDark.addEventListener('change', applyTheme) })
+onBeforeUnmount(() => { window.removeEventListener('focus', refreshVisibleProgress); document.removeEventListener('visibilitychange', refreshVisibleProgress); phoneQuery.removeEventListener('change', viewportChanged); window.removeEventListener('hashchange', syncPage); window.removeEventListener('keydown', keyboard, true); systemDark.removeEventListener('change', applyTheme) })
 </script>
 
 <template>
@@ -174,7 +175,7 @@ onBeforeUnmount(() => { phoneQuery.removeEventListener('change', viewportChanged
         </div>
         <div class="status-region sr-only" role="status" aria-live="polite" aria-atomic="true">{{ game.message }}</div>
         <p class="feedback-message">{{ game.feedback }}</p>
-        <div v-if="game.storageError" class="storage-warning" role="alert">{{ t('storageWarning') }}</div>
+        <div v-if="game.storageError" class="storage-warning" :class="{ 'has-conflict': game.storageConflict }" role="alert"><button v-if="game.storageConflict" class="conflict-settings" @click="openPage('settings')">{{ t('progressConflict') }} <span>{{ t('settings') }}</span></button><template v-else>{{ t('storageWarning') }}</template></div>
       </main>
     </div>
 

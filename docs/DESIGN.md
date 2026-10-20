@@ -78,3 +78,10 @@ A completed quotation is the reward: no new heading, score, confetti or success 
 Inside Collection, show the work as well as the author so repeated authors are distinguishable. Add one native status selector and a Continue shortcut when a started puzzle exists. Status is based on assignments/hints/history; a cleared puzzle with undo remains started, while Restart makes it new. Difficulty and status filters combine, with a clear-filter empty state. No extra gameplay chrome or numerical progress dashboard.
 
 Backup controls belong in Settings under Your progress. Export and Import have normal 44px+ controls. The file input is confined to Settings and is never a gameplay typing transport. Import shows a date and compact add/replace/keep/unavailable summary; replacement is unchecked by default. Confirm only when something will change. While committing, disable dismissal, navigation and duplicate operations. Failure is visible and recoverable, with the loaded file retained for retry; never reload/discard local progress. Long settings/preview content uses the existing internal screen/window scroll.
+
+
+## Exceptional cross-tab conflict — 0.5.0
+
+Ordinary play gains no controls or status labels. Successful cross-tab synchronization stays quiet and keeps focus/check marks unless the current session actually changed. On a genuine conflicting save, the existing storage-alert area becomes a 44px+ Settings link. Keep it above the quote on phones without consuming gameplay height. The local copy remains playable/exportable in memory.
+
+Settings shows a short conflict explanation beside the existing backup controls. Loading saved progress requires a checkbox explicitly acknowledging replacement of this tab's unsaved moves; export remains available first. Do not automatically merge incompatible undo histories or discard the local branch. Import cannot override a pending conflict. Long recovery content follows the existing internal screen/dialog scroll rules.

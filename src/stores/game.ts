@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { computed, onScopeDispose, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { quotes } from '../data/puzzles'
 import { progressStatus } from '../engine/collection'
@@ -6,7 +6,7 @@ import { planRestore } from '../services/backup'
 import type { ParsedBackup } from '../services/backup'
 import { createPuzzle, edit, initialSession, isComplete, isLocked, mistakes, nextUnanswered, travel } from '../engine/cipher'
 import type { Session } from '../engine/cipher'
-import { decodeSession, readRecord, saveSession, writeRecord, writeRecords } from '../services/storage'
+import { acknowledgeProgressReload, decodeSession, observeProgressRecord, ProgressConflict, readRecord, saveSession, subscribeProgress, writeRecord, writeRecords } from '../services/storage'
 import { deviceLocale, i18n, isLocale, t } from '../i18n'
 import type { Locale } from '../i18n'
 import type { Preferences, Theme } from '../services/storage'
@@ -29,6 +29,9 @@ export const useGameStore = defineStore('game', () => {
   const feedback = ref('')
   const checked = ref<number[]>([])
   const storageError = ref(false)
+  const storageConflict = ref(false)
+  const syncing = ref(false)
+  const changedKeys = new Set<string>()
   const pendingSaves = ref(0)
   const puzzle = computed(() => puzzles.find(p => p.quote.id === currentId.value)!)
   const session = computed(() => sessions.value[currentId.value]!)
@@ -41,16 +44,17 @@ export const useGameStore = defineStore('game', () => {
   }
   async function persist(job: Promise<unknown>) {
     pendingSaves.value++
-    try { await job } catch { storageError.value = true }
-    finally { pendingSaves.value-- }
+    try { await job } catch (error) { storageError.value = true; if (error instanceof ProgressConflict) storageConflict.value = true }
+    finally { pendingSaves.value--; if (!pendingSaves.value) void syncProgress() }
   }
-  function save() { void persist(saveSession(puzzle.value, session.value)) }
+  function save() { if (!storageConflict.value) void persist(saveSession(puzzle.value, session.value)) }
   function savePreferences() { void persist(writeRecord('preferences', { version: 2, theme: theme.value, haptics: haptics.value, currentId: currentId.value, language: language.value, lastPuzzle: { ...lastPuzzle.value, [language.value]: currentId.value } })) }
   async function initialize() {
     try {
-      const [preferences, ...records] = await Promise.all([readRecord('preferences'), ...puzzles.map(p => readRecord(`puzzle:${p.quote.id}`))])
+      const [preferences, ...records] = await Promise.all([readRecord('preferences'), ...puzzles.map(p => readRecord(`puzzle:${p.quote.id}`, false))])
       const upgrades: Promise<void>[] = []
       puzzles.forEach((p, i) => {
+        observeProgressRecord(`puzzle:${p.quote.id}`, records[i])
         const decoded = decodeSession(p, records[i])
         sessions.value[p.quote.id] = decoded ?? initialSession(p)
         if (decoded && (records[i] as { revision?: number })?.revision !== p.quote.revision) upgrades.push(persist(saveSession(p, decoded)))
@@ -78,6 +82,7 @@ export const useGameStore = defineStore('game', () => {
     message.value = t(complete.value ? 'puzzleDecoded' : 'selectPrompt')
     selected.value = startingSelection()
     ready.value = true
+    void syncProgress()
   }
   function tick() { if (haptics.value && typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(8) }
   function select(symbol: number, pulse = true) {
@@ -133,7 +138,7 @@ export const useGameStore = defineStore('game', () => {
     savePreferences()
   }
   async function restoreProgress(backup: ParsedBackup, replaceExisting = false) {
-    if (!ready.value || restoring.value) return false
+    if (!ready.value || restoring.value || syncing.value || storageConflict.value) return false
     restoring.value = true
     const controller = new AbortController()
     const timeout = setTimeout(() => controller.abort(new Error('Restore timed out')), 30_000)
@@ -154,10 +159,46 @@ export const useGameStore = defineStore('game', () => {
       selected.value = startingSelection(); checked.value = []; feedback.value = ''
       message.value = t('backup.restored'); storageError.value = false
       return true
-    } catch { return false }
-    finally { clearTimeout(timeout); restoring.value = false }
+    } catch (error) { if (error instanceof ProgressConflict) { storageConflict.value = true; storageError.value = true }; return false }
+    finally { clearTimeout(timeout); restoring.value = false; void syncProgress() }
   }
+  async function syncProgress(reload = false) {
+    if (!ready.value || syncing.value || restoring.value || pendingSaves.value || (!reload && (storageError.value || !changedKeys.size))) return false
+    syncing.value = true
+    const keys = reload ? puzzles.map(p => `puzzle:${p.quote.id}`) : [...changedKeys]
+    keys.forEach(key => changedKeys.delete(key))
+    const before = new Map(keys.map(key => [key, JSON.stringify(sessions.value[key.slice(7)])]))
+    try {
+      const records = await Promise.all(keys.map(key => readRecord(key, false)))
+      // Typing during a foreground refresh stays responsive; never adopt over a new local move.
+      if ((!reload && storageError.value) || pendingSaves.value || keys.some(key => before.get(key) !== JSON.stringify(sessions.value[key.slice(7)]))) {
+        keys.forEach(key => changedKeys.add(key)); return false
+      }
+      let currentChanged = false
+      keys.forEach((key, index) => {
+        const id = key.slice(7), p = puzzles.find(p => p.quote.id === id)
+        if (p) {
+          const session = decodeSession(p, records[index]) ?? initialSession(p)
+          observeProgressRecord(key, records[index])
+          if (JSON.stringify(session) !== JSON.stringify(sessions.value[id])) { sessions.value[id] = session; if (id === currentId.value) currentChanged = true }
+        }
+      })
+      if (currentChanged || reload) { selected.value = startingSelection(); checked.value = []; feedback.value = '' }
+      if (reload) { acknowledgeProgressReload(); storageConflict.value = false; storageError.value = false }
+      if (currentChanged || reload) message.value = t('progressSynced')
+      return true
+    } catch { storageError.value = true; return false }
+    finally { syncing.value = false; if (changedKeys.size && !storageError.value) void syncProgress() }
+  }
+  function refreshProgress() {
+    if (!ready.value || storageError.value) return
+    puzzles.forEach(p => changedKeys.add(`puzzle:${p.quote.id}`)); void syncProgress()
+  }
+  const unsubscribe = subscribeProgress(keys => {
+    keys.forEach(key => changedKeys.add(key)); void syncProgress()
+  })
+  onScopeDispose(unsubscribe)
   function setTheme(value: Theme) { theme.value = value; savePreferences() }
   function setHaptics(value: boolean) { haptics.value = value; tick(); savePreferences() }
-  return { language, collection, resumePointers, setLanguage, ready, restoring, restoreProgress, currentId, sessions, selected, theme, haptics, message, feedback, checked, storageError, pendingSaves, puzzle, session, complete, locked, hintTarget, initialize, select, apply, eraseChecked, revealHint, history, check, switchPuzzle, restart, setTheme, setHaptics }
+  return { storageConflict, syncing, syncProgress, refreshProgress, language, collection, resumePointers, setLanguage, ready, restoring, restoreProgress, currentId, sessions, selected, theme, haptics, message, feedback, checked, storageError, pendingSaves, puzzle, session, complete, locked, hintTarget, initialize, select, apply, eraseChecked, revealHint, history, check, switchPuzzle, restart, setTheme, setHaptics }
 })

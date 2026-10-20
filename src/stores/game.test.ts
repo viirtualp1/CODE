@@ -220,3 +220,81 @@ it('restores both resume pointers on a fresh device without replacing its langua
   await vi.waitFor(() => expect(resumed.pendingSaves).toBe(0))
   vi.restoreAllMocks()
 })
+
+it('retains unsaved conflict moves for export, suppresses further writes, and reloads only on explicit recovery', async () => {
+  const { initialSession } = await import('../engine/cipher')
+  vi.spyOn(storage, 'readRecord').mockResolvedValue(undefined)
+  const game = useGameStore(); await game.initialize()
+  const save = vi.spyOn(storage, 'saveSession').mockRejectedValue(new storage.ProgressConflict(`puzzle:${game.currentId}`))
+  const first = game.selected!
+  game.apply(game.puzzle.solution[first]!)
+  await vi.waitFor(() => expect(game.pendingSaves).toBe(0))
+  expect(game.storageConflict).toBe(true)
+  expect(game.session.entries[first]).toBe(game.puzzle.solution[first])
+  const second = game.puzzle.symbols.find(symbol => !game.puzzle.clues[symbol] && symbol !== first)!
+  game.select(second); game.apply(game.puzzle.solution[second]!)
+  expect(save).toHaveBeenCalledTimes(1)
+  expect(game.session.entries[second]).toBe(game.puzzle.solution[second])
+  game.refreshProgress() // Background sync must not discard the local copy.
+  expect(game.session.entries[first]).toBe(game.puzzle.solution[first])
+  expect(await game.syncProgress(true)).toBe(true)
+  expect(game.session).toEqual(initialSession(game.puzzle))
+  expect(game.storageConflict).toBe(false)
+  expect(game.storageError).toBe(false)
+  vi.restoreAllMocks()
+})
+
+it('retains selection and explicit check marks on an unchanged refresh, clearing them only for changed current progress', async () => {
+  const records = new Map<string, unknown>()
+  vi.spyOn(storage, 'readRecord').mockImplementation(async key => records.get(key))
+  vi.spyOn(storage, 'saveSession').mockImplementation(async (puzzle, session) => { records.set(`puzzle:${puzzle.quote.id}`, { version: 1, revision: puzzle.quote.revision, session: JSON.parse(JSON.stringify(session)) }) })
+  const game = useGameStore(); await game.initialize()
+  const symbol = game.selected!, wrong = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'].find(letter => letter !== game.puzzle.solution[symbol] && !Object.values(game.session.entries).includes(letter))!
+  game.apply(wrong); game.check()
+  await vi.waitFor(() => expect(game.pendingSaves).toBe(0))
+  const checked = [...game.checked]
+  game.refreshProgress(); await vi.waitFor(() => expect(game.syncing).toBe(false))
+  expect(game.selected).toBe(symbol)
+  expect(game.checked).toEqual(checked)
+  const record = records.get(`puzzle:${game.currentId}`) as { session: { entries: Record<number, string> } }
+  record.session.entries[symbol] = game.puzzle.solution[symbol]!
+  game.refreshProgress(); await vi.waitFor(() => expect(game.syncing).toBe(false))
+  expect(game.session.entries[symbol]).toBe(game.puzzle.solution[symbol])
+  expect(game.checked).toEqual([])
+  vi.restoreAllMocks()
+})
+
+it('does not advance observed snapshots or replace memory after a partially failed refresh', async () => {
+  const read = vi.spyOn(storage, 'readRecord').mockResolvedValue(undefined)
+  const observe = vi.spyOn(storage, 'observeProgressRecord')
+  const game = useGameStore(); await game.initialize()
+  const before = JSON.stringify(game.sessions)
+  observe.mockClear()
+  read.mockImplementation(async key => { if (key === `puzzle:${game.currentId}`) throw new Error('Interrupted read'); return undefined })
+  game.refreshProgress(); await vi.waitFor(() => expect(game.syncing).toBe(false))
+  expect(game.storageError).toBe(true)
+  expect(observe).not.toHaveBeenCalled()
+  expect(JSON.stringify(game.sessions)).toBe(before)
+  vi.restoreAllMocks()
+})
+
+it('accepts the first move during a foreground refresh without adopting a stale read over it', async () => {
+  const records = new Map<string, unknown>()
+  const read = vi.spyOn(storage, 'readRecord').mockImplementation(async key => records.get(key))
+  vi.spyOn(storage, 'saveSession').mockImplementation(async (puzzle, session) => { records.set(`puzzle:${puzzle.quote.id}`, { version: 1, revision: puzzle.quote.revision, session: JSON.parse(JSON.stringify(session)) }) })
+  const game = useGameStore(); await game.initialize()
+  let finishRead!: (value: unknown) => void, paused = false
+  read.mockImplementation(async key => {
+    if (key === `puzzle:${game.currentId}` && !paused) { paused = true; return new Promise(resolve => { finishRead = resolve }) }
+    return records.get(key)
+  })
+  game.refreshProgress()
+  expect(game.syncing).toBe(true)
+  const symbol = game.selected!
+  expect(game.apply(game.puzzle.solution[symbol]!)).toBe(true)
+  finishRead(undefined)
+  await vi.waitFor(() => { expect(game.syncing).toBe(false); expect(game.pendingSaves).toBe(0) })
+  expect(game.session.entries[symbol]).toBe(game.puzzle.solution[symbol])
+  expect(game.storageConflict).toBe(false)
+  vi.restoreAllMocks()
+})

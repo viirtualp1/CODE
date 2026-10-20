@@ -28,3 +28,38 @@ jobs:
           name: code-web
           path: dist/
           retention-days: 7
+  content-review:
+    name: Content review
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Select relevant changes
+        id: scope
+        env:
+          REVIEW_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          REVIEW_HEAD: ${{ github.sha }}
+        run: node scripts/review-ci.mjs plan
+      - uses: actions/setup-node@v7
+        if: steps.scope.outputs.run == 'true'
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install review dependencies
+        if: steps.scope.outputs.run == 'true'
+        run: npm ci
+      - name: Review selected puzzles
+        if: steps.scope.outputs.run == 'true'
+        run: node scripts/review-ci.mjs run
+      - uses: actions/upload-artifact@v7
+        if: success() && steps.scope.outputs.run == 'true'
+        with:
+          name: code-content-review
+          path: |
+            work/ci-content-review/report.json
+            work/ci-content-review/report.md
+          if-no-files-found: error
+          retention-days: 30
