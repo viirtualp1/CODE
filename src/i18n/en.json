@@ -147,5 +147,10 @@
   "backup.restore": "Restore progress",
   "backup.restoring": "Restoring…",
   "backup.restored": "Progress restored.",
-  "backup.restoreFailure": "Could not save the restored progress. Nothing was changed. Keep the backup and try again."
+  "backup.restoreFailure": "Could not save the restored progress. Nothing was changed. Keep the backup and try again.",
+  "progressConflict": "Progress changed in another tab. This copy is not saved.",
+  "progressConflictDetails": "Another tab saved newer progress. Your moves here remain in memory. Export this copy below before loading the saved progress; loading replaces unsaved moves in this tab.",
+  "progressDiscardConfirm": "I am ready to replace this tab’s unsaved moves with the saved progress.",
+  "progressLoadSaved": "Load saved progress",
+  "progressSynced": "Progress updated from this device."
 }

@@ -353,3 +353,7 @@ p, h1, h2, h3 { margin: 0; }
 @media (max-height: 580px) and (orientation: landscape) {
   .decoded-quote { font-size: min(1.75rem, 32px); line-height: 1.25; }
 }
+
+.storage-warning.has-conflict { padding: 0; }
+.conflict-settings { display: block; width: 100%; min-height: 44px; padding: 4px; text-align: left; color: var(--ink); font: inherit; line-height: 1.4; span { text-decoration: underline; } }
+.backup-conflict { padding: 12px; margin-top: 16px; border: 1px solid var(--danger); font-size: .75rem; line-height: 1.6; }

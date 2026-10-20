@@ -50,4 +50,6 @@ Read docs/PRODUCT.md, docs/DESIGN.md and docs/PUZZLE_ENGINE.md before changing b
 ## Handoff
 Record current behavior, known limitations, validation and next steps in .agents/HANDOFF.md. Keep quotes' sources and reuse rationale attached to their data. Storage migrations require a version bump and explicit compatibility handling.
 
-- Next puzzle uses stable shuffled ID order, preferring a different difficulty and author while skipping completed entries; it no longer prefers the same difficulty.
+- Next puzzle balances difficulty/length against a calm/challenge/recovery effort curve, with a small author-repeat penalty and stable shuffled ties. Same-difficulty runs are allowed; skip completed entries. Do not introduce profiling or new gameplay controls.
+- Developer-only content-review.ts reports bounded dictionary alternatives and search/coverage limits. Keep frequency rankings separate from grammatical correctness; never mutate clues or certify natural-language uniqueness. Default reviews sample two quotes; no full sweep is required.
+- Schema 2 protects puzzle writes with atomic observed-snapshot checks; keep envelope/backup compatibility. Conflict leaves local memory exportable and blocks autosave/update reload until explicit saved-state recovery. Notifications are optional; do not depend on them for safety.

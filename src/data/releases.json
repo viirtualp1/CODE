@@ -1,5 +1,23 @@
 [
   {
+    "version": "0.5.0",
+    "date": "2026-10-21",
+    "title": "A steadier flow",
+    "changes": [
+      "Puzzle selection balances length and difficulty, with calmer stretches between challenges.",
+      "Updated tabs share saved moves. Conflicting edits stay available for export instead of overwriting newer progress.",
+      "Earlier saves and portable backup files remain compatible."
+    ],
+    "ru": {
+      "title": "Более плавный ритм",
+      "changes": [
+        "Подбор пазлов учитывает длину и сложность, оставляя спокойные отрезки между более трудными задачами.",
+        "Обновлённые вкладки обмениваются сохранёнными ходами. При конфликте локальные ходы остаются доступны для экспорта и не затирают свежий прогресс.",
+        "Прежние сохранения и файлы резервных копий остаются совместимыми."
+      ]
+    }
+  },
+  {
     "version": "0.4.1",
     "date": "2026-10-20",
     "title": "More to decipher",

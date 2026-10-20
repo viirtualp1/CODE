@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { quotes } from '../data/puzzles'
 import { createPuzzle, edit, initialSession } from './cipher'
-import { nextPuzzleId, progressStatus } from './collection'
+import { nextPuzzleId, progressStatus, puzzleEffort } from './collection'
 const puzzles = quotes.filter(q => !q.locale).map(createPuzzle)
 const fresh = () => Object.fromEntries(puzzles.map(p => [p.quote.id, initialSession(p)]))
 describe('collection navigation', () => {
@@ -14,14 +14,27 @@ describe('collection navigation', () => {
     expect(progressStatus(p, edit(p, initial, symbol, p.solution[symbol]!, true).session)).toBe('started')
     expect(progressStatus(p, { ...initial, entries: { ...p.solution } })).toBe('complete')
   })
-  it('mixes difficulty and author in a stable order, skipping finished puzzles', () => {
-    const sessions = fresh(), first = puzzles[0]!
-    const id = nextPuzzleId(puzzles, sessions, first.quote.id), next = puzzles.find(p => p.quote.id === id)!
-    expect(next.quote.difficulty).not.toBe(first.quote.difficulty)
-    expect(next.quote.author).not.toBe(first.quote.author)
-    expect(nextPuzzleId(puzzles, sessions, first.quote.id)).toBe(id)
-    sessions[id]!.entries = { ...next.solution }
-    expect(nextPuzzleId(puzzles, sessions, first.quote.id)).not.toBe(id)
+  it('allows consecutive calm puzzles, then a peak and recovery, considering quote length', () => {
+    const fixtures = [
+      ['calm-a', 'Easy', 30], ['calm-b', 'Easy', 38], ['calm-c', 'Medium', 16],
+      ['medium-a', 'Medium', 55], ['medium-b', 'Medium', 95], ['hard-a', 'Hard', 50], ['hard-b', 'Hard', 95],
+    ].map(([id, difficulty, length], index) => createPuzzle({ ...quotes[0]!, id: String(id), author: `Author ${index}`, difficulty: difficulty as 'Easy' | 'Medium' | 'Hard', text: 'T'.repeat(Number(length)), clues: [] }))
+    const sessions = Object.fromEntries(fixtures.map(p => [p.quote.id, initialSession(p)]))
+    let current = fixtures[0]!
+    const effort: number[] = []
+    for (let step = 0; step < 4; step++) {
+      sessions[current.quote.id]!.entries = { ...current.solution }
+      const id = nextPuzzleId(fixtures, sessions, current.quote.id)
+      expect(nextPuzzleId(fixtures, sessions, current.quote.id)).toBe(id)
+      expect(sessions[id]!.entries).not.toEqual(fixtures.find(p => p.quote.id === id)!.solution)
+      current = fixtures.find(p => p.quote.id === id)!
+      effort.push(puzzleEffort(current))
+    }
+    expect(effort[0]).toBeLessThan(.4)
+    expect(effort[1]).toBeLessThan(.45)
+    expect(effort[2]).toBeGreaterThan(.65)
+    expect(effort[3]).toBeLessThan(effort[2]!)
+    expect(puzzleEffort(fixtures[3]!)).toBeLessThan(puzzleEffort(fixtures[4]!))
   })
   it('falls back to remaining difficulty and wraps when everything is complete', () => {
     const sessions = fresh(), first = puzzles[0]!, remaining = puzzles[1]!

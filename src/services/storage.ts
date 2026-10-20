@@ -7,11 +7,33 @@ export interface Preferences { version: 2; theme: Theme; haptics: boolean; curre
 export interface SavedSession { version: 1; revision: number; session: Session }
 let database: Promise<IDBDatabase> | undefined
 let queue: Promise<unknown> = Promise.resolve()
+// Each tab remembers the exact durable puzzle snapshots it read or committed.
+const observed = new Map<string, string | undefined>()
+const conflicts = new Set<string>()
+export class ProgressConflict extends Error {
+  constructor(readonly key: string) { super('Progress changed in another tab'); this.name = 'ProgressConflict' }
+}
+const progressKey = (key: string) => key.startsWith('puzzle:')
+const fingerprint = (value: unknown) => JSON.stringify(value)
+let channel: BroadcastChannel | undefined
+const listeners = new Set<(keys: string[]) => void>()
+export function subscribeProgress(listener: (keys: string[]) => void): () => void {
+  if (typeof window !== 'undefined' && typeof BroadcastChannel !== 'undefined' && !channel) {
+    try { channel = new BroadcastChannel('code-progress') } catch { /* Focus refresh remains available. */ }
+    if (channel) channel.onmessage = event => {
+      if (!Array.isArray(event.data) || event.data.length > 1000 || !event.data.every(key => typeof key === 'string' && progressKey(key))) return
+      for (const callback of listeners) callback(event.data)
+    }
+  }
+  listeners.add(listener)
+  return () => { listeners.delete(listener); if (!listeners.size) { channel?.close(); channel = undefined } }
+}
+export function acknowledgeProgressReload() { conflicts.clear(); queue = queue.catch(() => undefined) }
 function open(): Promise<IDBDatabase> {
   if (!database) database = new Promise((resolve, reject) => {
     if (typeof indexedDB === 'undefined') { reject(new Error('Storage unavailable')); return }
-    const request = indexedDB.open('code-cryptogram', 1)
-    request.onupgradeneeded = () => request.result.createObjectStore('records')
+    const request = indexedDB.open('code-cryptogram', 2)
+    request.onupgradeneeded = () => { if (!request.result.objectStoreNames.contains('records')) request.result.createObjectStore('records') }
     request.onsuccess = () => {
       const db = request.result
       db.onversionchange = () => { db.close(); database = undefined }
@@ -22,12 +44,16 @@ function open(): Promise<IDBDatabase> {
   })
   return database
 }
-export async function readRecord(key: string): Promise<unknown> {
+export function observeProgressRecord(key: string, value: unknown) { if (progressKey(key)) observed.set(key, fingerprint(value)) }
+export async function readRecord(key: string, remember = true): Promise<unknown> {
   const db = await open()
   return new Promise((resolve, reject) => {
     const tx = db.transaction('records', 'readonly')
     const request = tx.objectStore('records').get(key)
-    request.onsuccess = () => resolve(request.result)
+    request.onsuccess = () => {
+      if (remember) observeProgressRecord(key, request.result)
+      resolve(request.result)
+    }
     request.onerror = () => reject(request.error)
     tx.onabort = () => reject(tx.error)
   })
@@ -46,12 +72,34 @@ export function writeRecords(records: { key: string; value: unknown }[], signal?
       const abort = () => { try { tx.abort() } catch { /* Already committed: let oncomplete report success. */ } }
       const cleanup = () => signal?.removeEventListener('abort', abort)
       signal?.addEventListener('abort', abort, { once: true })
-      tx.oncomplete = () => { cleanup(); resolve() }
+      tx.oncomplete = () => {
+        cleanup()
+        const keys: string[] = []
+        for (const record of safeRecords) if (progressKey(record.key)) { observed.set(record.key, fingerprint(record.value)); keys.push(record.key) }
+        if (keys.length) { try { channel?.postMessage(keys) } catch { /* Notifications are optional; the transaction guard is authoritative. */ } }
+        resolve()
+      }
       tx.onerror = () => { cleanup(); reject(tx.error) }
-      tx.onabort = () => { cleanup(); reject(tx.error ?? new Error('Transaction aborted')) }
+      let conflict: ProgressConflict | undefined
+      tx.onabort = () => { cleanup(); reject(conflict ?? tx.error ?? new Error('Transaction aborted')) }
       try {
         const store = tx.objectStore('records')
-        for (const record of safeRecords) store.put(record.value, record.key)
+        const guarded = safeRecords.filter(record => progressKey(record.key))
+        const putAll = () => { try { for (const record of safeRecords) store.put(record.value, record.key) } catch (error) { tx.abort(); reject(error) } }
+        if (!guarded.length) putAll()
+        else {
+          let remaining = guarded.length
+          for (const record of guarded) {
+            const request = store.get(record.key)
+            request.onsuccess = () => {
+              if (conflict) return
+              if (conflicts.has(record.key) || (fingerprint(request.result) !== observed.get(record.key) && fingerprint(request.result) !== fingerprint(record.value))) {
+                conflicts.add(record.key); conflict = new ProgressConflict(record.key); tx.abort(); return
+              }
+              if (--remaining === 0) putAll()
+            }
+          }
+        }
       } catch (error) { tx.abort(); reject(error) }
     })
   })
@@ -78,4 +126,4 @@ export async function saveSession(puzzle: Puzzle, session: Session) {
 }
 
 /** Resolve only after every queued write, including the latest move, has committed. */
-export async function flushWrites(): Promise<void> { await queue }
+export async function flushWrites(): Promise<void> { await queue; if (conflicts.size) throw new ProgressConflict([...conflicts][0]!) }
