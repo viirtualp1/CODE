@@ -1,5 +1,27 @@
 [
   {
+    "version": "0.6.0",
+    "date": "2026-10-24",
+    "title": "A quieter way to play",
+    "changes": [
+      "Start from a minimal Home screen, continue an unfinished puzzle or try the optional hands-on practice.",
+      "Choose System, Dark or Light appearance. System follows device changes, and your choice stays saved.",
+      "Swipe the mobile menu closed with your finger while keeping vertical scrolling, Back and keyboard navigation.",
+      "Navigate with clean addresses, working page refresh and offline access. Earlier shared links still work.",
+      "Your saved letters, hints, completed puzzles and undo history carry over."
+    ],
+    "ru": {
+      "title": "Спокойнее и удобнее",
+      "changes": [
+        "Начинайте с минимального главного меню, продолжайте незавершённый пазл или попробуйте необязательное интерактивное обучение.",
+        "Выбирайте системную, тёмную или светлую тему. Системная следует настройкам устройства, а ваш выбор сохраняется.",
+        "Закрывайте мобильное меню свайпом: вертикальная прокрутка, кнопка «Назад» и навигация с клавиатуры продолжают работать.",
+        "Переходите по чистым адресам с поддержкой перезагрузки и офлайн-доступа. Старые ссылки тоже работают.",
+        "Введённые буквы, подсказки, завершённые пазлы и история отмены сохраняются."
+      ]
+    }
+  },
+  {
     "version": "0.5.0",
     "date": "2026-10-21",
     "title": "A steadier flow",

@@ -29,7 +29,7 @@ GitHub release publication and website deployment are separate. The host must se
 | `/manifest.webmanifest` | `no-cache, max-age=0, must-revalidate` |
 | `/assets/*` (hashed files) | `public, max-age=31536000, immutable` |
 
-Preserve old hashed assets briefly during deploys where the host allows it. Deploy the complete bundle atomically; never expose an HTML file whose referenced assets are not uploaded. Avoid permanently caching sw.js at an upstream CDN. Do not serve index.html in place of a missing script or service worker. Hash routing means `#/updates` needs no server rewrite and works from the offline cached document. Subpath hosting requires deliberate Vite base/manifest configuration; root hosting is the current contract.
+Preserve old hashed assets briefly during deploys where the host allows it. Deploy the complete bundle atomically; never expose an HTML file whose referenced assets are not uploaded. Avoid permanently caching sw.js at an upstream CDN. Do not serve index.html in place of a missing script or service worker. History API navigation uses clean paths such as `/updates`. Hosting must rewrite the six known application paths in vercel.json to `/index.html`, with the same noncached HTML policy. Do not add a blanket rewrite for missing assets. The service worker navigation fallback serves the cached application shell on offline direct loads. Old `/#/updates` bookmarks are converted to `/updates` at launch. Subpath hosting requires deliberate Vite base/manifest configuration; root hosting is the current contract.
 
 ## Runtime update contract
 

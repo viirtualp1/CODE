@@ -9,11 +9,11 @@ button, a { -webkit-user-select: none; user-select: none; }
 button { color: inherit; cursor: pointer; border: 0; background: none; }
 a { color: inherit; text-decoration: none; }
 button, a, select, input {
-  &:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+  &:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
 }
-button:disabled { cursor: default; opacity: .33; }
+button:disabled { cursor: default; color: var(--disabled-ink); }
 button:not(:disabled), a { transition: color 160ms, background 160ms, border-color 160ms; }
-button:not(:disabled):active { filter: brightness(.94); }
+button:not(:disabled):active { background-color: var(--pressed); }
 button svg, a svg { flex-shrink: 0; }
 p, h1, h2, h3 { margin: 0; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
@@ -83,11 +83,11 @@ p, h1, h2, h3 { margin: 0; }
   &.used { color: var(--muted); }
   &.current { background: var(--selected); color: var(--accent); border-color: var(--accent); }
   &:hover:not(:disabled) { background: var(--key-hover); }
-  &:disabled { opacity: .45; }
+  &:disabled { background: var(--disabled-surface); color: var(--disabled-ink); border-color: transparent; }
 }
 .used-mark { position: absolute; bottom: 5px; height: 2px; width: 2px; background: var(--accent); border-radius: 50%; }
 .special-key { color: var(--muted); background: transparent; border: 1px solid var(--line); }
-.next-key { background: var(--ink); border-color: var(--ink); color: var(--paper); &:hover:not(:disabled) { background: var(--accent); color: var(--paper); } }
+.next-key { background: var(--action); border-color: var(--action); color: var(--on-action); &:hover:not(:disabled) { background: var(--accent); color: var(--on-accent); } }
 .resume-button { max-width: var(--keyboard-width); margin-inline: auto; min-height: 54px; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; width: 100%; gap: 14px; color: var(--accent); font-size: .75rem; &:hover { background: var(--selected); } }
 .feedback-message { font-size: .75rem; color: var(--muted); line-height: 1.7; margin: 12px auto 0; width: 100%; max-width: 840px; min-height: 21px; }
 .storage-warning { font-size: .75rem; padding: 12px; border: 1px solid var(--line); margin-top: 12px; background: var(--surface); }
@@ -95,7 +95,8 @@ p, h1, h2, h3 { margin: 0; }
 // Dialogs use the same restrained surfaces and type as the game.
 .app-dialog {
   color: var(--ink); background: var(--surface); border: 1px solid var(--line); width: min(520px, calc(100% - 32px)); padding: 28px 31px 30px; max-height: calc(100dvh - 40px); overflow-y: auto; overscroll-behavior: contain; border-radius: 4px;
-  &::backdrop { background: #11180f77; backdrop-filter: blur(5px); }
+  box-shadow: 0 12px 40px var(--shadow);
+  &::backdrop { background: var(--scrim); }
 }
 .dialog-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; h2 { min-width: 0; overflow-wrap: anywhere; font-family: var(--serif); font-weight: 400; font-size: min(2.125rem, 40px); line-height: 1.15; letter-spacing: -.025em; } .icon-button { margin-right: -12px; margin-top: -5px; } }
 .dialog-description { color: var(--muted); font-size: .8125rem; line-height: 1.8; margin-top: 18px; }
@@ -111,7 +112,7 @@ p, h1, h2, h3 { margin: 0; }
 }
 .list-number { font-size: .6875rem; color: var(--muted); }
 .primary-button, .secondary-button { display: flex; justify-content: center; align-items: center; gap: 12px; min-height: 48px; font-size: .75rem; padding: 12px 17px; border-radius: 2px; }
-.primary-button { background: var(--ink); color: var(--paper); &:hover { background: var(--accent); } }
+.primary-button { background: var(--action); color: var(--on-action); &:hover:not(:disabled) { background: var(--accent); color: var(--on-accent); } &:active:not(:disabled) { background: var(--accent); color: var(--on-accent); } &:disabled { background: var(--disabled-surface); } }
 .secondary-button { border: 1px solid var(--line); &:hover { background: var(--selected); } }
 .dialog-buttons { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 9px; margin-top: 27px; }
 .help-demo {
@@ -212,7 +213,7 @@ p, h1, h2, h3 { margin: 0; }
   .cipher-board[data-size='compact'] { --cell-width: 24px; --cell-height: 48px; --letter-height: 28px; --letter-size: 22px; --number-gap: 4px; --number-size: .625rem; --number-cap: 12px; --word-gap: 12px; --row-gap: 6px; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
-@media (prefers-contrast: more) { :root { --muted: #50564b; --line: #9ba190; } :root[data-theme='dark'] { --muted: #c0cbb4; --line: #727f68; } }
+
 // Allow enlarged text to reflow inside dialogs rather than widening the page.
 .filter-tabs, .setting-row { flex-wrap: wrap; }
 .puzzle-list-item strong { overflow-wrap: anywhere; }
@@ -246,12 +247,14 @@ p, h1, h2, h3 { margin: 0; }
 // The menu is a native modal: focus trap, inert background and shared scroll restoration.
 .app-dialog.app-drawer {
   inset: 0 auto 0 0; margin: 0; width: min(352px, calc(100% - 40px)); height: 100dvh; max-height: 100dvh;
-  padding: max(26px, env(safe-area-inset-top)) 26px max(24px, env(safe-area-inset-bottom)); border-width: 0 1px 0 0; border-radius: 0;
-  animation: drawer-enter 220ms cubic-bezier(.2, .7, .2, 1) both;
-  &::backdrop { animation: backdrop-enter 220ms ease-out both; }
-  &.closing { animation: drawer-exit 200ms ease-in both; &::backdrop { animation: backdrop-exit 200ms ease-in both; } }
-  .dialog-header { align-items: center; margin-bottom: 38px; }
-  .dialog-header h2 { font-family: var(--sans); font-size: min(1.5625rem, 30px); font-weight: 600; letter-spacing: .17em; }
+  padding: max(20px, env(safe-area-inset-top)) 24px max(24px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left)); border-width: 0 1px 0 0; border-radius: 0;
+  animation: drawer-enter 200ms cubic-bezier(.2, .7, .2, 1);
+  transition: transform 200ms cubic-bezier(.2, .7, .2, 1);
+  &::backdrop { opacity: var(--drawer-backdrop, 1); transition: opacity 200ms; }
+  &.dragging, &.tracking { animation: none; transition: none; &::backdrop { transition: none; } }
+  &.closing { animation: none; pointer-events: none; }
+  .dialog-header { align-items: center; margin-bottom: 24px; }
+  .dialog-header h2 { font-family: var(--sans); font-size: min(1.5625rem, 30px); font-weight: 600; letter-spacing: -.06em; }
   .dialog-header .icon-button { margin-top: 0; }
 }
 .drawer-menu { border-top: 1px solid var(--line); }
@@ -264,15 +267,12 @@ p, h1, h2, h3 { margin: 0; }
   small { display: block; font-size: .6875rem; color: var(--muted); margin-top: 5px; }
   &:hover { background: var(--selected); }
 }
-.current-puzzle { padding: 22px 12px; margin-bottom: 14px; background: var(--selected); border-bottom: 0; }
+.current-puzzle { padding: 18px 12px; margin-block: 12px; background: var(--selected); border-bottom: 0; border-radius: 3px; }
 .drawer-item small.drawer-update-status { display: inline-flex; align-items: center; gap: 7px; color: var(--accent); font-weight: 600; }
 .drawer-update-dot { display: inline-block; width: 8px; height: 8px; flex-shrink: 0; border-radius: 50%; background: var(--accent); }
 .menu-count { color: var(--muted); font-size: .6875rem; }
 .theme-menu-item { margin-top: 32px; color: var(--muted); border-bottom: 0; min-height: 52px; }
 @keyframes drawer-enter { from { transform: translateX(-100%); } to { transform: translateX(0); } }
-@keyframes drawer-exit { from { transform: translateX(0); } to { transform: translateX(-100%); } }
-@keyframes backdrop-enter { from { opacity: 0; } to { opacity: 1; } }
-@keyframes backdrop-exit { from { opacity: 1; } to { opacity: 0; } }
 
 // Release information stays behind the menu; gameplay only gets a quiet availability dot.
 .update-dot { position: absolute; width: 6px; height: 6px; right: 5px; top: 5px; background: var(--accent); border-radius: 50%; }
@@ -358,3 +358,57 @@ p, h1, h2, h3 { margin: 0; }
 .storage-warning.has-conflict { padding: 0; }
 .conflict-settings { display: block; width: 100%; min-height: 44px; padding: 4px; text-align: left; color: var(--ink); font: inherit; line-height: 1.4; span { text-decoration: underline; } }
 .backup-conflict { padding: 12px; margin-top: 16px; border: 1px solid var(--danger); font-size: .75rem; line-height: 1.6; }
+
+// Launch and practice share the game palette, without adding a card-based shell.
+.is-loading { visibility: hidden; }
+.home-screen {
+  min-height: 100dvh; height: 100dvh; overflow-y: auto; overscroll-behavior: contain;
+  display: grid; place-items: center;
+  padding: calc(72px + env(safe-area-inset-top)) max(28px, env(safe-area-inset-right)) max(40px, env(safe-area-inset-bottom)) max(28px, env(safe-area-inset-left));
+}
+.home-settings { position: fixed; right: max(12px, env(safe-area-inset-right)); top: max(12px, env(safe-area-inset-top)); width: 48px; height: 48px; color: var(--muted); }
+.home-content { width: min(100%, 320px); margin-top: -5dvh; text-align: center; animation: screen-enter 180ms ease-out; }
+.home-identity h1 { font-size: min(5.5rem, 88px); line-height: 1; font-weight: 500; letter-spacing: -.075em; span { color: var(--accent); } }
+.home-identity p { font-size: 1rem; letter-spacing: .02em; color: var(--muted); margin-top: 16px; }
+.home-actions { display: grid; gap: 12px; margin-top: 56px; }
+.home-play { width: 100%; min-height: 58px; border-radius: 4px; font-size: 1rem; font-weight: 600; justify-content: space-between; padding-inline: 24px; }
+.home-help { min-height: 48px; padding: 12px; color: var(--muted); font-size: .875rem; border-radius: 4px; &:hover { background: var(--selected); color: var(--ink); } }
+.home-storage { position: fixed; bottom: max(16px, env(safe-area-inset-bottom)); left: 16px; right: 16px; top: auto; text-align: center; }
+.appearance-setting { min-width: 0; border: 0; padding: 24px 0; margin: 0; border-bottom: 1px solid var(--line); legend { float: left; width: 100%; margin-bottom: 16px; font-size: .875rem; font-weight: 600; } }
+.appearance-control {
+  clear: both; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); background: var(--key); border: 1px solid var(--line); border-radius: 5px; padding: 3px; gap: 3px;
+  label { position: relative; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; justify-content: center; min-width: 0; min-height: 46px; padding: 8px 4px; border: 1px solid transparent; border-radius: 3px; color: var(--muted); font-size: .8125rem; line-height: 1.4; text-align: center; cursor: pointer;
+    span { min-width: 0; overflow-wrap: anywhere; }
+    input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+    &:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: -2px; }
+    &:active { background: var(--pressed); }
+    &.chosen { background: var(--surface); color: var(--ink); border-color: var(--line); box-shadow: 0 1px 3px var(--shadow); font-weight: 600; }
+  }
+}
+.appearance-setting:disabled .appearance-control { opacity: .6; label { cursor: default; } }
+.app-dialog:not(.app-drawer) .dialog-header h2 { font-family: var(--sans); font-size: 1.375rem; font-weight: 600; letter-spacing: -.025em; }
+.tutorial { margin-top: 24px; h3 { font-size: 1.125rem; font-weight: 600; line-height: 1.5; } }
+.tutorial-intro, .tutorial-instructions { font-size: .8125rem; color: var(--muted); line-height: 1.7; margin-top: 12px; }
+.tutorial-board.cipher-board { margin-block: 28px; justify-content: center; gap: 20px; .cipher-word { gap: 4px; } .cipher-cell { width: 36px; height: 64px; } .cell-letter { width: 32px; height: 40px; font-size: 28px; } .cell-number { font-size: .75rem; margin-top: 7px; } .punctuation { width: 6px; font-size: 28px; } }
+.practice-keys { display: grid; grid-template-columns: repeat(3, minmax(48px, 1fr)); gap: 8px; max-width: 264px; margin: 20px auto 0; .key { height: 56px; } }
+.practice-tools { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 8px; }
+.practice-message { min-height: 2.8em; font-size: .8125rem; line-height: 1.6; color: var(--ink); margin-top: 12px; }
+.tutorial-actions { display: grid; gap: 8px; margin-top: 24px; .primary-button { font-size: .875rem; min-height: 52px; } }
+.help-reference { border-top: 1px solid var(--line); margin-top: 24px; padding-top: 4px; summary { cursor: pointer; padding-block: 16px; font-size: .8125rem; line-height: 1.6; &:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; } } }
+.backup-feedback { color: var(--success); }
+.backup-conflict { background: var(--danger-surface); }
+@media (max-width: 700px), (max-height: 580px) and (orientation: landscape) {
+  .app-dialog.app-drawer { touch-action: pan-y; }
+  .app-screen .dialog-header h2 { font-family: var(--sans); font-size: 1.25rem; font-weight: 600; }
+}
+@media (max-height: 580px) and (orientation: landscape) {
+  .home-screen { padding-block: max(32px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-bottom)); }
+  .home-content { width: min(100%, 660px); margin-top: 0; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 56px; }
+  .home-actions { margin-top: 0; }
+}
+
+// At enlarged font sizes, keep complete translated labels instead of splitting words.
+.appearance-setting { container-type: inline-size; }
+@container (max-width: 17em) {
+  .appearance-control { grid-template-columns: minmax(0, 1fr); }
+}

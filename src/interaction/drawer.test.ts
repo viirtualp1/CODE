@@ -1,0 +1,58 @@
+import { describe, expect, it } from 'vitest'
+import { canStartDrawerDrag, DrawerDrag } from './drawer'
+const p = (x: number, y: number, time: number) => ({ x, y, time })
+describe('left drawer intent and settling', () => {
+  it('tracks a horizontal finger and closes after deliberate travel', () => {
+    const drag = new DrawerDrag(); drag.begin(p(260, 100, 0), 320)
+    expect(drag.move(p(252, 104, 20))).toBe('pending')
+    expect(drag.offset).toBe(0)
+    expect(drag.move(p(145, 106, 350))).toBe('drag')
+    expect(drag.offset).toBe(-115)
+    expect(drag.release(p(144, 106, 400))).toBe(true)
+    expect(drag.offset).toBe(0)
+  })
+  it('snaps short/slow drags back, but accepts a short intentional fling', () => {
+    const drag = new DrawerDrag(); drag.begin(p(260, 100, 0), 320)
+    drag.move(p(220, 100, 300))
+    expect(drag.release(p(220, 100, 500))).toBe(false)
+    drag.begin(p(260, 100, 600), 320)
+    drag.move(p(248, 100, 610))
+    expect(drag.release(p(215, 100, 650))).toBe(true)
+  })
+  it('does not close on a tiny flick or a stale velocity after pausing', () => {
+    const drag = new DrawerDrag(); drag.begin(p(260, 100, 0), 320)
+    expect(drag.release(p(246, 100, 10))).toBe(false)
+    drag.begin(p(260, 100, 0), 320); drag.move(p(220, 100, 30))
+    expect(drag.release(p(220, 100, 600))).toBe(false)
+  })
+  it.each([[250, 125], [240, 123], [285, 102]])('locks scroll/ambiguous/rightward intent at %s,%s', (x, y) => {
+    const drag = new DrawerDrag(); drag.begin(p(260, 100, 0), 320)
+    expect(drag.move(p(x, y, 30))).toBe('scroll')
+    drag.move(p(80, 130, 100))
+    expect(drag.offset).toBe(0)
+    expect(drag.release(p(20, 130, 140))).toBe(false)
+  })
+  it('clamps bounds and resets interrupted or repeated gestures', () => {
+    const drag = new DrawerDrag(); drag.begin(p(260, 100, 0), 320)
+    drag.move(p(-200, 100, 200)); expect(drag.offset).toBe(-320)
+    drag.cancel(); expect(drag.offset).toBe(0)
+    expect(drag.release(p(-200, 100, 210))).toBe(false)
+    drag.begin(p(250, 10, 300), 280); drag.move(p(200, 10, 500))
+    drag.begin(p(250, 10, 600), 400); expect(drag.offset).toBe(0)
+    expect(drag.release(p(240, 10, 800))).toBe(false)
+  })
+  it('continues an interrupted settlement from its visual position', () => {
+    const drag = new DrawerDrag(); drag.begin(p(250, 100, 0), 320, -35)
+    expect(drag.offset).toBe(-35)
+    drag.move(p(225, 100, 80)); expect(drag.offset).toBe(-60)
+    expect(drag.release(p(180, 100, 160))).toBe(true)
+  })
+  it('preserves native edges, form controls, other pointers and desktop behavior', () => {
+    expect(canStartDrawerDrag('touch', true, 100, false, true)).toBe(true)
+    expect(canStartDrawerDrag('touch', true, 24, false, true)).toBe(false)
+    expect(canStartDrawerDrag('touch', true, 100, true, true)).toBe(false)
+    expect(canStartDrawerDrag('touch', false, 100, false, true)).toBe(false)
+    expect(canStartDrawerDrag('mouse', true, 100, false, true)).toBe(false)
+    expect(canStartDrawerDrag('touch', true, 100, false, false)).toBe(false)
+  })
+})

@@ -1,7 +1,8 @@
 import { computed, onScopeDispose, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { quotes } from '../data/puzzles'
-import { progressStatus } from '../engine/collection'
+import { progressStatus, resumePuzzleId } from '../engine/collection'
+import { cacheAppearance, isTheme, readAppearance } from '../services/appearance'
 import { planRestore } from '../services/backup'
 import type { ParsedBackup } from '../services/backup'
 import { createPuzzle, edit, initialSession, isComplete, isLocked, mistakes, nextUnanswered, travel } from '../engine/cipher'
@@ -23,7 +24,7 @@ export const useGameStore = defineStore('game', () => {
   const ready = ref(false)
   const restoring = ref(false)
   const selected = ref<number | null>(null)
-  const theme = ref<Theme>('system')
+  const theme = ref<Theme>(readAppearance())
   const haptics = ref(false)
   const message = ref(t('selectPrompt'))
   const feedback = ref('')
@@ -36,6 +37,7 @@ export const useGameStore = defineStore('game', () => {
   const puzzle = computed(() => puzzles.find(p => p.quote.id === currentId.value)!)
   const session = computed(() => sessions.value[currentId.value]!)
   const complete = computed(() => isComplete(puzzle.value, session.value))
+  const resumeId = computed(() => resumePuzzleId(collection.value, sessions.value, currentId.value))
   const locked = computed(() => selected.value === null || isLocked(puzzle.value, session.value, selected.value))
   const hintTarget = computed(() => complete.value ? null : selected.value && !isLocked(puzzle.value, session.value, selected.value) ? selected.value : puzzle.value.symbols.find(n => !isLocked(puzzle.value, session.value, n) && !session.value.entries[n]) ?? puzzle.value.symbols.find(n => !isLocked(puzzle.value, session.value, n)) ?? null)
 
@@ -62,7 +64,7 @@ export const useGameStore = defineStore('game', () => {
       await Promise.all(upgrades)
       if (preferences && typeof preferences === 'object') {
         const p = preferences as Partial<Preferences>
-        if (p.theme && ['light', 'dark', 'system'].includes(p.theme)) theme.value = p.theme
+        theme.value = isTheme(p.theme) ? p.theme : 'system'
         if (typeof p.haptics === 'boolean') haptics.value = p.haptics
         // Preferences v1 had only currentId; its valid puzzle establishes the legacy language.
         // Unknown versions are ignored; session envelopes/database remain at version 1.
@@ -76,7 +78,8 @@ export const useGameStore = defineStore('game', () => {
           }
           currentId.value = collection.value.find(item => item.quote.id === p.currentId)?.quote.id ?? collection.value.find(item => item.quote.id === lastPuzzle.value[language.value])?.quote.id ?? collection.value[0]!.quote.id
         }
-      }
+      } else theme.value = 'system'
+      cacheAppearance(theme.value)
     } catch { storageError.value = true }
     i18n.global.locale.value = language.value
     message.value = t(complete.value ? 'puzzleDecoded' : 'selectPrompt')
@@ -198,7 +201,7 @@ export const useGameStore = defineStore('game', () => {
     keys.forEach(key => changedKeys.add(key)); void syncProgress()
   })
   onScopeDispose(unsubscribe)
-  function setTheme(value: Theme) { theme.value = value; savePreferences() }
+  function setTheme(value: Theme) { if (!ready.value || restoring.value || !isTheme(value)) return; theme.value = value; cacheAppearance(value); savePreferences() }
   function setHaptics(value: boolean) { haptics.value = value; tick(); savePreferences() }
-  return { storageConflict, syncing, syncProgress, refreshProgress, language, collection, resumePointers, setLanguage, ready, restoring, restoreProgress, currentId, sessions, selected, theme, haptics, message, feedback, checked, storageError, pendingSaves, puzzle, session, complete, locked, hintTarget, initialize, select, apply, eraseChecked, revealHint, history, check, switchPuzzle, restart, setTheme, setHaptics }
+  return { resumeId, storageConflict, syncing, syncProgress, refreshProgress, language, collection, resumePointers, setLanguage, ready, restoring, restoreProgress, currentId, sessions, selected, theme, haptics, message, feedback, checked, storageError, pendingSaves, puzzle, session, complete, locked, hintTarget, initialize, select, apply, eraseChecked, revealHint, history, check, switchPuzzle, restart, setTheme, setHaptics }
 })

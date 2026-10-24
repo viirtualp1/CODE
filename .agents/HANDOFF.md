@@ -2,7 +2,7 @@
 
 A functional, local-first cryptogram game built with Vue 3, TypeScript, Vite, Pinia, SCSS and IndexedDB
 
-Current revision: 0.5.0.
+Current revision: 0.6.0 (2026-10-24).
 
 Working directory: `/Users/virtualp1/Documents/personal/CODE`. All subsequent changes belong here.
 
@@ -57,7 +57,7 @@ Open the local address printed by Vite. Production preview is needed to test ser
 | src/App.vue | App chrome, composed gameplay, dialogs and physical-key routing |
 | vite.config.ts | Build, tests and prompt-based PWA updates |
 
-One game view and four local hash destinations do not require a router dependency. No database wrapper, NLP library or generic command framework is needed. Native dialog provides focus trapping and inert background. Only a clicked/focused occurrence owns keyboard focus; every occurrence still shares its assignment. Arrows skip revealed clues but allow revisiting guessed cells. The app advances only successful regular letter edits, using the pure `nextEmptyCell` helper. It scans occurrences after the actual selected index, rather than the first appearance of that symbol. The board owns actual DOM focus. Phone layout displays the whole quote; only desktop overflow uses focus-reveal scrolling. Enter uses the same helper; arrows can revisit filled guesses.
+One game view and four local History API destinations do not require a router dependency. No database wrapper, NLP library or generic command framework is needed. Native dialog provides focus trapping and inert background. Only a clicked/focused occurrence owns keyboard focus; every occurrence still shares its assignment. Arrows skip revealed clues but allow revisiting guessed cells. The app advances only successful regular letter edits, using the pure `nextEmptyCell` helper. It scans occurrences after the actual selected index, rather than the first appearance of that symbol. The board owns actual DOM focus. Phone layout displays the whole quote; only desktop overflow uses focus-reveal scrolling. Enter uses the same helper; arrows can revisit filled guesses.
 
 History snapshots include both guesses and hint locks, capped at 100 steps. New edits clear redo. A hint may displace a conflicting guessed assignment; one undo restores both. Structural duplicate-letter rejection is not a correctness check.
 
@@ -78,7 +78,7 @@ See [RELEASING.md](RELEASING.md) for the release checklist, cache headers and ho
 
 CI runs tests and a production build on branches and pull requests. A pushed `vX.Y.Z` tag runs them again, verifies the exact version and creates a GitHub release with a web archive and SHA-256 checksum. No release or deployment is triggered by editing local files. The current hosting configuration targets Vercel, matching the Shotcaller reference; connect the repository in Vercel before publishing. The GitHub release archive alone does not update the hosted PWA.
 
-Release notes use `#/updates`, with browser/Android Back returning to the puzzle. Opening them directly and reloading works offline. There is no quote API, account or release API dependency. A downloaded version only activates after explicit Update & restart. During flush/activation the modal cannot be dismissed and gameplay is inert. Save and worker waits are each capped at 30 seconds and can be retried. Another tab's activation never forces this tab to reload. IndexedDB schema remains 1.
+Release notes use `/updates`, with browser/Android Back returning to the puzzle. Opening them directly and reloading works offline. There is no quote API, account or release API dependency. A downloaded version only activates after explicit Update & restart. During flush/activation the modal cannot be dismissed and gameplay is inert. Save and worker waits are each capped at 30 seconds and can be retried. Another tab's activation never forces this tab to reload. IndexedDB schema remains 1.
 
 Local validation is recorded in docs/QA.md; rerun the commands above before subsequent releases. The 0.4.0 pass adds focused migration, ambiguity, backup rollback/cancellation and bilingual resume coverage. Remote GitHub Actions and hosted Android updates require the workflows to be pushed and the host connected; these have not run from this local session.
 
@@ -129,7 +129,7 @@ Manrope Cyrillic and Noto Serif Cyrillic regular/italic are bundled; English New
 
 Exactly 100 quotes per language. Keep the original 16 English records in puzzles.ts and 12 Russian in russian-quotes.ts intact. New static records live in english-expansion.json (84) and russian-expansion.json (88); append them after the original records within each language. Each includes source, reuse/normalization rationale and explicit clue letters. No runtime generator or quote API. Difficulty remains editorial, not solver-certified. The longest bundled word may now contain 12 letters; never split it. Validate new content on small/large phones, landscape and 200% text. Existing English mapping fixtures still cover all 16 published entries.
 
-App.vue owns four small hash destinations and responsive matchMedia state. AppDialog uses a section for phone destination screens, with a sticky Back button; desktop and destructive confirmations retain native dialog. Both presentations preserve background scroll/focus restoration. Drawer remains a native animated modal. While a phone screen is open the game stays mounted but hidden/inert. Changing viewport recreates only the presentation; browser Back closes the current destination. Updates keep dismissal blocked while saving/activating.
+App.vue owns four small History API destinations and responsive matchMedia state. AppDialog uses a section for phone destination screens, with a sticky Back button; desktop and destructive confirmations retain native dialog. Both presentations preserve background scroll/focus restoration. Drawer remains a native animated modal. While a phone screen is open the game stays mounted but hidden/inert. Changing viewport recreates only the presentation; browser Back closes the current destination. Updates keep dismissal blocked while saving/activating.
 
 Desktop quote rows/attribution are centered. A ResizeObserver sets a bounded workspace top offset from measured quote, toolbar, keyboard and feedback heights: whole quote/actions/keyboard group centered 2vh (capped at 24px) above the viewport midpoint if it fits, otherwise clamp to preserve top controls and input visibility. Metadata is 1rem on desktop. The observer never changes cipher state and disconnects on unmount. Phone fitting and keyboard geometry remain independent.
 
@@ -173,3 +173,19 @@ Next puzzle uses stable shuffled ID order, with unfinished different-difficulty/
 - Work belongs on refine-puzzle-flow-and-saves. Push the feature branch; no main merge or release tag is requested.
 
 Final 0.5.0 validation: 290 Vitest + 3 release tests, TypeScript/release checks and production PWA build passed. Two developer review samples and two browser tab scenarios were sufficient; no corpus sweep. Foreground reads defer adoption if a local move occurs, so the first key is never dropped. See docs/QA.md.
+
+## UI redesign — 0.6.0 (2026-10-24)
+
+- HomeScreen adds root launch/Home, safe Play/Continue and minimal Settings/How to play. App retains History API navigation, with routes.ts recording Home, Game, drawer and existing destinations; no router/framework dependency. Main menu preserves sessions and prevents Back from reopening the replaced game entry.
+- AppearanceControl uses System / Dark / Light native radios. appearance.ts handles the synchronous code-appearance cache, theme resolution, media listener cleanup and theme-color. The document head resolves cache/system before app code; visible UI waits for IndexedDB preference reconciliation. SCSS centralizes both neutral palettes and semantic action, focus, disabled, verdict, scrim and shadow colors. No persistence schema or quote revision change.
+- TutorialGame keeps its own session and uses engine/tutorial.ts plus actual cipher operations. Practice is available in either language, skippable/replayable, never forced and never saved into game sessions. Existing help reference remains in a disclosure.
+- AppDialog retains native modality/body locks, adds explicit Tab boundary wrapping and unique labels, and implements mobile pointer-drag dismissal through the pure DrawerDrag helper. Treat lost capture from a child button as a transfer, not cancellation; real touch regression coverage protects this distinction. Native edge/form controls/vertical intent are excluded. Interrupted gestures and settlement starts preserve visual position; resize/blur/cancel reset safely. Desktop drawer remains modal and does not gain mouse dragging.
+- All existing engine, IndexedDB conflict, backups, PWA updates and bilingual corpus behavior are retained. No native packaging or new app dependency. Release 0.6.0 targets main and the existing Vercel production integration.
+
+QA: npm test; npm run build; optional npm run test:ui against a Vite development server on 127.0.0.1:5178. The browser script imports Playwright from PLAYWRIGHT_MODULE when supplied, otherwise from an available playwright package; BROWSER_CHANNEL defaults to chrome. It uses disposable profiles, writes screenshots to ignored outputs/redesign and does not touch the user's browser profile. See docs/QA.md for exact coverage and hardware limitations.
+
+Navigation follow-up: the user explicitly requested clean URLs. destinations now uses /, /play, /menu, /collection, /help, /settings and /updates via pushState/popstate. Launch canonicalizes old fragment bookmarks and trailing slashes without reload. vercel.json rewrites only known application paths to index.html and gives them the HTML cache policy; other hosts need equivalent SPA fallbacks. Vite development/preview and the existing service worker navigation fallback support direct refresh. No router dependency.
+
+Final local validation: 317 Vitest + 7 Node script tests; TypeScript/release check/production build; the optional UI suite in both palettes at six mobile sizes, English/Russian enlarged text, real touch events and desktop focus; clean-path production offline reload on all destinations with Dark/H/Undo retained. Detailed results and limitations are in docs/QA.md.
+
+Production release: 0.6.0, 2026-10-24. Repository homepage identifies https://www.crackthecode.quest as production. Vercel is connected to main. The release commit/tag are prepared after local validation; verify the new commit status and live bundle after pushing.

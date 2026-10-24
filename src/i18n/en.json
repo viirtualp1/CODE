@@ -152,5 +152,19 @@
   "progressConflictDetails": "Another tab saved newer progress. Your moves here remain in memory. Export this copy below before loading the saved progress; loading replaces unsaved moves in this tab.",
   "progressDiscardConfirm": "I am ready to replace this tab’s unsaved moves with the saved progress.",
   "progressLoadSaved": "Load saved progress",
-  "progressSynced": "Progress updated from this device."
+  "progressSynced": "Progress updated from this device.",
+  "system": "System",
+  "play": "Play",
+  "cryptograms": "Cryptograms",
+  "mainMenu": "Main menu",
+  "tutorialRule": "One number. One letter.",
+  "tutorialPrompt": "Try decoding “Too hot.” The T is already given.",
+  "tutorialInstructions": "Tap a blank, then a letter. Matching numbers fill together. Each letter belongs to only one number.",
+  "tutorialMatched": "Matching numbers filled together. Try the remaining letter.",
+  "tutorialSolved": "Too hot. You decoded it!",
+  "tutorialCheck": "Guesses stay neutral until you tap Check. Undo lets you change your mind.",
+  "practiceAgain": "Try again",
+  "skipTutorial": "Skip practice",
+  "moreHelp": "Rules & keyboard controls",
+  "continue": "Continue"
 }

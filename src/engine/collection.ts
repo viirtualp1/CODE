@@ -37,3 +37,10 @@ export function nextPuzzleId(puzzles: readonly Puzzle[], sessions: Record<string
   })).sort((a, b) => a.score - b.score)
   return ranked[0]!.puzzle.quote.id
 }
+
+/** Resume the current unfinished session, falling back to other started work. */
+export function resumePuzzleId(puzzles: readonly Puzzle[], sessions: Record<string, Session>, currentId: string): string | null {
+  const current = puzzles.find(puzzle => puzzle.quote.id === currentId)
+  if (current && progressStatus(current, sessions[currentId]!) === 'started') return currentId
+  return puzzles.find(puzzle => progressStatus(puzzle, sessions[puzzle.quote.id]!) === 'started')?.quote.id ?? null
+}
