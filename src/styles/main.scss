@@ -248,7 +248,7 @@ p, h1, h2, h3 { margin: 0; }
 .app-dialog.app-drawer {
   inset: 0 auto 0 0; margin: 0; width: min(352px, calc(100% - 40px)); height: 100dvh; max-height: 100dvh;
   padding: max(20px, env(safe-area-inset-top)) 24px max(24px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left)); border-width: 0 1px 0 0; border-radius: 0;
-  animation: drawer-enter 200ms cubic-bezier(.2, .7, .2, 1);
+  &.entering { animation: drawer-enter 200ms cubic-bezier(.2, .7, .2, 1); }
   transition: transform 200ms cubic-bezier(.2, .7, .2, 1);
   &::backdrop { opacity: var(--drawer-backdrop, 1); transition: opacity 200ms; }
   &.dragging, &.tracking { animation: none; transition: none; &::backdrop { transition: none; } }

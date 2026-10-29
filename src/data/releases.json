@@ -1,5 +1,21 @@
 [
   {
+    "version": "0.6.1",
+    "date": "2026-10-30",
+    "title": "Mobile menu taps restored",
+    "changes": [
+      "Fixed mobile menu taps closing the drawer instead of opening the selected screen.",
+      "Swipe dismissal and vertical scrolling remain available. Saved puzzle progress is unchanged."
+    ],
+    "ru": {
+      "title": "Исправлены нажатия в меню",
+      "changes": [
+        "Исправлено мобильное меню: нажатие открывает выбранный экран, а не закрывает панель.",
+        "Свайпы и вертикальная прокрутка продолжают работать. Прогресс пазлов сохраняется."
+      ]
+    }
+  },
+  {
     "version": "0.6.0",
     "date": "2026-10-24",
     "title": "A quieter way to play",

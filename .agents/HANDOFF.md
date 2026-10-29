@@ -2,7 +2,7 @@
 
 A functional, local-first cryptogram game built with Vue 3, TypeScript, Vite, Pinia, SCSS and IndexedDB
 
-Current revision: 0.6.0 (2026-10-24).
+Current revision: 0.6.1 (2026-10-30).
 
 Working directory: `/Users/virtualp1/Documents/personal/CODE`. All subsequent changes belong here.
 
@@ -189,3 +189,7 @@ Navigation follow-up: the user explicitly requested clean URLs. destinations now
 Final local validation: 317 Vitest + 7 Node script tests; TypeScript/release check/production build; the optional UI suite in both palettes at six mobile sizes, English/Russian enlarged text, real touch events and desktop focus; clean-path production offline reload on all destinations with Dark/H/Undo retained. Detailed results and limitations are in docs/QA.md.
 
 Production release: 0.6.0, 2026-10-24. Repository homepage identifies https://www.crackthecode.quest as production. Vercel is connected to main. The release commit/tag are prepared after local validation; verify the new commit status and live bundle after pushing.
+
+## 0.6.1 — mobile menu tap hotfix
+
+Real touch taps in 0.6.0 replayed drawer-enter when pointer tracking ended, moving the hit target before click dispatch and dismissing the drawer as a backdrop click. Entrance now has a one-shot lifecycle cleared on timeout or touch start; tracking never restarts it. The UI regression suite now uses tap() for controls and explicitly visits all drawer destinations, while retaining swipe/cancel/scroll/Back/focus coverage. No engine/storage changes.

@@ -9,6 +9,7 @@ const emit = defineEmits<{ close: [] }>()
 const titleId = useId()
 const dialog = ref<HTMLElement>()
 const closing = ref(false)
+const entering = ref(!!props.drawer)
 const dragging = ref(false)
 const tracking = ref(false)
 const offset = ref(0)
@@ -17,6 +18,7 @@ const drag = new DrawerDrag()
 let pointer: number | null = null
 let suppressClick = false
 let clickTimer: ReturnType<typeof setTimeout> | undefined
+let enterTimer: ReturnType<typeof setTimeout> | undefined
 let closeTimer: ReturnType<typeof setTimeout> | undefined
 const drawerStyle = computed(() => props.drawer ? { transform: `translateX(${offset.value}px)`, '--drawer-backdrop': String(Math.max(0, 1 + offset.value / width.value)) } : undefined)
 function cancelDrag() {
@@ -43,6 +45,7 @@ function pointerDown(event: PointerEvent) {
   if (!canStartDrawerDrag(event.pointerType, event.isPrimary, event.clientX, !!target?.closest('input, select, textarea, [contenteditable], [data-no-drawer-swipe]'), phone)) return
   const rect = dialog.value?.getBoundingClientRect()
   if (!rect || event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) return
+  entering.value = false
   cancelDrag(); suppressClick = false; clearTimeout(clickTimer)
   width.value = rect?.width ?? 1
   // Freeze any interrupted entry/snap-back at its current visual position.
@@ -82,6 +85,8 @@ let scrollY = 0
 let bodyStyle = { overflow: '', position: '', top: '', width: '', paddingRight: '' }
 let htmlOverflow = ''
 onMounted(() => {
+  // Entrance is one-shot: releasing a normal touch must never replay it.
+  enterTimer = setTimeout(() => { entering.value = false }, 200)
   previous = props.returnFocus ?? document.activeElement as HTMLElement
   scrollY = window.scrollY
   const body = document.body
@@ -97,7 +102,7 @@ onMounted(() => {
   window.addEventListener('blur', cancelDrag)
 })
 onBeforeUnmount(() => {
-  clearTimeout(closeTimer); clearTimeout(clickTimer); cancelDrag()
+  clearTimeout(enterTimer); clearTimeout(closeTimer); clearTimeout(clickTimer); cancelDrag()
   window.removeEventListener('resize', cancelDrag)
   window.removeEventListener('blur', cancelDrag)
   if (dialog.value instanceof HTMLDialogElement) dialog.value.close()
@@ -120,7 +125,7 @@ function backdrop(event: MouseEvent) {
 }
 </script>
 <template>
-  <component :is="page ? 'section' : 'dialog'" ref="dialog" :class="[page ? 'app-screen' : 'app-dialog', { 'app-drawer': drawer, closing, dragging, tracking }]" :style="drawerStyle" :role="page ? 'region' : undefined" :aria-labelledby="titleId" :aria-busy="busy" @keydown="trapFocus" @cancel.prevent="requestClose" @click.capture="captureClick" @click="backdrop" @pointerdown="pointerDown" @pointermove="pointerMove" @pointerup="pointerUp" @pointercancel="pointerCancel" @lostpointercapture="lostCapture">
+  <component :is="page ? 'section' : 'dialog'" ref="dialog" :class="[page ? 'app-screen' : 'app-dialog', { 'app-drawer': drawer, entering, closing, dragging, tracking }]" :style="drawerStyle" :role="page ? 'region' : undefined" :aria-labelledby="titleId" :aria-busy="busy" @keydown="trapFocus" @cancel.prevent="requestClose" @click.capture="captureClick" @click="backdrop" @pointerdown="pointerDown" @pointermove="pointerMove" @pointerup="pointerUp" @pointercancel="pointerCancel" @lostpointercapture="lostCapture">
     <div class="dialog-header"><button v-if="page" class="icon-button screen-back" :aria-label="t('back')" :disabled="busy" @click="requestClose"><ArrowLeft :size="23" /></button><h2 :id="titleId">{{ title }}</h2><button v-if="!page" class="icon-button" :aria-label="t('closeDialog')" :disabled="busy" @click="requestClose"><X :size="20" /></button></div>
     <slot />
   </component>
