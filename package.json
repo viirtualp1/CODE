@@ -14,7 +14,9 @@
     "content:audit": "node scripts/audit-content.mjs",
     "content:review": "node scripts/review-content.mjs",
     "content:review:ci": "node scripts/review-ci.mjs plan && node scripts/review-ci.mjs run",
-    "test:ui": "node scripts/check-ui.mjs"
+    "test:ui": "node scripts/check-ui.mjs",
+    "promo:video": "node scripts/promo/record.mjs",
+    "promo:shorts": "node scripts/promo/record-shorts.mjs"
   },
   "dependencies": {
     "@fontsource/manrope": "^5.2.8",

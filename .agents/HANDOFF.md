@@ -193,3 +193,7 @@ Production release: 0.6.0, 2026-10-24. Repository homepage identifies https://ww
 ## 0.6.1 — mobile menu tap hotfix
 
 Real touch taps in 0.6.0 replayed drawer-enter when pointer tracking ended, moving the hit target before click dispatch and dismissing the drawer as a backdrop click. Entrance now has a one-shot lifecycle cleared on timeout or touch start; tracking never restarts it. The UI regression suite now uses tap() for controls and explicitly visits all drawer destinations, while retaining swipe/cancel/scroll/Back/focus coverage. No engine/storage changes.
+
+## Promo videos
+
+`npm run promo:video` and `npm run promo:shorts` record YouTube promos from real gameplay against `npm run dev -- --port 5178` (override with PROMO_BASE_URL). They write outputs/CODE-promo.mp4 (1920×1080), outputs/CODE-promo-thumbnail.jpg and outputs/CODE-promo-shorts.mp4 (1080×1920, the phone layout in an iframe). Playwright and ffmpeg are developer tools, loaded like check-ui (PLAYWRIGHT_MODULE, BROWSER_CHANNEL); no app dependency. scripts/promo/capture.mjs records a CDP screencast with timestamps, keeps frames flowing during opacity-only fades with an invisible repainting pixel and forces the browser scale factor, which screencast otherwise ignores. Scenes solve English puzzle 001 and show wrong guess, undo/redo, Check, erase, hint, Enter and light/dark. Changing that quote, its clues or control labels requires updating the scripts. Videos have no audio.
